@@ -14,13 +14,18 @@ export const ROLE_ASSISTANT = 'assistant';
 export const ROLE_SYSTEM = 'system';
 
 // ============================================
-// Credit/Usage Constants
+// Subscription Tiers
 // ============================================
-export const CREDITS_PER_MESSAGE = 1;
-export const CREDITS_PER_BRAND_ANALYSIS = 10;
-export const FREE_TIER_MESSAGES = 100;
-export const STARTER_TIER_MESSAGES = 1000;
-export const PRO_TIER_MESSAGES = 10000;
+export const SUBSCRIPTION_TIERS = {
+  FREE: 'free',
+  PRO: 'pro',
+} as const;
+
+// ============================================
+// Rate Limiting for Free Tier
+// ============================================
+export const FREE_TIER_RATE_LIMIT = 100; // requests per hour for dashboard/homepage
+export const FREE_TIER_RATE_WINDOW = ONE_HOUR; // 1 hour in milliseconds
 
 // ============================================
 // Time Constants (in milliseconds unless specified)
@@ -100,7 +105,7 @@ export const GOOGLE_FAVICON_API = 'https://www.google.com/s2/favicons?domain=';
 // API Endpoints
 export const API_ENDPOINTS = {
   CHAT: '/api/chat',
-  CREDITS: '/api/credits',
+  SUBSCRIPTION: '/api/subscription',
   USER_PROFILE: '/api/user/profile',
   USER_SETTINGS: '/api/user/settings',
   BRAND_MONITOR_ANALYZE: '/api/brand-monitor/analyze',
@@ -150,7 +155,6 @@ export const SSE_EVENTS = {
   PARTIAL_RESULT: 'partial-result',
   COMPLETE: 'complete',
   ERROR: 'error',
-  CREDITS: 'credits',
   COMPETITOR_FOUND: 'competitor-found',
   PROMPT_GENERATED: 'prompt-generated',
   ANALYSIS_PROGRESS: 'analysis-progress',
@@ -238,8 +242,9 @@ export const ERROR_MESSAGES = {
   INVALID_MESSAGE: 'Invalid message',
   FAILED_TO_CHECK_ACCESS: 'Failed to check access',
   FAILED_TO_TRACK_USAGE: 'Failed to track usage',
-  NO_CREDITS_REMAINING: 'No credits remaining. Please upgrade your plan',
-  INSUFFICIENT_CREDITS_BRAND_ANALYSIS: 'You need at least 10 credits for a brand analysis',
+  SUBSCRIPTION_REQUIRED: 'This feature requires a Pro subscription. Please upgrade your plan.',
+  SUBSCRIPTION_REQUIRED_CHAT: 'AI Chat is only available on the Pro plan. Upgrade to access unlimited conversations.',
+  SUBSCRIPTION_REQUIRED_BRAND_MONITOR: 'Brand Monitoring is only available on the Pro plan. Upgrade to access unlimited analyses.',
 } as const;
 
 // ============================================
@@ -249,5 +254,5 @@ export const CACHE_KEYS = {
   USER_PROFILE: 'user-profile',
   USER_SETTINGS: 'user-settings',
   CONVERSATIONS: 'conversations',
-  CREDITS: 'credits',
+  SUBSCRIPTION: 'subscription',
 } as const;

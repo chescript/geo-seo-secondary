@@ -16,7 +16,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
-import { CREDITS_PER_BRAND_ANALYSIS } from "@/config/constants";
 import { ClientApiError } from "@/lib/client-errors";
 import {
   brandMonitorReducer,
@@ -58,15 +57,11 @@ import { AnalysisSkeleton } from "./skeletons/analysis-skeleton";
 import { useSSEHandler } from "./hooks/use-sse-handler";
 
 interface BrandMonitorProps {
-  creditsAvailable?: number;
-  onCreditsUpdate?: () => void;
   selectedAnalysis?: any;
   onSaveAnalysis?: (analysis: any) => void;
 }
 
 export function BrandMonitor({
-  creditsAvailable = 0,
-  onCreditsUpdate,
   selectedAnalysis,
   onSaveAnalysis,
 }: BrandMonitorProps = {}) {
@@ -83,7 +78,6 @@ export function BrandMonitor({
   const { startSSEConnection } = useSSEHandler({
     state,
     dispatch,
-    onCreditsUpdate,
     onAnalysisComplete: (completedAnalysis) => {
       // Only save if this is a new analysis (not loaded from existing)
       if (!selectedAnalysis && !hasSavedRef.current) {
@@ -99,7 +93,6 @@ export function BrandMonitor({
           },
           competitors: state.identifiedCompetitors,
           prompts: state.analyzingPrompts,
-          creditsUsed: CREDITS_PER_BRAND_ANALYSIS,
         };
 
         saveAnalysis.mutate(analysisData, {
@@ -233,18 +226,9 @@ export function BrandMonitor({
       return;
     }
 
-    // Check if user has enough credits for initial scrape (1 credit)
-    // Note: In development mode (DEV_BYPASS_CREDITS=true), the backend allows unlimited credits
-    if (creditsAvailable < 1) {
-      console.warn('⚠️  [CLIENT] Low credits warning:', creditsAvailable, '- attempting anyway (backend may bypass in dev mode)');
-      // Don't return - let the backend handle the credit check
-      // The backend will return an error if credits are insufficient in production
-    }
-
     console.log('\n🌐 [CLIENT] ========================================');
     console.log('🌐 [CLIENT] Starting URL scrape');
     console.log('🔗 [CLIENT] URL:', url);
-    console.log('💳 [CLIENT] Credits available:', creditsAvailable);
 
     dispatch({ type: "SET_LOADING", payload: true });
     dispatch({ type: "SET_ERROR", payload: null });
@@ -289,12 +273,6 @@ export function BrandMonitor({
         throw new Error("No company data received");
       }
 
-      // Scrape was successful - credits have been deducted, refresh the navbar
-      console.log('💳 [CLIENT] Updating credits...');
-      if (onCreditsUpdate) {
-        onCreditsUpdate();
-      }
-
       // Start fade out transition
       console.log('🎬 [CLIENT] Starting UI transitions...');
       dispatch({ type: "SET_SHOW_INPUT", payload: false });
@@ -322,7 +300,7 @@ export function BrandMonitor({
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
-  }, [url, creditsAvailable, onCreditsUpdate]);
+  }, [url]);
 
   const handleProviderSelectionChange = useCallback((providers: string[]) => {
     dispatch({ type: "SET_SELECTED_PROVIDERS", payload: providers });
@@ -496,21 +474,6 @@ export function BrandMonitor({
     console.log('\n🔬 [CLIENT] ========================================');
     console.log('🔬 [CLIENT] Starting brand analysis');
     console.log('🏢 [CLIENT] Company:', company.name);
-    console.log('💳 [CLIENT] Credits available:', creditsAvailable);
-
-    // Check if user has enough credits
-    // Note: In development mode (DEV_BYPASS_CREDITS=true), the backend allows unlimited credits
-    if (creditsAvailable < CREDITS_PER_BRAND_ANALYSIS) {
-      console.warn('⚠️  [CLIENT] Low credits warning:', creditsAvailable, '- attempting anyway (backend may bypass in dev mode)');
-      // Don't return - let the backend handle the credit check
-      // The backend will return an error if credits are insufficient in production
-    }
-
-    // Immediately trigger credit update to reflect deduction in navbar
-    console.log('💳 [CLIENT] Triggering credits update...');
-    if (onCreditsUpdate) {
-      onCreditsUpdate();
-    }
 
     // Backend will generate AI-powered prompts (no more keyword-based detection!)
     // Only use custom prompts if user provided them
@@ -582,7 +545,6 @@ export function BrandMonitor({
     customPrompts,
     identifiedCompetitors,
     startSSEConnection,
-    creditsAvailable,
     selectedProviders,
   ]);
 

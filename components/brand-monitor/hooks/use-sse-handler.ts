@@ -12,11 +12,10 @@ import {
 interface UseSSEHandlerProps {
   state: BrandMonitorState;
   dispatch: React.Dispatch<BrandMonitorAction>;
-  onCreditsUpdate?: () => void;
   onAnalysisComplete?: (analysis: any) => void;
 }
 
-export function useSSEHandler({ state, dispatch, onCreditsUpdate, onAnalysisComplete }: UseSSEHandlerProps) {
+export function useSSEHandler({ state, dispatch, onAnalysisComplete }: UseSSEHandlerProps) {
   // Use ref to track current prompt status to avoid closure issues in SSE handler
   const promptCompletionStatusRef = useRef(state.promptCompletionStatus);
   const analyzingPromptsRef = useRef(state.analyzingPrompts);
@@ -36,14 +35,6 @@ export function useSSEHandler({ state, dispatch, onCreditsUpdate, onAnalysisComp
     }
 
     switch (eventData.type) {
-      case 'credits':
-        console.log('💳 [SSE] Credits event - updating navbar');
-        // Handle credit update event
-        if (onCreditsUpdate) {
-          onCreditsUpdate();
-        }
-        break;
-        
       case 'progress':
         const progressData = eventData.data as ProgressData;
         dispatch({

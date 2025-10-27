@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { Autumn } from 'autumn-js';
 import { db } from '@/lib/db';
 import { conversations, messages } from '@/lib/db/schema';
 import { eq, and, desc } from 'drizzle-orm';
@@ -8,25 +7,19 @@ import { generateText } from 'ai';
 import { getProviderModel, normalizeProviderName, isProviderConfigured } from '@/lib/provider-config';
 import {
   AuthenticationError,
-  InsufficientCreditsError,
+  SubscriptionRequiredError,
   ValidationError,
   DatabaseError,
   ExternalServiceError,
   handleApiError
 } from '@/lib/api-errors';
 import {
-  FEATURE_ID_MESSAGES,
-  CREDITS_PER_MESSAGE,
   ERROR_MESSAGES,
   ROLE_USER,
   ROLE_ASSISTANT,
   UI_LIMITS
 } from '@/config/constants';
-import { checkCredits, trackCredits } from '@/lib/credits-utils';
-
-const autumn = new Autumn({
-  secretKey: process.env.AUTUMN_SECRET_KEY!,
-});
+import { requireProSubscription } from '@/lib/subscription-utils';
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,48 +43,20 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Check if user has access to use the chat (uses dev bypass if enabled)
+    // Check if user has Pro subscription to access chat
     try {
-      console.log('Checking access for:', {
-        userId: sessionResponse.user.id,
-        featureId: 'messages',
-      });
-
-      const access = await checkCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES
-      );
-
-      console.log('Access check result:', access);
-
-      if (!access.data?.allowed) {
-        console.log('Access denied - no credits remaining');
-        throw new InsufficientCreditsError(
-          ERROR_MESSAGES.NO_CREDITS_REMAINING,
-          CREDITS_PER_MESSAGE,
-          access.data?.balance || 0
+      console.log('[Chat API] Checking subscription for user:', sessionResponse.user.id);
+      await requireProSubscription(sessionResponse.user.id, 'chat');
+      console.log('[Chat API] Subscription check passed');
+    } catch (err) {
+      console.error('[Chat API] Subscription check failed:', err);
+      if (err instanceof Error && err.message.includes('Pro subscription')) {
+        throw new SubscriptionRequiredError(
+          ERROR_MESSAGES.SUBSCRIPTION_REQUIRED_CHAT,
+          'chat'
         );
       }
-    } catch (err) {
-      console.error('Failed to check access:', err);
-      if (err instanceof InsufficientCreditsError) {
-        throw err; // Re-throw our custom errors
-      }
-      throw new ExternalServiceError('Unable to verify credits. Please try again', 'autumn');
-    }
-
-    // Track API usage with Autumn (uses dev bypass if enabled)
-    try {
-      await trackCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES,
-        CREDITS_PER_MESSAGE
-      );
-    } catch (err) {
-      console.error('Failed to track usage:', err);
-      throw new ExternalServiceError('Unable to process credit usage. Please try again', 'autumn');
+      throw new ExternalServiceError('Unable to verify subscription. Please try again', 'autumn');
     }
 
     // Get or create conversation
@@ -212,23 +177,8 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    // Get remaining credits from Autumn (uses dev bypass if enabled)
-    let remainingCredits = 0;
-    try {
-      const usage = await checkCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES
-      );
-      remainingCredits = usage.data?.balance || 0;
-    } catch (err) {
-      console.error('Failed to get remaining credits:', err);
-    }
-
     return NextResponse.json({
       response: aiResponseText,
-      remainingCredits,
-      creditsUsed: CREDITS_PER_MESSAGE,
       conversationId: currentConversation.id,
       messageId: aiMessage.id,
       provider: normalizedProvider,

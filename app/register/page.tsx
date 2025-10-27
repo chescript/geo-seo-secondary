@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signUp } from '@/lib/auth-client';
-import { giveFreeCredits } from '@/app/actions/give-free-credits';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -41,18 +40,7 @@ export default function RegisterPage() {
         console.log('✅ [REGISTER] Registration successful!');
         console.log('📝 [REGISTER] User:', response.data?.user);
         console.log('📝 [REGISTER] Session:', response.data?.session);
-
-        // Give free credits to new user
-        const userId = response.data?.user?.id;
-        if (userId) {
-          console.log('📝 [REGISTER] Giving free credits...');
-          const creditsResult = await giveFreeCredits(userId);
-          if (creditsResult.success) {
-            console.log('✅ [REGISTER] Free credits given!');
-          } else {
-            console.error('❌ [REGISTER] Failed to give free credits:', creditsResult.error);
-          }
-        }
+        console.log('📝 [REGISTER] Free tier will be auto-attached via Better-Auth hook');
 
         // Wait a moment for everything to be set
         await new Promise(resolve => setTimeout(resolve, 100));

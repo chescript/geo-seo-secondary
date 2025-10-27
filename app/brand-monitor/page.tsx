@@ -4,7 +4,8 @@ import { BrandMonitor } from '@/components/brand-monitor/brand-monitor';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sparkles, Menu, X, Plus, Trash2, Loader2, Globe, Calendar, TrendingUp, Users } from 'lucide-react';
-import { useCustomer, useRefreshCustomer } from '@/hooks/useAutumnCustomer';
+import { useSubscription } from '@/hooks/useSubscription';
+import { SubscriptionPaywall } from '@/components/subscription-paywall';
 import { useBrandAnalyses, useBrandAnalysis, useDeleteBrandAnalysis } from '@/hooks/useBrandAnalyses';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
@@ -12,36 +13,37 @@ import { useSession } from '@/lib/auth-client';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import Image from 'next/image';
 
-// Separate component that uses Autumn hooks
+// Separate component that uses subscription hooks
 function BrandMonitorContent({ session }: { session: any }) {
   const router = useRouter();
-  const { customer, isLoading, error } = useCustomer();
-  const refreshCustomer = useRefreshCustomer();
+  const { hasProSubscription, isLoading: subscriptionLoading } = useSubscription();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAnalysisId, setSelectedAnalysisId] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [analysisToDelete, setAnalysisToDelete] = useState<string | null>(null);
-  
+
   // Queries and mutations
   const { data: analyses, isLoading: analysesLoading } = useBrandAnalyses();
   const { data: currentAnalysis } = useBrandAnalysis(selectedAnalysisId);
   const deleteAnalysis = useDeleteBrandAnalysis();
-  
-  // Get credits from customer data
-  const messageUsage = customer?.features?.messages;
-  const credits = messageUsage ? (messageUsage.balance || 0) : 0;
 
-  useEffect(() => {
-    // If there's an auth error, redirect to login
-    if (error?.code === 'UNAUTHORIZED' || error?.code === 'AUTH_ERROR') {
-      router.push('/login');
-    }
-  }, [error, router]);
+  // Show paywall for free users
+  if (subscriptionLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
-  const handleCreditsUpdate = async () => {
-    // Use the global refresh to update customer data everywhere
-    await refreshCustomer();
-  };
+  if (!hasProSubscription) {
+    return (
+      <SubscriptionPaywall
+        featureName="Brand Monitoring"
+        description="Unlimited brand monitoring and AI analysis are only available on the Pro plan"
+      />
+    );
+  }
   
   const handleDeleteAnalysis = async (analysisId: string) => {
     setAnalysisToDelete(analysisId);
@@ -205,9 +207,7 @@ function BrandMonitorContent({ session }: { session: any }) {
         {/* Main Content */}
         <div className="flex-1 overflow-x-hidden">
           <div className="px-4 sm:px-6 lg:px-8 py-6 overflow-x-hidden">
-            <BrandMonitor 
-              creditsAvailable={credits} 
-              onCreditsUpdate={handleCreditsUpdate}
+            <BrandMonitor
               selectedAnalysis={selectedAnalysisId ? currentAnalysis : null}
               onSaveAnalysis={(analysis) => {
                 // This will be called when analysis completes

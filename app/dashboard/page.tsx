@@ -1,462 +1,246 @@
 'use client';
 
-import { useCustomer, usePricingTable } from 'autumn-js/react';
+import { useCustomer } from 'autumn-js/react';
 import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Lock, CheckCircle, AlertCircle, Loader2, User, Mail, Phone, Edit2, Save, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ProductChangeDialog from '@/components/autumn/product-change-dialog';
-import { useProfile, useUpdateProfile, useSettings, useUpdateSettings } from '@/hooks/useProfile';
+import {
+  TrendingUp,
+  MessageSquare,
+  Search,
+  CreditCard,
+  User,
+  Sparkles,
+  Calendar,
+  BarChart3
+} from 'lucide-react';
+import { StatCard } from '@/components/dashboard/stat-card';
+import { QuickActionCard } from '@/components/dashboard/quick-action-card';
+import { ActivityTimeline } from '@/components/dashboard/activity-timeline';
+import { useDashboardStats } from '@/hooks/useDashboardStats';
+import { Card, CardContent } from '@/components/ui/card';
 
 // Separate component that uses Autumn hooks
 function DashboardContent({ session }: { session: any }) {
-  const { customer, attach } = useCustomer();
-  const { products } = usePricingTable();
-  const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
-  
-  // Profile and settings hooks
-  const { data: profileData } = useProfile();
-  const updateProfile = useUpdateProfile();
-  const { data: settings } = useSettings();
-  const updateSettings = useUpdateSettings();
-  
-  // Profile edit state
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [profileForm, setProfileForm] = useState({
-    displayName: '',
-    bio: '',
-    phone: '',
-  });
+  const { customer } = useCustomer();
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
 
-  useEffect(() => {
-    if (profileData?.profile) {
-      setProfileForm({
-        displayName: profileData.profile.displayName || '',
-        bio: profileData.profile.bio || '',
-        phone: profileData.profile.phone || '',
-      });
-    }
-  }, [profileData]);
-
-  const handleSaveProfile = async () => {
-    await updateProfile.mutateAsync(profileForm);
-    setIsEditingProfile(false);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditingProfile(false);
-    if (profileData?.profile) {
-      setProfileForm({
-        displayName: profileData.profile.displayName || '',
-        bio: profileData.profile.bio || '',
-        phone: profileData.profile.phone || '',
-      });
-    }
-  };
-
-  const handleSettingToggle = async (key: string, value: boolean) => {
-    await updateSettings.mutateAsync({ [key]: value });
-  };
-
-  // Get current user's products and features
+  // Get current user's subscription
   const userProducts = customer?.products || [];
-  const userFeatures = customer?.features || {};
-  
-  // Find the actual active product (not scheduled)
-  const activeProduct = userProducts.find(p => 
+  const activeProduct = userProducts.find(p =>
     p.status === 'active' || p.status === 'trialing' || p.status === 'past_due'
   );
-  const scheduledProduct = userProducts.find(p => 
-    p.status === 'scheduled' || (p.started_at && new Date(p.started_at) > new Date())
-  );
 
-  const handleUpgrade = async (productId: string) => {
-    try {
-      setLoadingProductId(productId);
-      await attach({
-        productId,
-        dialog: ProductChangeDialog,
-        returnUrl: window.location.origin + '/dashboard',
-        successUrl: window.location.origin + '/dashboard',
-        cancelUrl: window.location.origin + '/dashboard',
-      });
-    } finally {
-      setLoadingProductId(null);
-    }
-  };
+  const isPro = activeProduct?.id === 'pro';
+  const userName = session.user?.name || session.user?.email?.split('@')[0] || 'User';
+
+  // Mock activity data - in production, fetch from API
+  const [activities] = useState([
+    {
+      id: '1',
+      type: 'analysis' as const,
+      title: 'Brand Analysis Completed',
+      description: 'Analyzed brand presence across social platforms',
+      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 min ago
+    },
+    {
+      id: '2',
+      type: 'chat' as const,
+      title: 'AI Conversation Started',
+      description: 'New chat about brand monitoring strategies',
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+    },
+    {
+      id: '3',
+      type: 'profile' as const,
+      title: 'Profile Updated',
+      description: 'Changed account settings',
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
+    },
+  ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent">
-            Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Welcome back, {session.user?.email?.split('@')[0] || 'User'}
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-        {/* Stats Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <CardDescription>Current Plan</CardDescription>
-              <CardTitle className="text-2xl flex items-center gap-2">
-                {activeProduct ? (
-                  <>
-                    <CheckCircle className="h-5 w-5 text-green-500" />
-                    {activeProduct.name || activeProduct.id}
-                  </>
-                ) : (
-                  <>
-                    <AlertCircle className="h-5 w-5 text-yellow-500" />
-                    Free Plan
-                  </>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {scheduledProduct && (
-                <p className="text-xs text-muted-foreground">
-                  Switching to {scheduledProduct.name} on {new Date(scheduledProduct.started_at || scheduledProduct.current_period_end).toLocaleDateString()}
+        {/* Hero Section */}
+        <Card className="relative overflow-hidden border-2 border-orange-200 bg-gradient-to-br from-white to-orange-50 animate-in fade-in duration-700">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full blur-3xl opacity-20" />
+          <CardContent className="relative p-8">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-6 h-6 text-orange-500" />
+                  <span className="text-sm font-semibold text-orange-600 uppercase tracking-wider">
+                    Welcome Back
+                  </span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+                  Hello, <span className="bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent">
+                    {userName}
+                  </span>
+                </h1>
+                <p className="text-lg text-gray-600 max-w-2xl">
+                  {isPro
+                    ? "You're on the Pro plan with unlimited access to all features."
+                    : "Upgrade to Pro to unlock unlimited brand monitoring and AI chat."}
                 </p>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+              <div className="hidden md:block">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg animate-pulse-slow">
+                  <User className="w-12 h-12 text-white" />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card className="border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <CardDescription>Account Email</CardDescription>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Mail className="h-5 w-5 text-blue-500" />
-                {session.user?.email}
-              </CardTitle>
-            </CardHeader>
-          </Card>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-700 delay-150">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+            <StatCard
+              title="Subscription"
+              value={isPro ? "Pro" : "Free"}
+              icon={CreditCard}
+              description={isPro ? "Active subscription" : "Limited access"}
+              gradient="bg-gradient-to-br from-orange-400 to-orange-600"
+              iconColor="bg-gradient-to-br from-orange-500 to-orange-600"
+            />
+          </div>
 
-          <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <CardDescription>Account Status</CardDescription>
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                Active
-              </CardTitle>
-            </CardHeader>
-          </Card>
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+            <StatCard
+              title="Brand Analyses"
+              value={statsLoading ? "-" : stats?.brandAnalysesCount || 0}
+              icon={TrendingUp}
+              description="Total analyses created"
+              gradient="bg-gradient-to-br from-blue-400 to-blue-600"
+              iconColor="bg-gradient-to-br from-blue-500 to-blue-600"
+              trend={stats?.brandAnalysesCount ? { value: 12, isPositive: true } : undefined}
+            />
+          </div>
+
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-[400ms]">
+            <StatCard
+              title="Chat Conversations"
+              value={statsLoading ? "-" : stats?.chatConversationsCount || 0}
+              icon={MessageSquare}
+              description="Active conversations"
+              gradient="bg-gradient-to-br from-green-400 to-green-600"
+              iconColor="bg-gradient-to-br from-green-500 to-green-600"
+              trend={stats?.chatConversationsCount ? { value: 8, isPositive: true } : undefined}
+            />
+          </div>
+
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+            <StatCard
+              title="Account Age"
+              value={statsLoading ? "-" : `${stats?.accountAgeDays || 0}d`}
+              icon={Calendar}
+              description="Days since joined"
+              gradient="bg-gradient-to-br from-purple-400 to-purple-600"
+              iconColor="bg-gradient-to-br from-purple-500 to-purple-600"
+            />
+          </div>
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="plans">Plans</TabsTrigger>
-          </TabsList>
+        {/* Quick Actions Grid */}
+        <div className="animate-in fade-in duration-700 delay-[600ms]">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
+            <p className="text-gray-600">Jump to your most-used features</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <QuickActionCard
+              title="Brand Monitor"
+              description="Analyze your brand's online presence"
+              icon={Search}
+              href="/brand-monitor"
+              gradient="bg-gradient-to-br from-blue-400/10 to-blue-600/10"
+              disabled={!isPro}
+            />
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            {/* Usage Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage Statistics</CardTitle>
-                <CardDescription>Monitor your feature usage and limits</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {Object.keys(userFeatures).length > 0 ? (
-                  <div className="space-y-6">
-                    {Object.entries(userFeatures).map(([featureId, feature]) => {
-                      const total = feature.included_usage || feature.balance + (feature.usage || 0);
-                      const used = feature.usage || 0;
-                      const percentage = Math.min((used / (total || 1)) * 100, 100);
+            <QuickActionCard
+              title="AI Chat"
+              description="Chat with AI for insights"
+              icon={MessageSquare}
+              href="/chat"
+              gradient="bg-gradient-to-br from-green-400/10 to-green-600/10"
+              disabled={!isPro}
+            />
 
-                      return (
-                        <div key={featureId} className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-medium capitalize">
-                              {featureId.replace(/_/g, ' ')}
-                            </h3>
-                            <span className="text-sm text-muted-foreground">
-                              {used} / {total}
-                            </span>
-                          </div>
-                          <div className="w-full bg-secondary rounded-full h-2.5 overflow-hidden">
-                            <div
-                              className="bg-gradient-to-r from-orange-500 to-orange-600 h-2.5 rounded-full transition-all duration-500"
-                              style={{ width: `${percentage}%` }}
-                            />
-                          </div>
-                          {feature.next_reset_at && (
-                            <p className="text-xs text-muted-foreground">
-                              Resets on {new Date(feature.next_reset_at).toLocaleDateString()}
-                            </p>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No usage data available
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <QuickActionCard
+              title="View Plans"
+              description="Upgrade your subscription"
+              icon={CreditCard}
+              href="/plans"
+              gradient="bg-gradient-to-br from-orange-400/10 to-orange-600/10"
+            />
 
-            {/* Settings */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Preferences</CardTitle>
-                <CardDescription>Manage your notification settings</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
-                  <div>
-                    <p className="font-medium">Email Notifications</p>
-                    <p className="text-sm text-muted-foreground">Receive email notifications for important updates</p>
-                  </div>
-                  <button
-                    onClick={() => handleSettingToggle('emailNotifications', !settings?.emailNotifications)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      settings?.emailNotifications ? 'bg-orange-500' : 'bg-gray-300 dark:bg-gray-700'
-                    }`}
-                    disabled={updateSettings.isPending}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        settings?.emailNotifications ? 'translate-x-6' : 'translate-x-1'
-                      }`}
-                    />
-                  </button>
-                </div>
+            <QuickActionCard
+              title="Analytics"
+              description="View detailed usage stats"
+              icon={BarChart3}
+              href="/dashboard"
+              gradient="bg-gradient-to-br from-purple-400/10 to-purple-600/10"
+            />
+          </div>
+        </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
-                  <div>
-                    <p className="font-medium">Marketing Emails</p>
-                    <p className="text-sm text-muted-foreground">Receive emails about new features and offers</p>
-                  </div>
-                  <button
-                    onClick={() => handleSettingToggle('marketingEmails', !settings?.marketingEmails)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      settings?.marketingEmails ? 'bg-orange-500' : 'bg-gray-300 dark:bg-gray-700'
-                    }`}
-                    disabled={updateSettings.isPending}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        settings?.marketingEmails ? 'translate-x-6' : 'translate-x-1'
-                      }`}
-                    />
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+        {/* Activity Timeline */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in duration-700 delay-700">
+          <div className="lg:col-span-2">
+            <ActivityTimeline activities={activities} maxItems={5} />
+          </div>
 
-          {/* Profile Tab */}
-          <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <CardTitle>Profile Information</CardTitle>
-                    <CardDescription>Manage your personal information</CardDescription>
-                  </div>
-                  {!isEditingProfile ? (
-                    <Button
-                      onClick={() => setIsEditingProfile(true)}
-                      size="sm"
-                      className="bg-orange-500 hover:bg-orange-600"
-                    >
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      Edit Profile
-                    </Button>
-                  ) : (
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={handleSaveProfile}
-                        size="sm"
-                        disabled={updateProfile.isPending}
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Save
-                      </Button>
-                      <Button
-                        onClick={handleCancelEdit}
-                        size="sm"
-                        variant="outline"
-                        disabled={updateProfile.isPending}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Cancel
-                      </Button>
+          {/* Quick Stats Card */}
+          <Card>
+            <CardContent className="p-6 space-y-6">
+              <div>
+                <h3 className="font-semibold text-lg mb-4">Account Overview</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                        <User className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Email</p>
+                        <p className="text-xs text-gray-600 truncate max-w-[150px]">
+                          {session.user?.email}
+                        </p>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                        <CreditCard className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Plan</p>
+                        <p className="text-xs text-gray-600">
+                          {isPro ? "Pro - $9.99/mo" : "Free Tier"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {!isPro && (
+                    <button
+                      onClick={() => window.location.href = '/plans'}
+                      className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      Upgrade to Pro
+                    </button>
                   )}
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      Email
-                    </label>
-                    <p className="text-sm p-3 bg-secondary/50 rounded-lg">{session.user?.email}</p>
-                  </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      Display Name
-                    </label>
-                    {isEditingProfile ? (
-                      <input
-                        type="text"
-                        value={profileForm.displayName}
-                        onChange={(e) => setProfileForm({ ...profileForm, displayName: e.target.value })}
-                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-800"
-                        placeholder="Enter your display name"
-                      />
-                    ) : (
-                      <p className="text-sm p-3 bg-secondary/50 rounded-lg">
-                        {profileData?.profile?.displayName || 'Not set'}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      Phone
-                    </label>
-                    {isEditingProfile ? (
-                      <input
-                        type="tel"
-                        value={profileForm.phone}
-                        onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-800"
-                        placeholder="Enter your phone number"
-                      />
-                    ) : (
-                      <p className="text-sm p-3 bg-secondary/50 rounded-lg">
-                        {profileData?.profile?.phone || 'Not set'}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="md:col-span-2 space-y-2">
-                    <label className="text-sm font-medium">Bio</label>
-                    {isEditingProfile ? (
-                      <textarea
-                        value={profileForm.bio}
-                        onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-800"
-                        rows={3}
-                        placeholder="Tell us about yourself"
-                      />
-                    ) : (
-                      <p className="text-sm p-3 bg-secondary/50 rounded-lg">
-                        {profileData?.profile?.bio || 'Not set'}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Plans Tab */}
-          <TabsContent value="plans">
-            <Card>
-              <CardHeader>
-                <CardTitle>Available Plans</CardTitle>
-                <CardDescription>Upgrade or change your subscription plan</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {!products ? (
-                  <div className="flex justify-center py-12">
-                    <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-                  </div>
-                ) : (
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {products.map((product) => {
-                      const isCurrentPlan = activeProduct?.id === product.id;
-                      const isScheduledPlan = scheduledProduct?.id === product.id;
-                      const features = product.properties?.is_free ? product.items : product.items?.slice(1) || [];
-
-                      return (
-                        <Card key={product.id} className={`relative ${isCurrentPlan ? 'border-orange-500 border-2' : ''}`}>
-                          {isCurrentPlan && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                              <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                                Current Plan
-                              </span>
-                            </div>
-                          )}
-                          <CardHeader>
-                            <CardTitle className="flex items-center justify-between">
-                              {product.display?.name || product.name}
-                              {isScheduledPlan && (
-                                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
-                                  Scheduled
-                                </span>
-                              )}
-                            </CardTitle>
-                            {product.display?.description && (
-                              <CardDescription>{product.display.description}</CardDescription>
-                            )}
-                          </CardHeader>
-                          <CardContent>
-                            <ul className="space-y-2 mb-4">
-                              {features.slice(0, 3).map((item, index) => (
-                                <li key={index} className="flex items-start text-sm">
-                                  {isCurrentPlan ? (
-                                    <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                                  ) : (
-                                    <Lock className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
-                                  )}
-                                  <span className={!isCurrentPlan ? 'text-muted-foreground' : ''}>
-                                    {item.display?.primary_text}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                            {!isCurrentPlan && !isScheduledPlan && (
-                              <Button
-                                onClick={() => handleUpgrade(product.id)}
-                                className="w-full"
-                                variant={product.properties?.is_free ? 'outline' : 'default'}
-                                disabled={loadingProductId !== null}
-                              >
-                                {loadingProductId === product.id ? (
-                                  <>
-                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                    Loading...
-                                  </>
-                                ) : (
-                                  product.properties?.is_free ? 'Downgrade' : 'Upgrade'
-                                )}
-                              </Button>
-                            )}
-                            {isScheduledPlan && (
-                              <p className="text-sm text-center text-muted-foreground">
-                                Starts {new Date(scheduledProduct.started_at || scheduledProduct.current_period_end).toLocaleDateString()}
-                              </p>
-                            )}
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
     </div>
   );

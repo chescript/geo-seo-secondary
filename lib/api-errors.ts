@@ -17,9 +17,9 @@ export enum ErrorCode {
   NOT_FOUND = 'NOT_FOUND',
   ALREADY_EXISTS = 'ALREADY_EXISTS',
   
-  // Rate limiting
+  // Rate limiting and subscriptions
   RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
-  INSUFFICIENT_CREDITS = 'INSUFFICIENT_CREDITS',
+  SUBSCRIPTION_REQUIRED = 'SUBSCRIPTION_REQUIRED',
   
   // External service errors
   EXTERNAL_SERVICE_ERROR = 'EXTERNAL_SERVICE_ERROR',
@@ -102,18 +102,18 @@ export class RateLimitError extends ApiError {
   }
 }
 
-export class InsufficientCreditsError extends ApiError {
-  public readonly creditsRequired?: number;
-  public readonly creditsAvailable?: number;
+export class SubscriptionRequiredError extends ApiError {
+  public readonly requiredTier?: string;
+  public readonly featureName?: string;
 
   constructor(
-    message = 'Insufficient credits',
-    creditsRequired?: number,
-    creditsAvailable?: number
+    message = 'This feature requires a Pro subscription',
+    featureName?: string,
+    requiredTier = 'pro'
   ) {
-    super(message, 403, ErrorCode.INSUFFICIENT_CREDITS);
-    this.creditsRequired = creditsRequired;
-    this.creditsAvailable = creditsAvailable;
+    super(message, 403, ErrorCode.SUBSCRIPTION_REQUIRED);
+    this.featureName = featureName;
+    this.requiredTier = requiredTier;
   }
 }
 
@@ -168,10 +168,10 @@ export function createErrorResponse(error: ApiError): ErrorResponse {
     response.error.metadata = { retryAfter: error.retryAfter };
   }
 
-  if (error instanceof InsufficientCreditsError) {
+  if (error instanceof SubscriptionRequiredError) {
     response.error.metadata = {
-      creditsRequired: error.creditsRequired,
-      creditsAvailable: error.creditsAvailable,
+      requiredTier: error.requiredTier,
+      featureName: error.featureName,
     };
   }
 

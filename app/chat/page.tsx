@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { useCustomer } from '@/hooks/useAutumnCustomer';
+import { useSubscription } from '@/hooks/useSubscription';
+import { SubscriptionPaywall } from '@/components/subscription-paywall';
 import { Button } from '@/components/ui/button';
 import { Send, Menu, X, MessageSquare, Plus, Trash2, Bot } from 'lucide-react';
 import { useConversations, useConversation, useDeleteConversation } from '@/hooks/useConversations';
@@ -18,38 +19,46 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Separate component that uses Autumn hooks
+// Separate component that uses subscription hooks
 function ChatContent({ session }: { session: any }) {
   const router = useRouter();
-  const { allowed, customer, refetch } = useCustomer();
+  const { hasProSubscription, isLoading: subscriptionLoading } = useSubscription();
   const [input, setInput] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [conversationToDelete, setConversationToDelete] = useState<string | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<string>('anthropic');
-  
+
   // Queries and mutations
   const { data: conversations, isLoading: conversationsLoading } = useConversations();
   const { data: currentConversation } = useConversation(selectedConversationId);
   const sendMessage = useSendMessage();
   const deleteConversation = useDeleteConversation();
-  
-  // Get message usage data
-  const messageUsage = customer?.features?.messages;
-  const remainingMessages = messageUsage ? (messageUsage.balance || 0) : 0;
-  const hasMessages = remainingMessages > 0;
-  const isCustomerLoading = !customer && !session; // Still loading customer data
 
-  // Removed auto-scroll functionality
+  // Show paywall for free users
+  if (subscriptionLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasProSubscription) {
+    return (
+      <SubscriptionPaywall
+        featureName="AI Chat"
+        description="Unlimited AI conversations are only available on the Pro plan"
+      />
+    );
+  }
 
   const handleSendMessage = async () => {
     if (!input.trim() || sendMessage.isPending) return;
-
-    // Check if user has messages available
-    if (!allowed({ featureId: 'messages' })) {
-      return;
-    }
 
     try {
       const response = await sendMessage.mutateAsync({
@@ -57,16 +66,13 @@ function ChatContent({ session }: { session: any }) {
         message: input,
         provider: selectedProvider,
       });
-      
+
       setInput('');
-      
+
       // If this created a new conversation, select it
       if (!selectedConversationId && response.conversationId) {
         setSelectedConversationId(response.conversationId);
       }
-      
-      // Refetch customer data to update credits in navbar
-      await refetch();
     } catch (error: any) {
       console.error('Failed to send message:', error);
     }
@@ -145,13 +151,6 @@ function ChatContent({ session }: { session: any }) {
             </div>
           )}
         </div>
-        
-        <div className="p-4 border-t bg-gray-50">
-          <div className="text-sm text-gray-600">
-            <p>Messages remaining:</p>
-            <p className="text-2xl font-bold text-orange-600">{remainingMessages}</p>
-          </div>
-        </div>
       </div>
 
       {/* Main Chat Area */}
@@ -174,35 +173,7 @@ function ChatContent({ session }: { session: any }) {
 
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto p-4">
-          {isCustomerLoading ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading your account data...</p>
-              </div>
-            </div>
-          ) : !hasMessages ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center max-w-md">
-                <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Credit-Based Messaging</h2>
-                <p className="text-gray-600 mb-4">
-                  This is a demonstration of the credit-based messaging system. Each message consumes credits from your account balance.
-                </p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-orange-800">
-                    You currently have <span className="font-bold">{remainingMessages}</span> message credits available.
-                  </p>
-                </div>
-                <Button
-                  onClick={() => router.push('/plans')}
-                  className="btn-firecrawl-orange"
-                >
-                  Get More Credits
-                </Button>
-              </div>
-            </div>
-          ) : currentConversation?.messages && currentConversation.messages.length > 0 ? (
+          {currentConversation?.messages && currentConversation.messages.length > 0 ? (
             <div className="space-y-4 mb-20">
               {currentConversation.messages.map((message) => (
                 <div
@@ -280,13 +251,13 @@ function ChatContent({ session }: { session: any }) {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={hasMessages ? "Type your message..." : "No messages available"}
-              disabled={!hasMessages || sendMessage.isPending}
+              placeholder="Type your message..."
+              disabled={sendMessage.isPending}
               className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
             />
             <Button
               type="submit"
-              disabled={!hasMessages || !input.trim() || sendMessage.isPending}
+              disabled={!input.trim() || sendMessage.isPending}
               className="btn-firecrawl-orange"
             >
               <Send className="w-4 h-4" />

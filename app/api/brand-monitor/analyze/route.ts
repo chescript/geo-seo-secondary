@@ -1,26 +1,19 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
-import { Autumn } from "autumn-js";
 import { performAnalysis, createSSEMessage } from "@/lib/analyze-common";
 import { SSEEvent } from "@/lib/types";
 import {
   AuthenticationError,
-  InsufficientCreditsError,
+  SubscriptionRequiredError,
   ValidationError,
   ExternalServiceError,
   handleApiError,
 } from "@/lib/api-errors";
 import {
-  FEATURE_ID_MESSAGES,
-  CREDITS_PER_BRAND_ANALYSIS,
   ERROR_MESSAGES,
   SSE_MAX_DURATION,
 } from "@/config/constants";
-import { checkCredits, trackCredits } from "@/lib/credits-utils";
-
-const autumn = new Autumn({
-  secretKey: process.env.AUTUMN_SECRET_KEY!,
-});
+import { requireProSubscription } from "@/lib/subscription-utils";
 
 export const runtime = "nodejs"; // Use Node.js runtime for streaming
 export const maxDuration = 300; // 5 minutes
@@ -43,60 +36,21 @@ export async function POST(request: NextRequest) {
     console.log('✅ [ANALYSIS] User authenticated:', sessionResponse.user.id);
     console.log('📧 [ANALYSIS] User email:', sessionResponse.user.email);
 
-    // Check if user has enough credits (10 credits per analysis) - uses dev bypass if enabled
+    // Check if user has Pro subscription to access brand monitoring
     try {
-      console.log('💳 [ANALYSIS] Checking access - Customer ID:', sessionResponse.user.id);
-      const access = await checkCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES
-      );
-      console.log('💳 [ANALYSIS] Access check result:', JSON.stringify(access.data, null, 2));
-
-      if (
-        !access.data?.allowed ||
-        (access.data?.balance &&
-          access.data.balance < CREDITS_PER_BRAND_ANALYSIS)
-      ) {
-        console.log('❌ [ANALYSIS] Insufficient credits - Balance:', access.data?.balance);
-        throw new InsufficientCreditsError(
-          ERROR_MESSAGES.INSUFFICIENT_CREDITS_BRAND_ANALYSIS,
-          CREDITS_PER_BRAND_ANALYSIS,
-          access.data?.balance || 0
+      console.log('💳 [ANALYSIS] Checking subscription - User ID:', sessionResponse.user.id);
+      await requireProSubscription(sessionResponse.user.id, 'brand-monitor');
+      console.log('✅ [ANALYSIS] Subscription check passed');
+    } catch (err) {
+      console.error('❌ [ANALYSIS] Subscription check failed:', err);
+      if (err instanceof Error && err.message.includes('Pro subscription')) {
+        throw new SubscriptionRequiredError(
+          ERROR_MESSAGES.SUBSCRIPTION_REQUIRED_BRAND_MONITOR,
+          'brand-monitor'
         );
       }
-      console.log('✅ [ANALYSIS] Credit check passed');
-    } catch (err) {
-      console.error('❌ [ANALYSIS] Failed to check access:', err);
       throw new ExternalServiceError(
-        "Unable to verify credits. Please try again",
-        "autumn"
-      );
-    }
-
-    // Track usage (10 credits) - uses dev bypass if enabled
-    try {
-      console.log('📊 [ANALYSIS] Tracking usage - Customer ID:', sessionResponse.user.id);
-      console.log('💰 [ANALYSIS] Credits to deduct:', CREDITS_PER_BRAND_ANALYSIS);
-      const trackResult = await trackCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES,
-        CREDITS_PER_BRAND_ANALYSIS
-      );
-      console.log('✅ [ANALYSIS] Track result:', JSON.stringify(trackResult, null, 2));
-    } catch (err) {
-      console.error('❌ [ANALYSIS] Failed to track usage:', err);
-      // Log more details about the error
-      if (err instanceof Error) {
-        console.error('🔍 [ANALYSIS] Error details:', {
-          message: err.message,
-          stack: err.stack,
-          response: (err as any).response?.data,
-        });
-      }
-      throw new ExternalServiceError(
-        "Unable to process credit deduction. Please try again",
+        "Unable to verify subscription. Please try again",
         "autumn"
       );
     }
@@ -123,38 +77,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Track usage with Autumn (deduct credits) - uses dev bypass if enabled
-    try {
-      console.log('📊 [ANALYSIS] Recording usage - Customer ID:', sessionResponse.user.id);
-      await trackCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES,
-        CREDITS_PER_BRAND_ANALYSIS
-      );
-      console.log('✅ [ANALYSIS] Usage recorded successfully');
-    } catch (err) {
-      console.error('❌ [ANALYSIS] Failed to track usage:', err);
-      throw new ExternalServiceError(
-        "Unable to process credit deduction. Please try again",
-        "autumn"
-      );
-    }
-
-    // Get remaining credits after deduction - uses dev bypass if enabled
-    let remainingCredits = 0;
-    try {
-      const usage = await checkCredits(
-        autumn,
-        sessionResponse.user.id,
-        FEATURE_ID_MESSAGES
-      );
-      remainingCredits = usage.data?.balance || 0;
-      console.log('💳 [ANALYSIS] Remaining credits after deduction:', remainingCredits);
-    } catch (err) {
-      console.error('⚠️  [ANALYSIS] Failed to get remaining credits:', err);
-    }
-
     // Create a TransformStream for SSE
     console.log('📡 [ANALYSIS] Creating SSE stream...');
     const encoder = new TextEncoder();
@@ -171,17 +93,6 @@ export async function POST(request: NextRequest) {
     (async () => {
       try {
         console.log('🚀 [ANALYSIS] Starting async analysis processing...');
-
-        // Send initial credit info
-        await sendEvent({
-          type: "credits",
-          stage: "credits",
-          data: {
-            remainingCredits,
-            creditsUsed: CREDITS_PER_BRAND_ANALYSIS,
-          },
-          timestamp: new Date(),
-        });
 
         // Perform the analysis using common logic
         console.log('🔬 [ANALYSIS] Calling performAnalysis...');
@@ -243,7 +154,7 @@ export async function POST(request: NextRequest) {
 
     if (
       error instanceof AuthenticationError ||
-      error instanceof InsufficientCreditsError ||
+      error instanceof SubscriptionRequiredError ||
       error instanceof ValidationError ||
       error instanceof ExternalServiceError
     ) {
@@ -255,10 +166,10 @@ export async function POST(request: NextRequest) {
             statusCode: error.statusCode,
             timestamp: new Date().toISOString(),
             metadata:
-              error instanceof InsufficientCreditsError
+              error instanceof SubscriptionRequiredError
                 ? {
-                    creditsRequired: error.creditsRequired,
-                    creditsAvailable: error.creditsAvailable,
+                    requiredTier: error.requiredTier,
+                    featureName: error.featureName,
                   }
                 : undefined,
           },

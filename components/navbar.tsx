@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useSession, signOut } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useCustomer } from '@/hooks/useAutumnCustomer';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -28,21 +27,6 @@ import {
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-// Separate component that only renders when Autumn is available
-function UserCredits() {
-  const { customer } = useCustomer();
-  const messageUsage = customer?.features?.messages;
-  const remainingMessages = messageUsage ? (messageUsage.balance || 0) : 0;
-
-  return (
-    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-200">
-      <div className="flex items-center text-sm font-semibold text-orange-700">
-        <span>{remainingMessages}</span>
-      </div>
-      <span className="text-xs text-orange-600">credits</span>
-    </div>
-  );
-}
 
 export function Navbar() {
   const { data: session, isPending } = useSession();
@@ -104,8 +88,6 @@ export function Navbar() {
               );
             })}
 
-            {session && <UserCredits />}
-
             {isPending ? (
               <div className="h-8 w-20 bg-gray-100 rounded-lg animate-pulse" />
             ) : session ? (
@@ -166,7 +148,6 @@ export function Navbar() {
 
           {/* Mobile Menu */}
           <div className="md:hidden flex items-center gap-2">
-            {session && <UserCredits />}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">

@@ -37,11 +37,11 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
   {
     id: 'free',
     name: 'Free',
-    description: 'Get started with basic features',
+    description: 'Access to homepage and dashboard',
     type: 'service',
     display: {
       name: 'Free',
-      description: 'Perfect for trying out our service',
+      description: 'Access to homepage and dashboard with rate limits',
       button_text: 'Get Started',
     },
     properties: {
@@ -49,15 +49,15 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
     },
     items: [
       {
-        id: 'free-messages',
+        id: 'free-dashboard',
         type: 'unit',
         display: {
-          primary_text: '500 credits',
-          secondary_text: 'Free welcome credits',
+          primary_text: 'Homepage & Dashboard',
+          secondary_text: 'Rate limited access',
         },
         unit: {
           amount: 0,
-          quantity: 500,
+          quantity: 1,
         },
       },
     ],
@@ -65,12 +65,12 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
   {
     id: 'pro',
     name: 'Pro',
-    description: 'For growing teams that need more power',
+    description: 'Unlimited access to all features',
     type: 'service',
     display: {
       name: 'Pro',
-      description: 'Unlock full potential',
-      button_text: 'Start Free Trial',
+      description: 'Full access to brand monitoring, AI chat, and all features',
+      button_text: 'Subscribe Now',
       recommend_text: 'Most Popular',
     },
     properties: {
@@ -90,15 +90,39 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
         },
       },
       {
-        id: 'pro-messages',
+        id: 'pro-brand-monitoring',
         type: 'unit',
         display: {
-          primary_text: '10,000 messages',
-          secondary_text: 'per month',
+          primary_text: 'Brand Monitoring',
+          secondary_text: 'Unlimited analyses',
         },
         unit: {
           amount: 0,
-          quantity: 10000,
+          quantity: 0, // 0 means unlimited
+        },
+      },
+      {
+        id: 'pro-ai-chat',
+        type: 'unit',
+        display: {
+          primary_text: 'AI Chat',
+          secondary_text: 'Unlimited conversations',
+        },
+        unit: {
+          amount: 0,
+          quantity: 0, // 0 means unlimited
+        },
+      },
+      {
+        id: 'pro-dashboard',
+        type: 'unit',
+        display: {
+          primary_text: 'Homepage & Dashboard',
+          secondary_text: 'Unlimited access',
+        },
+        unit: {
+          amount: 0,
+          quantity: 0, // 0 means unlimited
         },
       },
     ],
