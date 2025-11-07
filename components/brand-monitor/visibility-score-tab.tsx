@@ -55,19 +55,19 @@ export function VisibilityScoreTab({
   return (
     <div className="flex flex-col h-full space-y-6">
       {/* Main Content Card */}
-      <Card className="analysis-card text-[#111111] gap-6 h-full flex flex-col">
-        <CardHeader className="border-b font-apercu px-6 sm:px-8">
+      <Card className="analysis-card bg-landing-card text-landing-base border-landing-border gap-6 h-full flex flex-col">
+        <CardHeader className="border-b border-landing-border px-6 sm:px-8">
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle className="font-neueBit text-[26px] leading-tight">Visibility Score</CardTitle>
-              <CardDescription className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">
+              <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">Visibility Score</CardTitle>
+              <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
                 Your brand visibility across AI providers
               </CardDescription>
             </div>
             {/* Visibility Score in top right */}
             <div className="text-right">
-              <p className="font-neueBit text-[40px] leading-none">{brandData.visibilityScore}%</p>
-              <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">
+              <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">{brandData.visibilityScore}%</p>
+              <p className="font-geist text-[11px] text-landing-muted mt-2">
                 Overall score
               </p>
             </div>
@@ -81,9 +81,9 @@ export function VisibilityScoreTab({
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <defs>
-                      <linearGradient id="orangeGradient" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#fb923c" />
-                        <stop offset="100%" stopColor="#ea580c" />
+                      <linearGradient id="brandGradient" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#111111" />
+                        <stop offset="100%" stopColor="#4a473f" />
                       </linearGradient>
                       <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
@@ -115,36 +115,37 @@ export function VisibilityScoreTab({
                       filter="url(#shadow)"
                     >
                       {competitors.slice(0, 8).map((competitor, idx) => (
-                        <Cell 
-                          key={`cell-${idx}`} 
-                          fill={competitor.isOwn ? 'url(#orangeGradient)' : 
-                            ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#6366f1', '#14b8a6', '#f43f5e'][idx % 8]}
-                          stroke={competitor.isOwn ? '#ea580c' : 'none'}
+                        <Cell
+                          key={`cell-${idx}`}
+                          fill={competitor.isOwn ? 'url(#brandGradient)' :
+                            ['#8b867c', '#a8a399', '#c5bfb3', '#d7d0c3', '#ece8dd', '#b5afa3', '#9d988d', '#8a857a'][idx % 8]}
+                          stroke={competitor.isOwn ? '#111111' : 'none'}
                           strokeWidth={competitor.isOwn ? 2 : 0}
                         />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        fontSize: '14px',
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#fdfbf5',
+                        border: '1px solid #ece8dd',
+                        borderRadius: '6px',
+                        fontSize: '13px',
                         padding: '8px 12px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.08)',
+                        fontFamily: 'var(--font-geist-sans)'
                       }}
                       formatter={(value: number, name: string) => [`${value}% visibility`, name]}
-                      labelStyle={{ fontWeight: 600 }}
+                      labelStyle={{ fontWeight: 600, color: '#111111' }}
                     />
                   </PieChart>
                 </ResponsiveContainer>
                 
                 {/* Center text showing relative performance */}
                 <div className="absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                  <p className="text-3xl font-bold text-gray-900">#{brandRank}</p>
-                  <p className="text-sm text-gray-500 mt-1">Rank</p>
+                  <p className="font-neueBit text-[36px] leading-none text-landing-base">#{brandRank}</p>
+                  <p className="font-geist text-[13px] text-landing-muted mt-2">Rank</p>
                   {difference !== 0 && (
-                    <p className={`text-xs mt-2 font-medium ${difference > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <p className={`font-geist text-[12px] mt-2 font-medium ${difference > 0 ? 'text-landing-body' : 'text-landing-muted'}`}>
                       {difference > 0 ? '+' : ''}{Math.abs(difference).toFixed(1)}% vs #1
                     </p>
                   )}
@@ -155,26 +156,26 @@ export function VisibilityScoreTab({
             {/* Right side - Legend */}
             <div className="w-80 space-y-2">
               {competitors.slice(0, 8).map((competitor, idx) => {
-                const competitorData = identifiedCompetitors.find(c => 
-                  c.name === competitor.name || 
+                const competitorData = identifiedCompetitors.find(c =>
+                  c.name === competitor.name ||
                   c.name.toLowerCase() === competitor.name.toLowerCase()
                 );
-                const faviconUrl = competitorData?.url ? 
+                const faviconUrl = competitorData?.url ?
                   `https://www.google.com/s2/favicons?domain=${competitorData.url}&sz=64` : null;
-                
-                const color = competitor.isOwn ? '#ea580c' : 
-                  ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#6366f1', '#14b8a6', '#f43f5e'][idx % 8];
-                
+
+                const color = competitor.isOwn ? '#111111' :
+                  ['#8b867c', '#a8a399', '#c5bfb3', '#d7d0c3', '#ece8dd', '#b5afa3', '#9d988d', '#8a857a'][idx % 8];
+
                 return (
                   <div key={idx} className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full flex-shrink-0" 
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
                       style={{ backgroundColor: color }}
                     />
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-5 h-5 rounded flex items-center justify-center bg-gray-100 flex-shrink-0">
+                      <div className="w-5 h-5 rounded flex items-center justify-center bg-landing-background flex-shrink-0">
                         {faviconUrl ? (
-                          <img 
+                          <img
                             src={faviconUrl}
                             alt={competitor.name}
                             className="w-4 h-4 object-contain"
@@ -186,18 +187,18 @@ export function VisibilityScoreTab({
                           />
                         ) : null}
                         <div className={`w-full h-full ${
-                          competitor.isOwn ? 'bg-orange-500' : 'bg-gray-300'
-                        } flex items-center justify-center text-white text-[8px] font-bold rounded`} 
+                          competitor.isOwn ? 'bg-landing-base' : 'bg-landing-muted'
+                        } flex items-center justify-center text-white font-geist text-[8px] font-bold rounded`}
                         style={{ display: faviconUrl ? 'none' : 'flex' }}>
                           {competitor.name.charAt(0)}
                         </div>
                       </div>
-                      <span className={`text-sm truncate ${
-                        competitor.isOwn ? 'font-semibold text-orange-600' : 'text-gray-700'
+                      <span className={`font-geist text-[13px] truncate ${
+                        competitor.isOwn ? 'font-semibold text-landing-base' : 'font-medium text-landing-body'
                       }`}>
                         {competitor.name}
                       </span>
-                      <span className="text-sm font-medium text-gray-900 ml-auto">
+                      <span className="font-geist text-[13px] font-semibold text-landing-base ml-auto">
                         {competitor.visibilityScore}%
                       </span>
                     </div>

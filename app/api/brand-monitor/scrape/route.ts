@@ -46,7 +46,11 @@ export async function POST(request: NextRequest) {
     console.log('🚀 [SCRAPE] Starting company info scraping...');
     const company = await scrapeCompanyInfo(normalizedUrl, maxAge);
 
-    console.log('✅ [SCRAPE] Scraping completed successfully');
+    if (company?.scraped) {
+      console.log('✅ [SCRAPE] Scraping completed successfully');
+    } else {
+      console.log('✅ [SCRAPE] Scraping completed with fallback');
+    }
     console.log('📦 [SCRAPE] Company data:', {
       name: company?.name,
       description: company?.description?.substring(0, 100),

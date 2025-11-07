@@ -1,33 +1,15 @@
 'use client';
 
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
+import { EXAMPLE_URL, MOCK_CHECKS, MOCK_RECOMMENDATIONS } from './shared-constants';
 
-export function CompactAnalysisPreview() {
-  const exampleUrl = 'www.chatsy.com';
-
-  // Example check data
-  const checks = [
-    { id: '1', label: 'No llms.txt file found', title: 'LLMs.txt', status: 'pass' as const, details: 'Add an llms.txt file to define AI usage permissions' },
-    { id: '2', label: 'LLMs.TXT', title: 'Robots.txt', status: 'pass' as const, details: 'Add an llms.txt file to define AI usage permissions' },
-    { id: '3', label: 'LLMs.TXT', title: 'Sitemap', status: 'pass' as const, details: 'Add an llms.txt file to define AI usage permissions' },
-    { id: '4', label: 'LLMs.TXT', title: 'Heading Hierarchy', status: 'pass' as const, details: 'Multiple H1s (2) create topic ambiguity, Skipped heading.' },
-    { id: '5', label: 'No llms.txt file found', title: 'Content Readability', status: 'pass' as const, details: 'Difficult to read (Flesch: 48)' },
-    { id: '6', label: 'LLMs.TXT', title: 'Metadata Quality', status: 'pass' as const, details: 'Title ✓, Description' },
-    { id: '7', label: 'LLMs.TXT', title: 'Semantic HTML', status: 'pass' as const, details: 'Found 1 semantic HTML5 elements' },
-    { id: '8', label: 'LLMs.TXT', title: 'Accessibility', status: 'pass' as const, details: '100% images have alt text, ARIA labels: Yes' },
-  ];
-
-  const recommendations = [
-    'Add an llms.txt file to define AI usage permissions',
-    'Use exactly one H1 and maintain logical heading hierarchy (H1→H2→H3)',
-    'Simplify sentences and use clearer language for better AI comprehension',
-    'Use more semantic HTML5 elements (article, nav, main, section, etc.)',
-  ];
+export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
 
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="relative overflow-hidden py-24 bg-white">
+      <div className="relative max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-neueBit text-[48px] text-[#111111] mb-4">
             See Your AI-Readiness Score
@@ -42,10 +24,11 @@ export function CompactAnalysisPreview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-[920px] mx-auto px-4"
+          className="relative w-full max-w-[920px] mx-auto px-4"
         >
+          <div className="pointer-events-none absolute inset-x-8 top-6 mx-auto h-[420px] rounded-[40px] bg-gradient-to-b from-white/60 to-transparent blur-[80px]" />
           {/* Analysis Results Dashboard matching Figma */}
-          <div className="bg-white border-[#f1f1f1] border-[0.617px] border-solid relative rounded-[4.933px] w-full max-w-[888px] mx-auto overflow-clip">
+          <div className="relative w-full max-w-[888px] mx-auto overflow-clip rounded-[24px] border border-white/80 bg-[radial-gradient(circle_at_top,_#ffffff,_#fefbf4_70%,_#f5eee2_110%)] shadow-[0_45px_140px_rgba(15,15,15,0.12)]">
             <div className="overflow-clip relative rounded-[inherit] size-full">
               <div className="md:px-[135.67px] px-6 md:py-[70.3px] py-10 flex flex-col md:gap-[82.63px] gap-12">
                 {/* Header Section */}
@@ -62,7 +45,7 @@ export function CompactAnalysisPreview() {
                           <div className="bg-white h-full opacity-[0.15] rounded-[19.733px] shrink-0 w-[3.083px]" />
                           <div className="bg-white h-full opacity-[0.15] rounded-[19.733px] shrink-0 w-[3.083px]" />
                         </div>
-                        <span className="font-['Geist',sans-serif] font-medium text-white text-[12px] px-[8px]">{exampleUrl}</span>
+                        <span className="font-['Geist',sans-serif] font-medium text-white text-[12px] px-[8px]">{EXAMPLE_URL}</span>
                         <Search className="size-[14.8px] text-white opacity-60" />
                       </div>
                     </div>
@@ -169,7 +152,7 @@ export function CompactAnalysisPreview() {
 
                   {/* First Row of Check Cards */}
                   <div className="content-stretch grid md:grid-cols-4 grid-cols-1 sm:grid-cols-2 gap-[9.867px] relative shrink-0 w-full">
-                    {checks.slice(0, 4).map((check, index) => (
+                    {MOCK_CHECKS.slice(0, 4).map((check, index) => (
                       <motion.div
                         key={check.id}
                         initial={{ opacity: 0, y: 10 }}
@@ -224,7 +207,7 @@ export function CompactAnalysisPreview() {
 
                   {/* Second Row of Check Cards */}
                   <div className="content-stretch grid md:grid-cols-4 grid-cols-1 sm:grid-cols-2 gap-[9.867px] relative shrink-0 w-full">
-                    {checks.slice(4, 8).map((check, index) => (
+                    {MOCK_CHECKS.slice(4, 8).map((check, index) => (
                       <motion.div
                         key={check.id}
                         initial={{ opacity: 0, y: 10 }}
@@ -286,7 +269,7 @@ export function CompactAnalysisPreview() {
                     </div>
 
                     <div className="content-stretch flex flex-col gap-[9.867px] items-start relative shrink-0 w-full">
-                      {recommendations.map((rec, index) => (
+                      {MOCK_RECOMMENDATIONS.map((rec, index) => (
                         <div key={index} className="content-stretch flex gap-[7.4px] items-center relative shrink-0 w-full">
                           <div className="relative shrink-0 size-[11.1px]">
                             {index % 2 === 0 ? (
@@ -319,4 +302,4 @@ export function CompactAnalysisPreview() {
       </div>
     </section>
   );
-}
+});

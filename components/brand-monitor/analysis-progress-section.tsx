@@ -101,7 +101,7 @@ export function AnalysisProgressSection({
                 {/* Competitors list on the right */}
                 {!analyzing && (
                   <div className="flex items-center gap-2">
-                    <span className="font-apercu text-[11px] uppercase tracking-[0.35em] text-[#8b867c]">
+                    <span className="font-geist text-[11px] font-medium uppercase tracking-[0.35em] text-[#8b867c]">
                       Competitors
                     </span>
                     <div className="flex -space-x-2">
@@ -119,14 +119,14 @@ export function AnalysisProgressSection({
                               }}
                             />
                           ) : null}
-                          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600" style={{ display: comp.url ? 'none' : 'flex' }}>
+                          <div className="w-full h-full bg-gray-100 flex items-center justify-center font-geist text-xs font-semibold text-gray-600" style={{ display: comp.url ? 'none' : 'flex' }}>
                             {comp.name.charAt(0)}
                           </div>
                         </div>
                       ))}
                       {identifiedCompetitors.length > 6 && (
                         <div className="w-8 h-8 rounded-full bg-gray-100 border-2 border-white shadow-sm flex items-center justify-center">
-                          <span className="text-xs text-gray-600 font-medium">+{identifiedCompetitors.length - 6}</span>
+                          <span className="font-geist text-xs text-gray-600 font-semibold">+{identifiedCompetitors.length - 6}</span>
                         </div>
                       )}
                     </div>
@@ -136,7 +136,7 @@ export function AnalysisProgressSection({
               {scrapingCompetitors && !analyzing && (
                 <CardDescription className="mt-2 flex items-center justify-center gap-2 text-[#c94135]">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="font-apercu text-[12px] uppercase tracking-[0.3em]">
+                  <span className="font-geist text-[12px] font-medium uppercase tracking-[0.3em]">
                     Validating competitor data in background
                   </span>
                 </CardDescription>
@@ -144,11 +144,11 @@ export function AnalysisProgressSection({
               {analyzing && analysisProgress && (
                 <div className="mt-4">
                   <div className="flex items-center justify-between mb-2">
-                    <CardDescription className="flex items-center gap-2 font-apercu text-[12px] uppercase tracking-[0.25em] text-[#8b867c]">
+                    <CardDescription className="flex items-center gap-2 font-geist text-[12px] font-medium text-[#8b867c]">
                       <Loader2 className="w-4 h-4 animate-spin text-[#111111]" />
                       <span className="text-[#111111]">{analysisProgress.message}</span>
                     </CardDescription>
-                    <span className="font-neueBit text-[18px] text-[#111111]">{analysisProgress.progress}%</span>
+                    <span className="font-geist text-[16px] font-semibold text-[#111111]">{analysisProgress.progress}%</span>
                   </div>
                   <div className="w-full bg-[#e8e1d5] rounded-full h-2 overflow-hidden">
                     <div 
@@ -171,7 +171,7 @@ export function AnalysisProgressSection({
                         className="group relative rounded-[22px] border border-[#ece8dd] bg-white/90 p-5 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(17,17,17,0.08)] transition-all"
                       >
                         <div className="flex items-start justify-between gap-4">
-                          <p className="font-neueBit text-[17px] leading-snug text-[#111111] flex-1">
+                          <p className="font-geist text-[15px] font-medium leading-snug text-[#111111] flex-1">
                             {prompt}
                           </p>
                           {!analyzing && !isCustom && (
@@ -236,7 +236,7 @@ export function AnalysisProgressSection({
                             );
                           })}
                         </div>
-                        {isCustom && <Badge variant="outline" className="text-[10px] uppercase tracking-[0.35em] mt-3">Custom</Badge>}
+                        {isCustom && <Badge variant="outline" className="font-geist text-[10px] uppercase tracking-[0.35em] mt-3">Custom</Badge>}
                       </div>
                     );
                   })}
@@ -248,7 +248,7 @@ export function AnalysisProgressSection({
                 <button
                   onClick={onAddPromptClick}
                   disabled={analyzing}
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-[#111111] px-6 font-neueBit text-[15px] text-white transition-all disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex h-[44px] items-center gap-2 rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] px-6 font-geist text-[14px] font-medium text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Plus className="h-4 w-4" />
                   Add Prompt
@@ -260,7 +260,7 @@ export function AnalysisProgressSection({
                 <button
                   onClick={onStartAnalysis}
                   disabled={analyzing}
-                  className="inline-flex h-14 items-center justify-center rounded-full bg-[#111111] px-10 font-neueBit text-[18px] text-white transition-all disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex h-[52px] items-center justify-center rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] px-10 font-geist text-[16px] font-medium text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {analyzing ? (
                     <>

@@ -1,0 +1,13 @@
+# Target modern browsers to eliminate legacy JavaScript polyfills
+# This removes polyfills for Array.prototype.at, flatMap, Object.fromEntries, etc.
+# Saves ~11.4 KiB and improves parsing performance
+
+# Modern browsers (last 2 versions) - covers 95%+ of users
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+
+# No IE11 support - removes tons of polyfills
+not IE 11
+not dead

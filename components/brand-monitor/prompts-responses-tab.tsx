@@ -114,7 +114,7 @@ export function PromptsResponsesTab({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search prompts and responses..."
-              className="w-full h-12 rounded-full border border-[#d7d0c3] bg-[#f4f2ed] pl-12 pr-5 font-neueBit text-[14px] text-[#111111] placeholder:text-[#8b867c] focus:outline-none focus:ring-2 focus:ring-[#111111]"
+              className="w-full h-12 rounded-full border border-[#d7d0c3] bg-[#f4f2ed] pl-12 pr-5 font-geist text-[14px] font-medium text-[#111111] placeholder:text-[#8b867c] focus:outline-none focus:ring-2 focus:ring-[#111111]"
             />
             <svg 
               className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8b867c]"
@@ -139,7 +139,7 @@ export function PromptsResponsesTab({
           {/* Expand/Collapse All Button */}
           <button
             onClick={handleExpandAll}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#111111] px-6 font-neueBit text-[14px] text-white transition-all"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#111111] px-6 font-geist text-[14px] font-medium text-white transition-all cursor-pointer"
           >
             {allExpanded ? (
               <>
@@ -200,9 +200,9 @@ export function PromptsResponsesTab({
             >
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <p className="font-neueBit text-[16px] text-[#111111] truncate">{promptData.prompt}</p>
+                  <p className="font-geist text-[15px] font-medium text-[#111111] truncate">{promptData.prompt}</p>
                   {hasBrandMention && (
-                    <Badge variant="default" className="text-[10px] uppercase tracking-[0.3em] bg-[#e0f5e7] text-[#1f8f4d] shrink-0">
+                    <Badge variant="default" className="font-geist text-[10px] font-medium uppercase tracking-[0.3em] bg-[#e0f5e7] text-[#1f8f4d] shrink-0">
                       Brand Mentioned
                     </Badge>
                   )}
@@ -264,24 +264,24 @@ export function PromptsResponsesTab({
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-2">
                             {getProviderIcon(response.provider)}
-                            <span className="font-neueBit text-[15px] text-[#111111]">{response.provider}</span>
+                            <span className="font-geist text-[14px] font-semibold text-[#111111]">{response.provider}</span>
                           </div>
                           {isFailed ? (
-                            <Badge variant="destructive" className="text-[11px] bg-[#fde6e3] text-[#c94135]">
+                            <Badge variant="destructive" className="font-geist text-[11px] font-medium bg-[#fde6e3] text-[#c94135]">
                               Failed ×
                             </Badge>
                           ) : response.brandMentioned ? (
-                            <Badge variant="default" className="text-[11px] bg-[#e0f5e7] text-[#1f8f4d]">
+                            <Badge variant="default" className="font-geist text-[11px] font-medium bg-[#e0f5e7] text-[#1f8f4d]">
                               Brand Mentioned
                             </Badge>
                           ) : null}
                           {response.brandPosition && response.brandPosition > 0 && (
-                            <Badge variant="outline" className="text-[11px] uppercase tracking-[0.3em]">
+                            <Badge variant="outline" className="font-geist text-[11px] font-medium uppercase tracking-[0.3em]">
                               Position #{response.brandPosition}
                             </Badge>
                           )}
                         </div>
-                        <div className="rounded-2xl border border-[#f1eade] bg-[#fffef9] p-4 text-sm text-[#4a473f] select-text cursor-text">
+                        <div className="rounded-2xl border border-[#f1eade] bg-[#fffef9] p-4 font-geist text-[14px] text-[#4a473f] select-text cursor-text">
                           {isFailed ? (
                             <div className="text-[#c94135] italic">
                               Response failed or returned empty content
@@ -302,7 +302,7 @@ export function PromptsResponsesTab({
                     })}
                   </div>
                 ) : (
-                  <div className="text-[#8b867c] text-sm text-center py-4 font-apercu uppercase tracking-[0.25em]">
+                  <div className="text-[#8b867c] font-geist text-[13px] text-center py-4">
                     No responses available for this prompt
                   </div>
                 )}
@@ -315,8 +315,8 @@ export function PromptsResponsesTab({
       {/* No results message */}
       {searchQuery && filteredPromptIndices.length === 0 && (
         <div className="text-center py-10 rounded-[28px] border border-[#ece8dd] bg-[#fefcf7]">
-          <p className="font-neueBit text-[18px] text-[#111111] mb-2">No results found for "{searchQuery}"</p>
-          <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">Try different keywords</p>
+          <p className="font-geist text-[18px] font-semibold text-[#111111] mb-2">No results found for "{searchQuery}"</p>
+          <p className="font-geist text-[13px] text-[#8b867c]">Try different keywords</p>
         </div>
       )}
     </div>

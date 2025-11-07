@@ -252,13 +252,8 @@ export function useSSEHandler({ state, dispatch, onAnalysisComplete }: UseSSEHan
           payload: completeData.analysis
         });
 
-        // Update credits after analysis is complete
-        console.log('💳 [SSE] Updating credits after completion');
-        if (onCreditsUpdate) {
-          onCreditsUpdate();
-        }
-
         // Call the completion callback
+        console.log('✅ [SSE] Analysis complete, calling onAnalysisComplete callback');
         if (onAnalysisComplete) {
           onAnalysisComplete(completeData.analysis);
         }

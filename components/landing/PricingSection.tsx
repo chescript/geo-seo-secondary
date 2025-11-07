@@ -1,9 +1,10 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export function PricingSection() {
+export const PricingSection = memo(function PricingSection() {
   const freePlanFeatures = [
     '10 analyses per month',
     'Community support',
@@ -24,8 +25,8 @@ export function PricingSection() {
   ];
 
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-[1128px] mx-auto px-4">
+    <section className="relative isolate py-24 bg-white">
+      <div className="relative max-w-[1128px] mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -56,14 +57,14 @@ export function PricingSection() {
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="flex items-start justify-center w-full">
+        <div className="flex items-start justify-center w-full gap-8 flex-col lg:flex-row">
           {/* Free Plan */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="bg-neutral-50 border border-[#efefef] w-[386px] p-8 flex flex-col justify-between"
+            className="relative w-full max-w-[386px] rounded-[32px] border border-white/60 bg-white/90 p-8 shadow-[0_35px_90px_rgba(15,15,15,0.08)] backdrop-blur-[6px] flex flex-col justify-between"
           >
             <div className="flex flex-col gap-8 w-full">
               {/* Header */}
@@ -115,12 +116,12 @@ export function PricingSection() {
           </motion.div>
 
           {/* Premium Plan */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-neutral-50 border-[#efefef] border-r border-t border-b flex-1 p-8 relative"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="relative flex-1 rounded-[32px] border border-white/60 bg-white p-8 shadow-[0_45px_110px_rgba(15,15,15,0.12)] backdrop-blur-[8px]"
           >
             {/* Popular badge */}
             <div className="absolute -top-3 right-8 bg-[#111111] text-white px-3 py-1 rounded-full text-xs font-bold">
@@ -182,5 +183,5 @@ export function PricingSection() {
       </div>
     </section>
   );
-}
+});
 

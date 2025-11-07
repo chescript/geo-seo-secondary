@@ -26,7 +26,7 @@ interface VisibilityBarChartProps {
 const chartConfig = {
   visibilityScore: {
     label: 'Visibility Score',
-    color: 'var(--chart-1)',
+    color: '#111111',
   },
 } satisfies ChartConfig;
 
@@ -40,20 +40,20 @@ export function VisibilityBarChart({ data, brandName, averageScore }: Visibility
   const trendPercentage = Math.abs(((topScore - averageScore) / averageScore) * 100).toFixed(1);
 
   return (
-    <Card className="p-2 bg-card text-card-foreground rounded-xl border shadow-sm border-gray-200">
-      <CardHeader className="border-b pb-4">
+    <Card className="p-2 bg-landing-card text-landing-base rounded-[6px] border border-landing-border shadow-landing-card">
+      <CardHeader className="border-b border-landing-border pb-4">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="font-neueBit text-[20px] leading-[0.9] tracking-[-0.2px]">
               Provider Visibility Breakdown
             </CardTitle>
-            <CardDescription className="text-sm text-gray-600 mt-1">
+            <CardDescription className="font-geist text-[13px] text-landing-muted mt-1">
               {brandName}'s visibility across AI providers
             </CardDescription>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-bold text-orange-600">{averageScore}%</p>
-            <p className="text-xs text-gray-500 mt-1">Average Score</p>
+            <p className="font-neueBit text-[32px] leading-[0.9] text-landing-base">{averageScore}%</p>
+            <p className="font-geist text-[11px] text-landing-muted mt-1">Average Score</p>
           </div>
         </div>
       </CardHeader>
@@ -89,11 +89,12 @@ export function VisibilityBarChart({ data, brandName, averageScore }: Visibility
               content={
                 <ChartTooltipContent
                   hideLabel
+                  className="bg-landing-card border-landing-border"
                   formatter={(value, name, props) => (
                     <div className="flex flex-col gap-1">
-                      <span className="font-semibold">{props.payload.provider}</span>
-                      <span className="text-sm">Visibility: {value}%</span>
-                      <span className="text-xs text-gray-500">
+                      <span className="font-geist font-semibold text-landing-base">{props.payload.provider}</span>
+                      <span className="font-geist text-[13px] text-landing-body">Visibility: {value}%</span>
+                      <span className="font-geist text-[11px] text-landing-muted">
                         Mention Rate: {props.payload.mentionRate}%
                       </span>
                     </div>
@@ -103,7 +104,7 @@ export function VisibilityBarChart({ data, brandName, averageScore }: Visibility
             />
             <Bar
               dataKey="visibilityScore"
-              fill="hsl(var(--chart-1))"
+              fill="#111111"
               radius={[0, 8, 8, 0]}
             >
               <LabelList
@@ -116,13 +117,13 @@ export function VisibilityBarChart({ data, brandName, averageScore }: Visibility
             </Bar>
           </BarChart>
         </ChartContainer>
-        <div className="flex items-center justify-center gap-2 text-sm mt-4 pt-4 border-t">
+        <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-landing-border">
           {trend === 'up' ? (
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <TrendingUp className="h-4 w-4 text-landing-base" />
           ) : (
-            <TrendingDown className="h-4 w-4 text-red-600" />
+            <TrendingDown className="h-4 w-4 text-landing-muted" />
           )}
-          <span className="font-medium">
+          <span className="font-geist text-[13px] font-medium text-landing-body">
             Top performer is {trendPercentage}% {trend === 'up' ? 'above' : 'below'} average
           </span>
         </div>

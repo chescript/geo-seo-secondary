@@ -39,8 +39,12 @@ export function ReadyToScanModal({ isOpen, onClose, onAnalyze }: ReadyToScanModa
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
             transition={{ type: 'spring', damping: 25 }}
-            className="fixed right-8 top-1/2 -translate-y-1/2 w-[326px] h-[321px] bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 z-50"
+            className="fixed right-8 top-1/2 -translate-y-1/2 w-[326px] h-[321px] overflow-hidden rounded-[28px] border border-white/70 bg-gradient-to-b from-white via-[#fffaf3] to-[#f6efe2] p-6 shadow-[0_35px_120px_rgba(15,15,15,0.18)] backdrop-blur-[6px] z-50"
           >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-6 top-0 h-24 rounded-[32px] bg-white/60 blur-2xl"
+            />
             {/* Close button */}
             <button
               onClick={onClose}

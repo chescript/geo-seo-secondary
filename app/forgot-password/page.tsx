@@ -21,12 +21,20 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
+      console.log('🔐 [FORGOT PASSWORD] Requesting password reset...');
+      console.log('🔐 [FORGOT PASSWORD] Email:', email);
+      const resetUrl = `${window.location.origin}/reset-password`;
+      console.log('🔐 [FORGOT PASSWORD] Redirect URL:', resetUrl);
+
       await authClient.forgetPassword({
         email,
-        redirectTo: '/reset-password',
+        redirectTo: resetUrl,
       });
+
+      console.log('✅ [FORGOT PASSWORD] Reset email sent successfully');
       setSuccess(true);
     } catch (err: any) {
+      console.error('❌ [FORGOT PASSWORD] Error:', err);
       setError(err.message || 'Failed to send reset email');
     } finally {
       setLoading(false);

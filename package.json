@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "setup": "node setup.js",
@@ -96,6 +97,7 @@
     "@better-auth/cli": "^1.2.12",
     "@eslint/eslintrc": "^3",
     "@jest/globals": "^30.2.0",
+    "@next/bundle-analyzer": "^16.0.1",
     "@playwright/test": "^1.56.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",

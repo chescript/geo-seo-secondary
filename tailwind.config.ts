@@ -13,7 +13,9 @@ const colors = Object.keys(colorsJson).reduce(
   {} as Record<string, string>
 );
 
-const sizes = Array.from({ length: 1000 }, (_, i) => i).reduce(
+// Optimized: Generate fewer size utilities (0-200px instead of 0-999px)
+// Most common spacing values are < 200px. Larger sizes can use arbitrary values
+const sizes = Array.from({ length: 201 }, (_, i) => i).reduce(
   (acc, curr) => {
     acc[curr] = `${curr}px`;
 
@@ -32,27 +34,48 @@ const sizes = Array.from({ length: 1000 }, (_, i) => i).reduce(
     "2/6": "33.3%",
     "3/6": "50%",
     "4/6": "66.6%",
-    "5/6": "83.3%"
+    "5/6": "83.3%",
+    // Add larger commonly used values
+    "250": "250px",
+    "300": "300px",
+    "350": "350px",
+    "400": "400px",
+    "450": "450px",
+    "500": "500px",
+    "600": "600px",
+    "700": "700px",
+    "800": "800px",
+    "900": "900px",
+    "1000": "1000px",
   } as Record<string, string>
 );
 
-const opacities = Array.from({ length: 100 }, (_, i) => i).reduce(
+// Optimized: Generate opacity utilities in steps of 5 instead of every integer
+const opacities = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100].reduce(
   (acc, curr) => {
     acc[curr] = curr / 100 + "";
-
     return acc;
   },
   {} as Record<string, string>
 );
 
-const transitionDurations = Array.from({ length: 60 }, (_, i) => i).reduce(
-  (acc, curr) => {
-    acc[curr] = curr * 50 + "";
-
-    return acc;
-  },
-  {} as Record<string, string>
-);
+// Optimized: Only generate commonly used transition durations
+const transitionDurations = {
+  "0": "0ms",
+  "75": "75ms",
+  "100": "100ms",
+  "150": "150ms",
+  "200": "200ms",
+  "300": "300ms",
+  "400": "400ms",
+  "500": "500ms",
+  "600": "600ms",
+  "700": "700ms",
+  "1000": "1000ms",
+  "1500": "1500ms",
+  "2000": "2000ms",
+  "3000": "3000ms",
+} as Record<string, string>;
 
 const themeConfig: Config = {
   content: [

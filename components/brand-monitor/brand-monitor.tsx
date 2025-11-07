@@ -75,11 +75,18 @@ export function BrandMonitor({
   const [isLoadingExistingAnalysis, setIsLoadingExistingAnalysis] =
     useState(false);
   const hasSavedRef = useRef(false);
+  const analysisSectionRef = useRef<HTMLDivElement>(null);
 
   const { startSSEConnection } = useSSEHandler({
     state,
     dispatch,
     onAnalysisComplete: (completedAnalysis) => {
+      console.log("🔍 onAnalysisComplete called", {
+        selectedAnalysis,
+        hasSavedRef: hasSavedRef.current,
+        completedAnalysis
+      });
+
       // Only save if this is a new analysis (not loaded from existing)
       if (!selectedAnalysis && !hasSavedRef.current) {
         hasSavedRef.current = true;
@@ -96,18 +103,22 @@ export function BrandMonitor({
           prompts: state.analyzingPrompts,
         };
 
+        console.log("💾 Attempting to save analysis:", analysisData);
+
         saveAnalysis.mutate(analysisData, {
           onSuccess: (savedAnalysis) => {
-            console.log("Analysis saved successfully:", savedAnalysis);
+            console.log("✅ Analysis saved successfully:", savedAnalysis);
             if (onSaveAnalysis) {
               onSaveAnalysis(savedAnalysis);
             }
           },
           onError: (error) => {
-            console.error("Failed to save analysis:", error);
+            console.error("❌ Failed to save analysis:", error);
             hasSavedRef.current = false;
           },
         });
+      } else {
+        console.log("⏭️ Skipping save - already saved or loading existing");
       }
     },
   });
@@ -504,6 +515,14 @@ export function BrandMonitor({
     });
     dispatch({ type: "SET_ANALYSIS_TILES", payload: [] });
 
+    // Scroll to analysis section
+    setTimeout(() => {
+      analysisSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 100);
+
     // Initialize prompt completion status
     const initialStatus: any = {};
     const expectedProviders = getEnabledProviders().map(
@@ -658,7 +677,7 @@ export function BrandMonitor({
 
       {/* Prompts List Section - Shows both before and during analysis */}
       {showPromptsList && company && !analysis && !generatingPrompts && (
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div ref={analysisSectionRef} className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
           <AnalysisProgressSection
             company={company}
             analyzing={analyzing}
@@ -692,8 +711,8 @@ export function BrandMonitor({
 
       {/* Analysis Results */}
       {analysis && brandData && (
-        <div className="flex gap-4 animate-panel-in overflow-x-hidden font-overused">
-          {/* Sidebar Navigation */}
+        <div className="w-full animate-panel-in font-overused">
+          {/* Horizontal Navigation Tabs */}
           <ResultsNavigation
             activeTab={activeResultsTab}
             onTabChange={(tab) => {
@@ -703,101 +722,126 @@ export function BrandMonitor({
           />
 
           {/* Main Content Area */}
-          <div className="flex-1 min-w-0 overflow-x-hidden">
-            <div className="overflow-x-hidden">
+          <div className="w-full bg-landing-background">
+            <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-[1600px] mx-auto relative">
                   {/* Tab Content */}
                   {activeResultsTab === "visibility" && (
-                    <VisibilityScoreTab
-                      competitors={analysis.competitors}
-                      brandData={brandData}
-                      identifiedCompetitors={identifiedCompetitors}
-                      providerRankings={analysis.providerRankings}
-                      companyName={company?.name}
-                    />
+                    <div
+                      className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out"
+                      key="visibility"
+                      style={{ willChange: 'opacity, transform' }}
+                    >
+                      <VisibilityScoreTab
+                        competitors={analysis.competitors}
+                        brandData={brandData}
+                        identifiedCompetitors={identifiedCompetitors}
+                        providerRankings={analysis.providerRankings}
+                        companyName={company?.name}
+                      />
+                    </div>
                   )}
 
                   {activeResultsTab === "matrix" && (
-                    <Card className="analysis-card bg-white text-card-foreground gap-6 flex flex-col overflow-hidden">
-                      <CardHeader className="border-b font-overused">
+                    <div
+                      className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out"
+                      key="matrix"
+                      style={{ willChange: 'opacity, transform' }}
+                    >
+                      <Card className="analysis-card bg-landing-card text-landing-base gap-6 flex flex-col border-landing-border">
+                      <CardHeader className="border-b border-landing-border">
                         <div className="flex justify-between items-center">
                           <div>
-                            <CardTitle className="font-geist text-[20px] tracking-[-0.2px] font-semibold">
+                            <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">
                               Comparison Matrix
                             </CardTitle>
-                            <CardDescription className="font-overused text-sm text-gray-600 mt-1">
+                            <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
                               Compare visibility scores across different AI
                               providers
                             </CardDescription>
                           </div>
                           <div className="text-right">
-                            <p className="text-2xl font-bold text-orange-600">
+                            <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">
                               {brandData.visibilityScore}%
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="font-geist text-[11px] text-landing-muted mt-2">
                               Average Score
                             </p>
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent className="pt-6 overflow-x-hidden">
-                        {analysis.providerComparison ? (
-                          <ProviderComparisonMatrix
-                            data={analysis.providerComparison}
-                            brandName={company?.name || ""}
-                            competitors={identifiedCompetitors}
-                          />
-                        ) : (
-                          <div className="text-center py-8 text-gray-500">
-                            <p>No comparison data available</p>
-                            <p className="text-sm mt-2">
-                              Please ensure AI providers are configured and the
-                              analysis has completed.
-                            </p>
-                          </div>
-                        )}
+                      <CardContent className="pt-6">
+                        <div className="overflow-x-auto">
+                          {analysis.providerComparison ? (
+                            <ProviderComparisonMatrix
+                              data={analysis.providerComparison}
+                              brandName={company?.name || ""}
+                              competitors={identifiedCompetitors}
+                            />
+                          ) : (
+                            <div className="text-center py-8 bg-landing-card rounded-[6px] border border-landing-border">
+                              <p className="font-geist text-[16px] font-medium text-landing-base">No comparison data available</p>
+                              <p className="font-geist text-[13px] text-landing-muted mt-2">
+                                Please ensure AI providers are configured and the
+                                analysis has completed.
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
+                    </div>
                   )}
 
                   {activeResultsTab === "rankings" &&
                     analysis.providerRankings && (
-                      <div id="provider-rankings" className="h-full">
-                        <ProviderRankingsTabs
-                          providerRankings={analysis.providerRankings}
-                          brandName={company?.name || "Your Brand"}
-                          shareOfVoice={brandData.shareOfVoice}
-                          averagePosition={Math.round(
-                            brandData.averagePosition
-                          )}
-                          sentimentScore={brandData.sentimentScore}
-                          weeklyChange={brandData.weeklyChange}
-                        />
+                      <div
+                        className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out"
+                        key="rankings"
+                        style={{ willChange: 'opacity, transform' }}
+                      >
+                        <div id="provider-rankings" className="h-full">
+                          <ProviderRankingsTabs
+                            providerRankings={analysis.providerRankings}
+                            brandName={company?.name || "Your Brand"}
+                            shareOfVoice={brandData.shareOfVoice}
+                            averagePosition={Math.round(
+                              brandData.averagePosition
+                            )}
+                            sentimentScore={brandData.sentimentScore}
+                            weeklyChange={brandData.weeklyChange}
+                          />
+                        </div>
                       </div>
                     )}
 
                   {activeResultsTab === "prompts" && analysis.prompts && (
-                    <Card className="analysis-card bg-white text-card-foreground gap-6 flex flex-col overflow-hidden">
-                      <CardHeader className="border-b font-overused">
+                    <div
+                      className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out"
+                      key="prompts"
+                      style={{ willChange: 'opacity, transform' }}
+                    >
+                      <Card className="analysis-card bg-landing-card text-landing-base gap-6 flex flex-col border-landing-border">
+                      <CardHeader className="border-b border-landing-border">
                         <div className="flex justify-between items-center">
                           <div>
-                            <CardTitle className="font-geist text-[20px] tracking-[-0.2px] font-semibold">
+                            <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">
                               Prompts & Responses
                             </CardTitle>
-                            <CardDescription className="font-overused text-sm text-gray-600 mt-1">
+                            <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
                               AI responses to your brand queries
                             </CardDescription>
                           </div>
                           <div className="text-right">
-                            <p className="text-2xl font-bold text-orange-600">
+                            <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">
                               {analysis.prompts.length}
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="font-geist text-[11px] text-landing-muted mt-2">
                               Total Prompts
                             </p>
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent className="pt-6 overflow-x-hidden">
+                      <CardContent className="pt-6">
                         <PromptsResponsesTab
                           prompts={analysis.prompts}
                           responses={analysis.responses}
@@ -815,8 +859,9 @@ export function BrandMonitor({
                         />
                       </CardContent>
                     </Card>
+                    </div>
                   )}
-                </div>
+            </div>
           </div>
         </div>
       )}

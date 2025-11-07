@@ -27,11 +27,11 @@ interface ProviderPerformanceChartProps {
 const chartConfig = {
   brand: {
     label: 'Your Brand',
-    color: 'hsl(var(--chart-1))',
+    color: '#111111',
   },
   topCompetitor: {
     label: 'Top Competitor',
-    color: 'hsl(var(--chart-2))',
+    color: '#8b867c',
   },
 } satisfies ChartConfig;
 
@@ -41,20 +41,20 @@ export function ProviderPerformanceChart({ data, brandName }: ProviderPerformanc
   const winRate = ((wins / data.length) * 100).toFixed(0);
 
   return (
-    <Card className="p-2 bg-card text-card-foreground rounded-xl border shadow-sm border-gray-200">
-      <CardHeader className="border-b pb-4">
+    <Card className="p-2 bg-landing-card text-landing-base rounded-[6px] border border-landing-border shadow-landing-card">
+      <CardHeader className="border-b border-landing-border pb-4">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="font-neueBit text-[20px] leading-[0.9] tracking-[-0.2px]">
               Competitive Performance
             </CardTitle>
-            <CardDescription className="text-sm text-gray-600 mt-1">
+            <CardDescription className="font-geist text-[13px] text-landing-muted mt-1">
               {brandName} vs top competitor across providers
             </CardDescription>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-bold text-orange-600">{winRate}%</p>
-            <p className="text-xs text-gray-500 mt-1">Win Rate</p>
+            <p className="font-neueBit text-[32px] leading-[0.9] text-landing-base">{winRate}%</p>
+            <p className="font-geist text-[11px] text-landing-muted mt-1">Win Rate</p>
           </div>
         </div>
       </CardHeader>
@@ -73,20 +73,21 @@ export function ProviderPerformanceChart({ data, brandName }: ProviderPerformanc
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              className="text-sm"
+              className="font-geist text-[13px]"
             />
             <ChartTooltip
               cursor={false}
               content={
                 <ChartTooltipContent
                   indicator="dashed"
+                  className="bg-landing-card border-landing-border"
                   labelFormatter={(value, payload) => {
                     const item = payload?.[0]?.payload;
                     return (
                       <div className="flex flex-col gap-1">
-                        <span className="font-semibold">{value}</span>
+                        <span className="font-geist font-semibold text-landing-base">{value}</span>
                         {item && (
-                          <span className="text-xs text-gray-500">
+                          <span className="font-geist text-[11px] text-landing-muted">
                             vs {item.competitorName}
                           </span>
                         )}
@@ -110,8 +111,8 @@ export function ProviderPerformanceChart({ data, brandName }: ProviderPerformanc
             />
           </BarChart>
         </ChartContainer>
-        <div className="flex items-center justify-center gap-2 text-sm mt-4 pt-4 border-t text-gray-600">
-          <span>
+        <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-landing-border">
+          <span className="font-geist text-[13px] font-medium text-landing-body">
             Outperforming in {wins} out of {data.length} providers
           </span>
         </div>

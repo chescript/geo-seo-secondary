@@ -89,15 +89,15 @@ const CompanyCell = ({
             onError={() => setFaviconError(true)}
           />
         ) : (
-          <div className="w-5 h-5 bg-gray-200 rounded flex items-center justify-center">
-            <span className="text-gray-600 font-semibold text-[10px]">
+          <div className="w-5 h-5 bg-landing-background rounded flex items-center justify-center">
+            <span className="font-geist text-landing-muted font-semibold text-[10px]">
               {name.charAt(0).toUpperCase()}
             </span>
           </div>
         )}
       </div>
-      <span className={`text-sm ${
-        isOwn ? 'font-semibold text-black' : 'text-black'
+      <span className={`font-geist text-[13px] ${
+        isOwn ? 'font-semibold text-landing-base' : 'text-landing-body'
       }`}>
         {name}
       </span>
@@ -136,18 +136,18 @@ export function ProviderRankingsTabs({
   const getSentimentBadge = (sentiment: string) => {
     switch (sentiment) {
       case 'positive':
-        return <Badge variant="secondary" className="bg-green-50 text-black text-xs">Positive</Badge>;
+        return <Badge variant="secondary" className="bg-[#e0f5e7] text-[#1f8f4d] font-geist text-[11px] font-medium">Positive</Badge>;
       case 'negative':
-        return <Badge variant="secondary" className="bg-red-50 text-black text-xs">Negative</Badge>;
+        return <Badge variant="secondary" className="bg-[#fde6e3] text-[#c94135] font-geist text-[11px] font-medium">Negative</Badge>;
       default:
-        return <Badge variant="secondary" className="bg-gray-50 text-black text-xs">Neutral</Badge>;
+        return <Badge variant="secondary" className="bg-landing-background text-landing-muted font-geist text-[11px] font-medium">Neutral</Badge>;
     }
   };
 
   const getChangeIcon = (change: number | undefined) => {
-    if (!change) return <Minus className="h-3 w-3 text-gray-400" />;
-    if (change > 0) return <TrendingUp className="h-3 w-3 text-black" />;
-    return <TrendingDown className="h-3 w-3 text-black" />;
+    if (!change) return <Minus className="h-3 w-3 text-landing-muted" />;
+    if (change > 0) return <TrendingUp className="h-3 w-3 text-landing-base" />;
+    return <TrendingDown className="h-3 w-3 text-landing-base" />;
   };
 
   // Get the selected provider's data
@@ -157,22 +157,22 @@ export function ProviderRankingsTabs({
   const brandVisibility = competitors.find(c => c.isOwn)?.visibilityScore || 0;
 
   return (
-    <Card className="p-2 bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm border-gray-200 h-full flex flex-col">
-      <CardHeader className="border-b">
+    <Card className="p-2 bg-landing-card text-landing-base gap-6 rounded-[6px] border py-6 shadow-landing-card border-landing-border h-full flex flex-col">
+      <CardHeader className="border-b border-landing-border px-6 sm:px-8">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-xl font-semibold">Provider Rankings</CardTitle>
-            <CardDescription className="text-sm text-gray-600 mt-1">
+            <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">Provider Rankings</CardTitle>
+            <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
               Your brand performance by AI provider
             </CardDescription>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-bold text-orange-600">#{brandRank}</p>
-            <p className="text-xs text-gray-500 mt-1">Average Rank</p>
+            <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">#{brandRank}</p>
+            <p className="font-geist text-[11px] text-landing-muted mt-2">Average Rank</p>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="pt-6 pb-2 flex-1 flex flex-col">
+      <CardContent className="pt-6 pb-2 px-6 sm:px-8 flex-1 flex flex-col">
         <Tabs value={selectedProvider} onValueChange={setSelectedProvider} className="flex-1 flex flex-col">
           <TabsList className={`grid w-full mb-2 h-14 ${providerRankings.length === 2 ? 'grid-cols-2' : providerRankings.length === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}>
             {providerRankings.map(({ provider }) => {
@@ -192,15 +192,15 @@ export function ProviderRankingsTabs({
 
           {providerRankings.map(({ provider, competitors }) => (
             <TabsContent key={provider} value={provider} className="mt-0">
-              <div className="overflow-x-auto rounded-lg border border-gray-200">
+              <div className="overflow-x-auto rounded-lg border border-landing-border">
                 <table className="w-full border-collapse">
                   <thead>
                     <tr>
-                      <th className="bg-gray-50 border-b border-r border-gray-200 text-left p-3 text-xs font-medium text-gray-900 w-8">#</th>
-                      <th className="bg-gray-50 border-b border-r border-gray-200 text-left p-3 text-xs font-medium text-gray-900 w-[200px]">Company</th>
-                      <th className="bg-gray-50 border-b border-r border-gray-200 text-right p-3 text-xs font-medium text-gray-900">Visibility</th>
-                      <th className="bg-gray-50 border-b border-r border-gray-200 text-right p-3 text-xs font-medium text-gray-900">Share of Voice</th>
-                      <th className="bg-gray-50 border-b border-gray-200 text-right p-3 text-xs font-medium text-gray-900">Sentiment</th>
+                      <th className="bg-landing-background border-b border-r border-landing-border text-left p-3 font-geist text-[11px] font-medium text-landing-base w-8">#</th>
+                      <th className="bg-landing-background border-b border-r border-landing-border text-left p-3 font-geist text-[11px] font-medium text-landing-base w-[200px]">Company</th>
+                      <th className="bg-landing-background border-b border-r border-landing-border text-right p-3 font-geist text-[11px] font-medium text-landing-base">Visibility</th>
+                      <th className="bg-landing-background border-b border-r border-landing-border text-right p-3 font-geist text-[11px] font-medium text-landing-base">Share of Voice</th>
+                      <th className="bg-landing-background border-b border-landing-border text-right p-3 font-geist text-[11px] font-medium text-landing-base">Sentiment</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -208,29 +208,29 @@ export function ProviderRankingsTabs({
                       const competitorUrl = generateFallbackUrl(competitor.name);
                       
                       return (
-                        <tr 
-                          key={idx} 
+                        <tr
+                          key={idx}
                           className={`
-                            ${idx > 0 ? 'border-t border-gray-200' : ''}
-                            ${competitor.isOwn 
-                              ? 'bg-orange-50' 
-                              : 'hover:bg-gray-50 transition-colors'
+                            ${idx > 0 ? 'border-t border-landing-border' : ''}
+                            ${competitor.isOwn
+                              ? 'bg-[#f4f2ed]'
+                              : 'hover:bg-landing-background transition-colors'
                             }
                           `}
                         >
-                          <td className="border-r border-gray-200 p-3 text-xs text-black">
+                          <td className="border-r border-landing-border p-3 font-geist text-[11px] text-landing-body">
                             {idx + 1}
                           </td>
-                          <td className="border-r border-gray-200 p-3">
-                            <CompanyCell 
+                          <td className="border-r border-landing-border p-3">
+                            <CompanyCell
                               name={competitor.name}
                               isOwn={competitor.isOwn}
                               url={competitorUrl}
                             />
                           </td>
-                          <td className="border-r border-gray-200 p-3 text-right">
+                          <td className="border-r border-landing-border p-3 text-right">
                             <div className="flex items-center justify-end gap-1">
-                              <span className="text-sm font-medium text-black">
+                              <span className="font-geist text-[13px] font-medium text-landing-base">
                                 {competitor.visibilityScore}%
                               </span>
                               {competitor.weeklyChange !== undefined && competitor.weeklyChange !== 0 && (
@@ -238,8 +238,8 @@ export function ProviderRankingsTabs({
                               )}
                             </div>
                           </td>
-                          <td className="border-r border-gray-200 p-3 text-right">
-                            <span className="text-sm text-black">
+                          <td className="border-r border-landing-border p-3 text-right">
+                            <span className="font-geist text-[13px] text-landing-body">
                               {competitor.shareOfVoice}%
                             </span>
                           </td>
@@ -257,34 +257,34 @@ export function ProviderRankingsTabs({
         </Tabs>
         
         {/* Metrics Row at Bottom */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 pt-6 border-t">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Competitors</p>
-            <p className="text-lg font-semibold text-black">{competitors.length}</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 pt-6 border-t border-landing-border">
+          <div className="bg-landing-background rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">Competitors</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">{competitors.length}</p>
           </div>
-          <div className="bg-orange-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">{brandName} Rank</p>
-            <p className="text-lg font-semibold text-black">
+          <div className="bg-[#f4f2ed] rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">{brandName} Rank</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">
               #{brandRank}
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">{brandName} Visibility</p>
-            <p className="text-lg font-semibold text-black">
+          <div className="bg-landing-background rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">{brandName} Visibility</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">
               {brandVisibility}%
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Share of Voice</p>
-            <p className="text-lg font-semibold text-black">{shareOfVoice}%</p>
+          <div className="bg-landing-background rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">Share of Voice</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">{shareOfVoice}%</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Average Position</p>
-            <p className="text-lg font-semibold text-black">#{averagePosition}</p>
+          <div className="bg-landing-background rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">Average Position</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">#{averagePosition}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Sentiment Score</p>
-            <p className="text-lg font-semibold text-black">{sentimentScore}%</p>
+          <div className="bg-landing-background rounded-lg p-4 text-center">
+            <p className="font-geist text-[11px] text-landing-muted mb-1">Sentiment Score</p>
+            <p className="font-neueBit text-[20px] leading-[0.9] text-landing-base">{sentimentScore}%</p>
           </div>
         </div>
       </CardContent>

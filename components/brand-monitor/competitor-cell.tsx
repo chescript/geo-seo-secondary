@@ -25,7 +25,7 @@ export const CompetitorCell: React.FC<CompetitorCellProps> = ({
   const faviconUrl = favicon || (url ? `https://www.google.com/s2/favicons?domain=${url}&sz=64` : null);
   
   return (
-    <div className="flex items-center gap-2 p-3 hover:bg-gray-50">
+    <div className="flex items-center gap-2 p-3 hover:bg-landing-background transition-colors">
       <div className="w-6 h-6 flex items-center justify-center rounded overflow-hidden flex-shrink-0">
         {faviconUrl && !faviconError ? (
           <Image
@@ -37,8 +37,8 @@ export const CompetitorCell: React.FC<CompetitorCellProps> = ({
             onError={() => setFaviconError(true)}
           />
         ) : (
-          <div className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center">
-            <span className="text-gray-600 font-semibold text-xs">
+          <div className="w-6 h-6 bg-landing-border rounded flex items-center justify-center">
+            <span className="text-landing-muted font-geist text-[11px] font-semibold">
               {name.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -47,24 +47,24 @@ export const CompetitorCell: React.FC<CompetitorCellProps> = ({
       <div className="flex-1">
         <div className="flex items-center gap-1.5">
           {url && !isOwn ? (
-            <a 
+            <a
               href={url.startsWith('http') ? url : `https://${url}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-sm font-medium hover:underline ${isOwn ? 'text-orange-600' : 'text-gray-900 hover:text-blue-600'} flex items-center gap-1`}
+              className={`font-geist text-[13px] font-medium hover:underline ${isOwn ? 'text-landing-base font-semibold' : 'text-landing-base hover:text-landing-body'} flex items-center gap-1`}
               onClick={(e) => e.stopPropagation()}
             >
               {name}
-              <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+              <ExternalLink className="w-3.5 h-3.5 text-landing-muted" />
             </a>
           ) : (
-            <h3 className={`text-sm font-medium ${isOwn ? 'text-orange-600' : 'text-gray-900'}`}>
+            <h3 className={`font-geist text-[13px] font-medium ${isOwn ? 'font-semibold' : ''}`}>
               {name}
             </h3>
           )}
         </div>
         {description && (
-          <p className="text-sm text-gray-500">{description}</p>
+          <p className="font-geist text-[11px] text-landing-muted">{description}</p>
         )}
       </div>
     </div>

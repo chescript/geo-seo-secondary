@@ -1,19 +1,77 @@
 'use client';
 
 import Link from "next/link";
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, Suspense, useCallback } from "react";
+import { AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import { AnalysisResultsDashboard } from "@/components/ai-readiness/AnalysisResultsDashboard";
-import { ChevronDown } from "lucide-react";
-import { ReadyToScanModal } from "@/components/landing/ReadyToScanModal";
-import { PricingSection } from "@/components/landing/PricingSection";
-import { TopicsSection } from "@/components/landing/TopicsSection";
-import { PixelArtCTA } from "@/components/landing/PixelArtCTA";
-import { CompactAnalysisPreview } from "@/components/landing/CompactAnalysisPreview";
 import { LoadingPreview } from "@/components/landing/LoadingPreview";
-import { WantMoreSection } from "@/components/landing/WantMoreSection";
-import { StartForFree } from "@/components/landing/StartForFree";
-import { Footer, FooterBottomBanner } from "@/components/footer";
+
+// Lazy load below-the-fold components with aggressive settings
+// Using ssr: false to defer execution and reduce initial bundle
+const CompactAnalysisPreview = dynamic(
+  () => import("@/components/landing/CompactAnalysisPreview").then(mod => ({ default: mod.CompactAnalysisPreview })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[600px] bg-white" />
+  }
+);
+
+const WantMoreSection = dynamic(
+  () => import("@/components/landing/WantMoreSection").then(mod => ({ default: mod.WantMoreSection })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[560px] bg-white" />
+  }
+);
+
+const PricingSection = dynamic(
+  () => import("@/components/landing/PricingSection").then(mod => ({ default: mod.PricingSection })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[400px] bg-white" />
+  }
+);
+
+const TopicsSection = dynamic(
+  () => import("@/components/landing/TopicsSection").then(mod => ({ default: mod.TopicsSection })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[400px] bg-white" />
+  }
+);
+
+const PixelArtCTA = dynamic(
+  () => import("@/components/landing/PixelArtCTA").then(mod => ({ default: mod.PixelArtCTA })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[600px] bg-white" />
+  }
+);
+
+const Footer = dynamic(
+  () => import("@/components/footer").then(mod => ({ default: mod.Footer })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[300px] bg-white" />
+  }
+);
+
+const StartForFree = dynamic(
+  () => import("@/components/landing/StartForFree").then(mod => ({ default: mod.StartForFree })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[200px] bg-white" />
+  }
+);
+
+const FooterBottomBanner = dynamic(
+  () => import("@/components/footer").then(mod => ({ default: mod.FooterBottomBanner })),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[50px] bg-white" />
+  }
+);
 
 export default function HomePage() {
   const [url, setUrl] = useState<string>("");
@@ -24,7 +82,7 @@ export default function HomePage() {
   const [showAnalysisTool, setShowAnalysisTool] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const handleAnalysis = async () => {
+  const handleAnalysis = useCallback(async () => {
     if (!url) return;
 
     // Auto-prepend https:// if no protocol is provided
@@ -78,43 +136,34 @@ export default function HomePage() {
     } finally {
       setIsAnalyzing(false);
     }
-  };
+  }, [url]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white pt-[183px] pb-[56px]">
+      <section className="relative overflow-hidden bg-white pt-[132px] pb-[56px]">
         <div className="relative max-w-[796px] mx-auto px-4">
           <div className="text-center flex flex-col items-center gap-10">
             {/* Title */}
             <div className="flex flex-col items-center gap-6">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="font-neueBit text-[80px] leading-[0.9] text-[#111111] w-[604px]"
+              <h1
+                className="hero-title font-neueBit text-[80px] leading-[0.9] text-[#111111] w-[604px]"
                 style={{ textTransform: 'none' }}
               >
                 Future-Proof Your Presence In The AI Web.
-              </motion.h1>
+              </h1>
 
               {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="font-apercu text-[16px] leading-[1.8] text-[#818181] tracking-[-0.48px] uppercase w-[572px]"
+              <p
+                className="hero-subtitle font-apercu text-[16px] leading-[1.8] text-[#818181] tracking-[-0.48px] uppercase w-[572px]"
               >
                 Analyze how AI-ready your webpage is. Get instant insights on LLM compatibility, SEO, and metadata optimization.
-              </motion.p>
+              </p>
             </div>
 
             {/* Analysis Form */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col items-center gap-8 w-full max-w-[398px]"
+            <div
+              className="hero-form flex flex-col items-center gap-8 w-full max-w-[398px]"
             >
               {/* Input and Button */}
               <div className="flex gap-3 w-full">
@@ -176,7 +225,7 @@ export default function HomePage() {
               {urlError && (
                 <p className="text-sm text-red-500">{urlError}</p>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

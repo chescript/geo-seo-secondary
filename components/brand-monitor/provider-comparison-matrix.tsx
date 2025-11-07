@@ -96,9 +96,9 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
   
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 bg-gray-50 rounded-lg">
-        <p className="text-gray-600 text-lg mb-2">No comparison data available</p>
-        <p className="text-gray-500 text-sm">The analysis may still be processing or no providers returned data.</p>
+      <div className="text-center py-12 bg-landing-card rounded-[6px] border border-landing-border">
+        <p className="text-landing-base font-geist text-[16px] font-medium mb-2">No comparison data available</p>
+        <p className="text-landing-muted font-geist text-[13px]">The analysis may still be processing or no providers returned data.</p>
       </div>
     );
   }
@@ -127,12 +127,12 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
   //   });
   // });
   
-  // Get background style based on score
+  // Get background style based on score - using landing page muted color palette
   const getBackgroundStyle = (score: number) => {
-    const opacity = Math.pow(score / 100, 0.5);
+    const opacity = Math.pow(score / 100, 0.5) * 0.6; // More subtle
     return {
-      backgroundColor: `rgba(251, 146, 60, ${opacity})`,
-      border: score > 0 ? '1px solid rgb(251, 146, 60)' : undefined
+      backgroundColor: `rgba(139, 134, 124, ${opacity})`, // landing-muted color
+      border: score > 0 ? '1px solid rgba(139, 134, 124, 0.3)' : undefined
     };
   };
 
@@ -178,29 +178,29 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
   if (providers.length === 0) return null;
   
   return (
-    <div className="overflow-hidden rounded-[4.933px] border-[0.617px] border-[#f1f1f1]">
-      <table className="w-full border-collapse">
+    <div className="rounded-[6px] border border-landing-border">
+      <table className="w-full min-w-[800px] border-collapse">
         <thead>
           <tr>
-            <th className="bg-gray-50 border-b border-r border-gray-200 w-[180px]">
-              <button 
-                onClick={() => handleSort('competitor')} 
-                className="w-full p-3 font-medium text-gray-900 flex items-center justify-between hover:bg-gray-100 transition-colors text-left"
+            <th className="bg-landing-card border-b border-r border-landing-border w-[180px]">
+              <button
+                onClick={() => handleSort('competitor')}
+                className="w-full p-3 font-geist text-[13px] font-medium text-landing-base flex items-center justify-between hover:bg-landing-background transition-colors text-left"
               >
                 Competitors
                 {getSortIcon('competitor')}
               </button>
             </th>
             {providers.map((provider, index) => (
-              <th 
+              <th
                 key={provider}
-                className={`bg-gray-50 border-b ${
+                className={`bg-landing-card border-b ${
                   index < providers.length - 1 ? 'border-r' : ''
-                } border-gray-200`}
+                } border-landing-border`}
               >
                 <button
                   onClick={() => handleSort(provider)}
-                  className="w-full p-3 font-medium text-gray-900 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                  className="w-full p-3 font-geist text-[13px] font-medium text-landing-base flex items-center justify-center hover:bg-landing-background transition-colors"
                 >
                   <div className="flex items-center justify-center gap-2">
                     {getProviderIcon(provider)}
@@ -222,9 +222,9 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
             const fallbackUrl = !competitorData?.url ? generateFallbackUrl(competitor.competitor) : undefined;
             
             return (
-              <tr key={competitor.competitor} className={rowIndex > 0 ? 'border-t border-gray-200' : ''}>
-                <td className="border-r border-gray-200 bg-white">
-                  <CompetitorCell 
+              <tr key={competitor.competitor} className={rowIndex > 0 ? 'border-t border-landing-border' : ''}>
+                <td className="border-r border-landing-border bg-landing-card">
+                  <CompetitorCell
                     name={competitor.competitor}
                     isOwn={competitor.isOwn}
                     favicon={competitorData?.metadata?.favicon}
@@ -234,16 +234,16 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
                 {providers.map((provider, index) => {
                   const providerData = competitor.providers[provider];
                   const score = providerData?.visibilityScore || 0;
-                  
+
                   return (
-                    <td 
-                      key={provider} 
+                    <td
+                      key={provider}
                       className={`text-center p-3 ${
-                        index < providers.length - 1 ? 'border-r border-gray-200' : ''
+                        index < providers.length - 1 ? 'border-r border-landing-border' : ''
                       }`}
                       style={getBackgroundStyle(score)}
                     >
-                      <span className="text-orange-900 font-medium text-xs">
+                      <span className="text-landing-base font-geist text-[13px] font-medium">
                         {score}%
                       </span>
                     </td>

@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -430,68 +430,20 @@
     @apply bg-background text-foreground;
   }
 
-  /* Custom Fonts - Loaded from /public/fonts/ directory */
-  @font-face {
-    font-family: 'PP NeueBit';
-    src: url('/fonts/PPNeueBit-Bold.otf') format('opentype');
-    font-weight: 400 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'PP Mondwest';
-    src: url('/fonts/PPMondwest-Regular.otf') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* Apercu Mono Pro - Multiple weights */
-  @font-face {
-    font-family: 'Apercu Mono Pro';
-    src: url('/fonts/ApercuMonoProLight.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Apercu Mono Pro';
-    src: url('/fonts/ApercuMonoProRegular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Apercu Mono Pro';
-    src: url('/fonts/ApercuMonoProMedium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Apercu Mono Pro';
-    src: url('/fonts/ApercuMonoProBold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Custom fonts now loaded via next/font/local in layout.tsx */
 }
 
 /* Custom font utility classes */
 .font-neueBit {
-  font-family: 'PP NeueBit', system-ui, sans-serif !important;
+  font-family: var(--font-neue-bit), system-ui, sans-serif !important;
 }
 
 .font-mondwest {
-  font-family: 'PP Mondwest', serif !important;
+  font-family: var(--font-mondwest), serif !important;
 }
 
 .font-apercu {
-  font-family: 'Apercu Mono Pro', 'Consolas', 'Monaco', monospace !important;
+  font-family: var(--font-apercu-mono), 'Consolas', 'Monaco', monospace !important;
 }
 
 .font-ascii {
@@ -503,4 +455,54 @@
    changing this utility to that family when assets are available. */
 .font-overused {
   font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+}
+
+/* Performance-optimized CSS animations for hero section */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title {
+  animation: hero-fade-in 0.6s ease-out 0.1s both;
+}
+
+.hero-subtitle {
+  animation: hero-fade-in 0.6s ease-out 0.2s both;
+}
+
+.hero-form {
+  animation: hero-fade-in 0.6s ease-out 0.3s both;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable motion-based animations */
+  .animate-blob,
+  .animate-float,
+  .animate-fade-in-up,
+  .animate-fade-up,
+  .animate-panel-in,
+  .animate-fade-in,
+  .animate-fade-in-scale,
+  .animate-slide-in-left,
+  .animate-slide-in-right,
+  .thermometer-low {
+    animation: none !important;
+  }
 }
