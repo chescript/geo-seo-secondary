@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signUp } from '@/lib/auth-client';
+import { AuthShowcase } from '@/components/auth/AuthShowcase';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -76,176 +77,194 @@ export default function RegisterPage() {
     }
   };
 
+  const showcaseStats = [
+    { value: '14m', label: 'To first scan', subtext: 'Avg. onboarding' },
+    { value: '6', label: 'AI surfaces ready', subtext: 'Day-one coverage' },
+    { value: '35%', label: 'Metadata lift', subtext: 'After 2 weeks' },
+  ];
+
+  const registerChecklist = [
+    'Workspace-wide visibility',
+    'Automated crawl insights',
+    'Auditable change history',
+  ];
+
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Orange gradient */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 p-12 items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/90 via-orange-500/90 to-orange-600/90" />
-        <div className="relative z-10 max-w-md text-white">
-          <h1 className="text-4xl font-bold mb-4">Join thousands of developers</h1>
-          <p className="text-lg opacity-90">
-            Start building with our powerful API and unlock new possibilities for your applications.
-          </p>
-          <div className="mt-8 space-y-4">
-            <div className="flex items-center space-x-3">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span>Unlimited API access</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span>Real-time collaboration</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span>24/7 support</span>
-            </div>
-          </div>
-        </div>
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob" />
-        <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000" />
-      </div>
+    <div className="min-h-screen bg-[#f8f6f0] text-[#111111]">
+      <div className="flex min-h-screen flex-col lg:flex-row">
+        <AuthShowcase
+          eyebrow="CREATE YOUR WORKSPACE"
+          title="Launch your AI-ready workspace."
+          description="Spin up Geoscanner to benchmark every landing page before AI assistants do."
+          stats={showcaseStats}
+          checklist={registerChecklist}
+          footerNote="Provisioning takes under 60 seconds."
+        />
 
-      {/* Right side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <div className="lg:hidden mb-8 flex justify-center">
-              <Image
-                src="/firecrawl-logo-with-fire.webp"
-                alt="Firecrawl"
-                width={180}
-                height={37}
-                priority
-              />
-            </div>
-            <h2 className="text-center text-3xl font-extrabold text-gray-900">
-              Create your account
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              Or{' '}
-              <Link href="/login" className="font-medium text-orange-600 hover:text-orange-500">
-                sign in to existing account
-              </Link>
-            </p>
-          </div>
-          <form className="mt-8 space-y-6" onSubmit={handleRegister}>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Full name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                  placeholder="Enter your full name"
+        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-8 lg:px-16">
+          <div className="w-full max-w-[480px] space-y-10">
+            <div className="space-y-3 text-center lg:hidden">
+              <div className="relative mx-auto h-12 w-12">
+                <Image
+                  src="/logos/Logo.png"
+                  alt="Geoscanner"
+                  fill
+                  priority
+                  sizes="48px"
+                  className="object-contain"
                 />
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                  placeholder="Choose a strong password"
-                />
-                <p className="mt-1 text-xs text-gray-500">Must be at least 8 characters long</p>
-              </div>
+              <p className="font-apercu text-[11px] uppercase tracking-[0.4em] text-[#8b867c]">
+                AI Readiness Platform
+              </p>
+              <h1 className="font-neueBit text-[40px] leading-[0.92] text-[#111111]">Create your workspace.</h1>
             </div>
 
-            {error && (
-              <div className={`border px-4 py-3 rounded-lg ${showExistingAccountOptions ? 'bg-gray-900 border-gray-800' : 'bg-red-50 border-red-200'}`}>
-                <p className={showExistingAccountOptions ? 'text-white font-medium' : 'text-red-600'}>
-                  {error}
+            <div className="rounded-[32px] border border-[#ece8dd] bg-white/90 p-8 sm:p-10 shadow-[0_45px_120px_rgba(11,11,11,0.15)] backdrop-blur">
+              <div className="space-y-5 text-center">
+                <span className="inline-flex items-center justify-center gap-2 rounded-full border border-[#e4ded0] bg-[#fdfbf5] px-4 py-2 font-apercu text-[11px] uppercase tracking-[0.4em] text-[#7f7a71]">
+                  Launch Workspace
+                  <span className="h-2 w-2 rounded-full bg-[#111111]" />
+                </span>
+                <h2 className="font-neueBit text-[44px] leading-[0.9] text-[#111111]">Create your account.</h2>
+                <p className="text-[15px] leading-relaxed text-[#6a665d]">
+                  Benchmark your AI presence, ship fixes faster, and keep your landing-page aesthetic consistent everywhere.
                 </p>
-                {showExistingAccountOptions && (
-                  <div className="mt-3 space-y-3">
-                    <p className="text-sm text-gray-300">
-                      It looks like you already have an account with this email address.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <Link 
-                        href={`/login?email=${encodeURIComponent(email)}`}
-                        className="inline-flex items-center justify-center px-4 py-2 border border-orange-500 text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:ring-offset-gray-900 transition-colors"
-                      >
-                        Sign in instead
-                      </Link>
-                      <Link 
-                        href="/forgot-password"
-                        className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-orange-400 hover:text-orange-300 focus:outline-none focus:underline transition-colors"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
+                <p className="text-sm text-[#4a473f]">
+                  Already analyzing with us?{' '}
+                  <Link
+                    href="/login"
+                    className="font-medium text-[#111111] underline decoration-[#c7c0b2]/70 underline-offset-4 transition-colors hover:decoration-[#111111]"
+                  >
+                    Sign in instead
+                  </Link>
+                </p>
+              </div>
+
+              <form className="mt-10 space-y-6" onSubmit={handleRegister}>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="name"
+                      className="font-apercu text-[11px] uppercase tracking-[0.4em] text-[#8b867c]"
+                    >
+                      Full name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full rounded-2xl border border-[#e0dacf] bg-[#fdfbf5] px-4 py-3 text-[15px] text-[#111111] placeholder:text-[#928d82] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/60 transition-all shadow-[0_10px_30px_rgba(15,15,15,0.05)]"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="email"
+                      className="font-apercu text-[11px] uppercase tracking-[0.4em] text-[#8b867c]"
+                    >
+                      Work email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-2xl border border-[#e0dacf] bg-[#fdfbf5] px-4 py-3 text-[15px] text-[#111111] placeholder:text-[#928d82] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/60 transition-all shadow-[0_10px_30px_rgba(15,15,15,0.05)]"
+                      placeholder="name@company.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="password"
+                      className="font-apercu text-[11px] uppercase tracking-[0.4em] text-[#8b867c]"
+                    >
+                      Password
+                    </label>
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full rounded-2xl border border-[#e0dacf] bg-[#fdfbf5] px-4 py-3 text-[15px] text-[#111111] placeholder:text-[#928d82] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/60 transition-all shadow-[0_10px_30px_rgba(15,15,15,0.05)]"
+                      placeholder="Choose a strong password"
+                    />
+                    <p className="text-xs text-[#7c776d]">Must be at least 8 characters long.</p>
+                  </div>
+                </div>
+
+                {error && (
+                  <div
+                    className={`rounded-2xl border px-5 py-4 text-sm shadow-sm ${
+                      showExistingAccountOptions ? 'border-[#111111] bg-[#111111] text-white' : 'border-[#f5d1cf] bg-[#fff7f6] text-[#712727]'
+                    }`}
+                  >
+                    <p className="font-medium">{error}</p>
+                    {showExistingAccountOptions && (
+                      <div className="mt-4 space-y-3 text-white/90">
+                        <p>It looks like you already have an account with this email address.</p>
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                          <Link
+                            href={`/login?email=${encodeURIComponent(email)}`}
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-white bg-white px-4 py-2 text-sm font-medium text-[#111111] transition-all hover:-translate-y-0.5"
+                          >
+                            Sign in instead
+                          </Link>
+                          <Link
+                            href="/forgot-password"
+                            className="inline-flex flex-1 items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white underline decoration-dotted underline-offset-4"
+                          >
+                            Forgot password?
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
-              </div>
-            )}
 
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  required
-                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-                />
-                <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-                  I agree to the{' '}
-                  <Link href="#" className="text-orange-600 hover:text-orange-500">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link href="#" className="text-orange-600 hover:text-orange-500">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-firecrawl-orange w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 h-10 px-4"
-              >
-                {loading ? 'Creating account...' : 'Create account'}
-              </button>
+                <div className="space-y-4">
+                  <label htmlFor="terms" className="flex items-start gap-3 text-sm text-[#4a473f]">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      required
+                      className="mt-1 h-4 w-4 rounded border-[#d5cec1] text-[#111111] accent-[#111111] focus:ring-0"
+                    />
+                    <span>
+                      I agree to the{' '}
+                      <Link href="#" className="underline decoration-[#c7c0b2]/70 underline-offset-4 hover:decoration-[#111111]">
+                        Terms of Service
+                      </Link>{' '}
+                      and{' '}
+                      <Link href="#" className="underline decoration-[#c7c0b2]/70 underline-offset-4 hover:decoration-[#111111]">
+                        Privacy Policy
+                      </Link>
+                      .
+                    </span>
+                  </label>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="relative flex w-full items-center justify-center gap-2 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] py-3 text-[15px] font-medium text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_35px_80px_rgba(0,0,0,0.4)] disabled:translate-y-0 disabled:opacity-60"
+                  >
+                    {loading ? 'Creating account...' : 'Create account'}
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

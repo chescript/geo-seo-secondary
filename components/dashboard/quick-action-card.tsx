@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card';
+﻿import { Card } from '@/components/ui/card';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -20,51 +20,36 @@ export function QuickActionCard({
   gradient,
   disabled = false
 }: QuickActionCardProps) {
-  const content = (
-    <Card className={cn(
-      "group relative overflow-hidden transition-all duration-300 cursor-pointer",
-      "hover:shadow-2xl hover:-translate-y-2 border-2",
-      disabled
-        ? "opacity-50 cursor-not-allowed"
-        : "hover:border-orange-300"
-    )}>
-      {/* Animated gradient background */}
-      <div className={cn(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-        gradient
-      )} />
+  const card = (
+    <Card
+      className={cn(
+        'group relative overflow-hidden rounded-[24px] border border-[#ece8dd] bg-white',
+        'transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)]',
+        disabled && 'opacity-60 pointer-events-none'
+      )}
+    >
+      <div className={cn('absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500', gradient)} />
 
-      <div className="relative p-6">
-        <div className={cn(
-          "w-14 h-14 rounded-2xl mb-4 flex items-center justify-center",
-          "bg-gradient-to-br from-orange-400 to-orange-600",
-          "group-hover:scale-110 transition-transform duration-300"
-        )}>
-          <Icon className="w-7 h-7 text-white" />
+      <div className="relative p-6 space-y-3">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-b from-[#2b2b2b] to-[#050505] flex items-center justify-center text-white">
+          <Icon className="w-7 h-7" />
         </div>
+        <h3 className="font-neueBit text-[22px] text-[#111111]">{title}</h3>
+        <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#6a665d]">{description}</p>
 
-        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
-          {title}
-        </h3>
-        <p className="text-sm text-gray-600 group-hover:text-gray-700">
-          {description}
-        </p>
-
-        {/* Arrow indicator */}
-        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
+        <div className="flex items-center gap-2 text-sm text-[#111111] underline decoration-dotted underline-offset-4">
+          <span>Open</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </Card>
   );
 
   if (disabled) {
-    return content;
+    return card;
   }
 
-  return <Link href={href}>{content}</Link>;
+  return <Link href={href}>{card}</Link>;
 }

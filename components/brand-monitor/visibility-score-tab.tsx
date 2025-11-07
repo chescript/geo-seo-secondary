@@ -55,23 +55,25 @@ export function VisibilityScoreTab({
   return (
     <div className="flex flex-col h-full space-y-6">
       {/* Main Content Card */}
-      <Card className="p-2 bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm border-gray-200 h-full flex flex-col">
-        <CardHeader className="border-b">
+      <Card className="analysis-card text-[#111111] gap-6 h-full flex flex-col">
+        <CardHeader className="border-b font-apercu px-6 sm:px-8">
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle className="text-xl font-semibold">Visibility Score</CardTitle>
-              <CardDescription className="text-sm text-gray-600 mt-1">
+              <CardTitle className="font-neueBit text-[26px] leading-tight">Visibility Score</CardTitle>
+              <CardDescription className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">
                 Your brand visibility across AI providers
               </CardDescription>
             </div>
             {/* Visibility Score in top right */}
             <div className="text-right">
-              <p className="text-3xl font-bold text-orange-600">{brandData.visibilityScore}%</p>
-              <p className="text-xs text-gray-500 mt-1">Overall Score</p>
+              <p className="font-neueBit text-[40px] leading-none">{brandData.visibilityScore}%</p>
+              <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">
+                Overall score
+              </p>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-6 flex-1">
+        <CardContent className="pt-6 px-6 sm:px-8 flex-1">
           <div className="flex gap-8">
             {/* Left side - Pie Chart */}
             <div className="flex-1">

@@ -46,6 +46,7 @@ import { AddCompetitorModal } from "./modals/add-competitor-modal";
 import { ProviderComparisonMatrix } from "./provider-comparison-matrix";
 import { ProviderRankingsTabs } from "./provider-rankings-tabs";
 import { ProviderSelector } from "./provider-selector";
+import { UsageCounter } from "./usage-counter";
 
 // Skeleton loaders
 import { ScrapingSkeleton } from "./skeletons/scraping-skeleton";
@@ -580,6 +581,9 @@ export function BrandMonitor({
 
   return (
     <div className="flex flex-col h-full overflow-x-hidden">
+      {/* Usage Counter - shown on initial input screen */}
+      {showInput && <UsageCounter />}
+
       {/* URL Input Section */}
       {showInput && (
         <div className="flex items-center justify-center min-h-[50vh]">
@@ -688,7 +692,7 @@ export function BrandMonitor({
 
       {/* Analysis Results */}
       {analysis && brandData && (
-        <div className="flex gap-4 animate-panel-in overflow-x-hidden">
+        <div className="flex gap-4 animate-panel-in overflow-x-hidden font-overused">
           {/* Sidebar Navigation */}
           <ResultsNavigation
             activeTab={activeResultsTab}
@@ -713,14 +717,14 @@ export function BrandMonitor({
                   )}
 
                   {activeResultsTab === "matrix" && (
-                    <Card className="p-2 bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm border-gray-200 flex flex-col overflow-hidden">
-                      <CardHeader className="border-b">
+                    <Card className="analysis-card bg-white text-card-foreground gap-6 flex flex-col overflow-hidden">
+                      <CardHeader className="border-b font-overused">
                         <div className="flex justify-between items-center">
                           <div>
-                            <CardTitle className="text-xl font-semibold">
+                            <CardTitle className="font-geist text-[20px] tracking-[-0.2px] font-semibold">
                               Comparison Matrix
                             </CardTitle>
-                            <CardDescription className="text-sm text-gray-600 mt-1">
+                            <CardDescription className="font-overused text-sm text-gray-600 mt-1">
                               Compare visibility scores across different AI
                               providers
                             </CardDescription>
@@ -772,14 +776,14 @@ export function BrandMonitor({
                     )}
 
                   {activeResultsTab === "prompts" && analysis.prompts && (
-                    <Card className="p-2 bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm border-gray-200 flex flex-col overflow-hidden">
-                      <CardHeader className="border-b">
+                    <Card className="analysis-card bg-white text-card-foreground gap-6 flex flex-col overflow-hidden">
+                      <CardHeader className="border-b font-overused">
                         <div className="flex justify-between items-center">
                           <div>
-                            <CardTitle className="text-xl font-semibold">
+                            <CardTitle className="font-geist text-[20px] tracking-[-0.2px] font-semibold">
                               Prompts & Responses
                             </CardTitle>
-                            <CardDescription className="text-sm text-gray-600 mt-1">
+                            <CardDescription className="font-overused text-sm text-gray-600 mt-1">
                               AI responses to your brand queries
                             </CardDescription>
                           </div>

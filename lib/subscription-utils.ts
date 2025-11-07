@@ -61,3 +61,13 @@ export async function getSubscriptionTier(userId: string): Promise<'free' | 'pro
   const hasPro = await hasProSubscription(userId);
   return hasPro ? SUBSCRIPTION_TIERS.PRO : SUBSCRIPTION_TIERS.FREE;
 }
+
+/**
+ * Get a user-friendly name for the subscription tier
+ * @param userId - The user's ID
+ * @returns User-friendly plan name
+ */
+export async function getSubscriptionPlanName(userId: string): Promise<string> {
+  const tier = await getSubscriptionTier(userId);
+  return tier === SUBSCRIPTION_TIERS.PRO ? 'FireGEO Brand Monitor' : 'Free Plan';
+}

@@ -113,6 +113,26 @@ export const brandAnalysesRelations = relations(brandAnalyses, ({ one }) => ({
   }),
 }));
 
+// Usage Tracking table - tracks monthly usage for features with limits
+export const usageTracking = pgTable('usage_tracking', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id').notNull(),
+  featureType: text('feature_type').notNull(), // 'brand_analysis', 'ai_chat', etc.
+  usageCount: integer('usage_count').notNull().default(0),
+  periodStart: timestamp('period_start').notNull(),
+  periodEnd: timestamp('period_end').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()),
+});
+
+// Usage Tracking Relations
+export const usageTrackingRelations = relations(usageTracking, ({ one }) => ({
+  userProfile: one(userProfile, {
+    fields: [usageTracking.userId],
+    references: [userProfile.userId],
+  }),
+}));
+
 // Type exports for use in application
 export type UserProfile = typeof userProfile.$inferSelect;
 export type NewUserProfile = typeof userProfile.$inferInsert;
@@ -126,3 +146,5 @@ export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
 export type BrandAnalysis = typeof brandAnalyses.$inferSelect;
 export type NewBrandAnalysis = typeof brandAnalyses.$inferInsert;
+export type UsageTracking = typeof usageTracking.$inferSelect;
+export type NewUsageTracking = typeof usageTracking.$inferInsert;

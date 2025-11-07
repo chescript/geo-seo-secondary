@@ -133,13 +133,16 @@ function ResetPasswordForm() {
         <div className="max-w-md w-full space-y-8">
           <div>
             <div className="lg:hidden mb-8 flex justify-center">
-              <Image
-                src="/firecrawl-logo-with-fire.webp"
-                alt="Firecrawl"
-                width={180}
-                height={37}
-                priority
-              />
+              <div className="relative h-12 w-12">
+                <Image
+                  src="/logos/Logo.png"
+                  alt="Geoscanner"
+                  fill
+                  priority
+                  sizes="48px"
+                  className="object-contain"
+                />
+              </div>
             </div>
             <h2 className="text-center text-3xl font-extrabold text-gray-900">
               Reset your password

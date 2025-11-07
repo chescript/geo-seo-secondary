@@ -13,7 +13,7 @@ import {
   ERROR_MESSAGES,
   SSE_MAX_DURATION,
 } from "@/config/constants";
-import { requireProSubscription } from "@/lib/subscription-utils";
+import { canPerformAction, trackUsage } from "@/lib/usage-tracking";
 
 export const runtime = "nodejs"; // Use Node.js runtime for streaming
 export const maxDuration = 300; // 5 minutes
@@ -36,22 +36,31 @@ export async function POST(request: NextRequest) {
     console.log('✅ [ANALYSIS] User authenticated:', sessionResponse.user.id);
     console.log('📧 [ANALYSIS] User email:', sessionResponse.user.email);
 
-    // Check if user has Pro subscription to access brand monitoring
+    // Check if user has remaining analyses this month
     try {
-      console.log('💳 [ANALYSIS] Checking subscription - User ID:', sessionResponse.user.id);
-      await requireProSubscription(sessionResponse.user.id, 'brand-monitor');
-      console.log('✅ [ANALYSIS] Subscription check passed');
+      console.log('📊 [ANALYSIS] Checking usage limits - User ID:', sessionResponse.user.id);
+      const usageCheck = await canPerformAction(sessionResponse.user.id, 'brand_analysis');
+
+      console.log('📊 [ANALYSIS] Usage check result:', {
+        allowed: usageCheck.allowed,
+        remaining: usageCheck.remaining,
+        limit: usageCheck.limit,
+      });
+
+      if (!usageCheck.allowed) {
+        console.error('❌ [ANALYSIS] Monthly limit exceeded');
+        throw new ValidationError(ERROR_MESSAGES.MONTHLY_LIMIT_EXCEEDED);
+      }
+
+      console.log(`✅ [ANALYSIS] Usage check passed. Remaining: ${usageCheck.remaining}/${usageCheck.limit === -1 ? '100' : usageCheck.limit}`);
     } catch (err) {
-      console.error('❌ [ANALYSIS] Subscription check failed:', err);
-      if (err instanceof Error && err.message.includes('Pro subscription')) {
-        throw new SubscriptionRequiredError(
-          ERROR_MESSAGES.SUBSCRIPTION_REQUIRED_BRAND_MONITOR,
-          'brand-monitor'
-        );
+      console.error('❌ [ANALYSIS] Usage check failed:', err);
+      if (err instanceof ValidationError) {
+        throw err;
       }
       throw new ExternalServiceError(
-        "Unable to verify subscription. Please try again",
-        "autumn"
+        "Unable to verify usage limits. Please try again",
+        "usage-tracking"
       );
     }
 
@@ -112,6 +121,15 @@ export async function POST(request: NextRequest) {
           providersUsed: analysisResult.providerRankings?.length || 0,
           overallScore: analysisResult.scores?.overallScore
         });
+
+        // Track successful analysis usage
+        try {
+          await trackUsage(sessionResponse.user!.id, 'brand_analysis');
+          console.log('✅ [ANALYSIS] Usage tracked successfully');
+        } catch (trackError) {
+          console.error('⚠️ [ANALYSIS] Failed to track usage, but analysis succeeded:', trackError);
+          // Don't fail the analysis if tracking fails
+        }
 
         // Send final complete event with all data
         await sendEvent({

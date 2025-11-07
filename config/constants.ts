@@ -22,10 +22,12 @@ export const SUBSCRIPTION_TIERS = {
 } as const;
 
 // ============================================
-// Rate Limiting for Free Tier
+// Usage Limits by Tier
 // ============================================
-export const FREE_TIER_RATE_LIMIT = 100; // requests per hour for dashboard/homepage
-export const FREE_TIER_RATE_WINDOW = ONE_HOUR; // 1 hour in milliseconds
+export const USAGE_LIMITS = {
+  FREE_TIER_ANALYSES_PER_MONTH: 10,
+  PRO_TIER_ANALYSES_PER_MONTH: 100,
+} as const;
 
 // ============================================
 // Time Constants (in milliseconds unless specified)
@@ -43,6 +45,12 @@ export const ONE_WEEK_SECONDS = 60 * 60 * 24 * 7;
 // Query client
 export const QUERY_STALE_TIME = ONE_MINUTE;
 export const QUERY_CACHE_TIME = FIVE_MINUTES;
+
+// ============================================
+// Rate Limiting for Free Tier
+// ============================================
+export const FREE_TIER_RATE_LIMIT = 100; // requests per hour for dashboard/homepage
+export const FREE_TIER_RATE_WINDOW = ONE_HOUR; // 1 hour in milliseconds
 
 // SSE and timeouts
 export const SSE_HEARTBEAT_INTERVAL = 30000; // 30 seconds
@@ -245,6 +253,8 @@ export const ERROR_MESSAGES = {
   SUBSCRIPTION_REQUIRED: 'This feature requires a Pro subscription. Please upgrade your plan.',
   SUBSCRIPTION_REQUIRED_CHAT: 'AI Chat is only available on the Pro plan. Upgrade to access unlimited conversations.',
   SUBSCRIPTION_REQUIRED_BRAND_MONITOR: 'Brand Monitoring is only available on the Pro plan. Upgrade to access unlimited analyses.',
+  MONTHLY_LIMIT_EXCEEDED: 'You have reached your monthly analysis limit. Upgrade to FireGEO Brand Monitor for 100 analyses per month.',
+  USAGE_TRACKING_FAILED: 'Failed to track usage. Please try again.',
 } as const;
 
 // ============================================

@@ -178,7 +178,7 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
   if (providers.length === 0) return null;
   
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200">
+    <div className="overflow-hidden rounded-[4.933px] border-[0.617px] border-[#f1f1f1]">
       <table className="w-full border-collapse">
         <thead>
           <tr>

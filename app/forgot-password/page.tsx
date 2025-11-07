@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { authClient } from '@/lib/auth-client';
 import { ArrowLeft } from 'lucide-react';
+import { AuthShowcase } from '@/components/auth/AuthShowcase';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -33,48 +34,46 @@ export default function ForgotPasswordPage() {
   };
 
   if (success) {
-    return (
-      <div className="min-h-screen flex">
-        {/* Left side - Orange gradient */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 p-12 items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-400/90 via-orange-500/90 to-orange-600/90" />
-          <div className="relative z-10 max-w-md text-white">
-            <h1 className="text-4xl font-bold mb-4">Check your inbox!</h1>
-            <p className="text-lg opacity-90">
-              We've sent you instructions to reset your password. Check your email to continue.
-            </p>
-          </div>
-          {/* Decorative elements */}
-          <div className="absolute top-20 right-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob" />
-          <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000" />
-        </div>
+    const showcaseStats = [
+      { value: '60s', label: 'Avg. delivery', subtext: 'Email link ETA' },
+      { value: '99.9%', label: 'Uptime', subtext: 'Auth systems' },
+      { value: '0', label: 'Cost', subtext: 'Reset is free' },
+    ];
 
-        {/* Right side - Success message */}
-        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-md w-full space-y-8">
-            <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
+    return (
+      <div className="min-h-screen bg-[#f8f6f0] text-[#111111]">
+        <div className="flex min-h-screen flex-col lg:flex-row">
+          <AuthShowcase
+            eyebrow="PASSWORD RESET"
+            title="Check your inbox."
+            description="We emailed a secure link to reset your password."
+            stats={showcaseStats}
+            checklist={["Use the latest link", "Expires after use", "Contact support if needed"]}
+            footerNote="Links are valid for a short time for your security."
+          />
+
+          <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-8 lg:px-16">
+            <div className="w-full max-w-[440px]">
+              <div className="text-center rounded-[28px] border border-[#e9e3d4] bg-white/95 p-10 shadow-[0_45px_120px_rgba(11,11,11,0.15)]">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <svg className="h-6 w-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="font-neueBit text-[40px] leading-[0.92]">Email sent</h2>
+                <p className="mt-3 text-[15px] text-[#4a473f]">We sent a reset link to</p>
+                <p className="mt-1 text-[16px] font-medium">{email}</p>
+                <p className="mt-4 text-sm text-[#6a665d]">Didn’t receive it? Check spam or try again.</p>
+
+                <div className="mt-8">
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] px-6 py-2 text-sm font-medium text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_35px_80px_rgba(0,0,0,0.4)]"
+                  >
+                    <ArrowLeft className="h-4 w-4" /> Back to login
+                  </Link>
+                </div>
               </div>
-              <h2 className="text-3xl font-extrabold text-gray-900">
-                Check your email
-              </h2>
-              <p className="mt-2 text-gray-600">
-                We've sent a password reset link to
-              </p>
-              <p className="mt-1 text-lg font-medium text-gray-900">{email}</p>
-              <p className="mt-4 text-sm text-gray-500">
-                Didn't receive the email? Check your spam folder or try again.
-              </p>
-              <Link 
-                href="/login" 
-                className="mt-6 inline-flex items-center text-sm text-orange-600 hover:text-orange-500"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
-              </Link>
             </div>
           </div>
         </div>
@@ -83,45 +82,43 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Orange gradient */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 p-12 items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/90 via-orange-500/90 to-orange-600/90" />
-        <div className="relative z-10 max-w-md text-white">
-          <h1 className="text-4xl font-bold mb-4">Forgot your password?</h1>
-          <p className="text-lg opacity-90">
-            No worries! We'll help you reset it and get back to building amazing things.
-          </p>
-        </div>
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob" />
-        <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000" />
-      </div>
+    <div className="min-h-screen bg-[#f8f6f0] text-[#111111]">
+      <div className="flex min-h-screen flex-col lg:flex-row">
+        <AuthShowcase
+          eyebrow="PASSWORD RESET"
+          title="We’ve got you."
+          description="Enter your email to receive a secure reset link."
+          stats={[{ value: '60s', label: 'Avg. delivery' }, { value: '24/7', label: 'Support' }, { value: '1x', label: 'One-time link' }]}
+          checklist={["Use your work email", "Check spam if missing", "Links expire after use"]}
+          footerNote="For security, reset links are short‑lived."
+        />
 
-      {/* Right side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <div className="lg:hidden mb-8 flex justify-center">
-              <Image
-                src="/firecrawl-logo-with-fire.webp"
-                alt="Firecrawl"
-                width={180}
-                height={37}
-                priority
-              />
+        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-8 lg:px-16">
+          <div className="w-full max-w-[440px] space-y-8">
+            <div>
+              <div className="lg:hidden mb-8 flex justify-center">
+                <div className="relative h-12 w-12">
+                  <Image
+                    src="/logos/Logo.png"
+                  alt="Geoscanner"
+                  fill
+                  priority
+                  sizes="48px"
+                  className="object-contain"
+                />
+              </div>
             </div>
-            <h2 className="text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="text-center font-neueBit text-[44px] leading-[0.9] text-[#111111]">
               Reset your password
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            <p className="mt-2 text-center text-sm text-[#4a473f]">
               Enter your email and we'll send you a reset link
             </p>
           </div>
           
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-apercu uppercase tracking-[0.3em] text-[#8b867c] mb-2">
                 Email address
               </label>
               <input
@@ -132,7 +129,7 @@ export default function ForgotPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className="w-full rounded-2xl border border-[#e0dacf] bg-[#fdfbf5] px-4 py-3 text-[15px] text-[#111111] placeholder:text-[#928d82] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/60 transition-all shadow-[0_10px_30px_rgba(15,15,15,0.05)]"
                 placeholder="Enter your email"
               />
             </div>
@@ -147,19 +144,19 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-firecrawl-default w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 h-10 px-4"
+                className="group relative flex w-full items-center justify-center gap-2 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] py-3 text-[15px] font-medium text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_35px_80px_rgba(0,0,0,0.4)] disabled:translate-y-0 disabled:opacity-60"
               >
-                {loading ? 'Sending...' : 'Send reset link'}
+                {loading ? 'Sending…' : 'Send reset link'}
               </button>
             </div>
 
             <div className="text-center">
-              <Link href="/login" className="text-sm text-orange-600 hover:text-orange-500 inline-flex items-center">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
+              <Link href="/login" className="text-sm text-[#111111] underline decoration-dotted underline-offset-4 inline-flex items-center">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to login
               </Link>
             </div>
           </form>
+          </div>
         </div>
       </div>
     </div>

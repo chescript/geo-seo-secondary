@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -121,6 +121,20 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
+}
+
+/* Figma analysis overrides */
+/* Font utility for Overused Grotesk (falls back to Geist until font files provided) */
+.font-overused {
+  font-family: 'Overused Grotesk', var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Card utility to match Figma analysis cards */
+.analysis-card {
+  border: 1px solid #ece8dd !important;
+  border-radius: 32px !important;
+  background: #fefcf7 !important;
+  box-shadow: 0px 35px 80px rgba(17, 17, 17, 0.08) !important;
 }
 
 /* Firecrawl button styles */
@@ -415,4 +429,78 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Custom Fonts - Loaded from /public/fonts/ directory */
+  @font-face {
+    font-family: 'PP NeueBit';
+    src: url('/fonts/PPNeueBit-Bold.otf') format('opentype');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'PP Mondwest';
+    src: url('/fonts/PPMondwest-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Apercu Mono Pro - Multiple weights */
+  @font-face {
+    font-family: 'Apercu Mono Pro';
+    src: url('/fonts/ApercuMonoProLight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Apercu Mono Pro';
+    src: url('/fonts/ApercuMonoProRegular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Apercu Mono Pro';
+    src: url('/fonts/ApercuMonoProMedium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Apercu Mono Pro';
+    src: url('/fonts/ApercuMonoProBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+/* Custom font utility classes */
+.font-neueBit {
+  font-family: 'PP NeueBit', system-ui, sans-serif !important;
+}
+
+.font-mondwest {
+  font-family: 'PP Mondwest', serif !important;
+}
+
+.font-apercu {
+  font-family: 'Apercu Mono Pro', 'Consolas', 'Monaco', monospace !important;
+}
+
+.font-ascii {
+  font-family: var(--font-roboto-mono), 'Courier New', monospace !important;
+}
+
+/* Temporary alias for Figma's Overused Grotesk using Geist Sans
+   Swap to real files by adding @font-face for 'Overused Grotesk' and
+   changing this utility to that family when assets are available. */
+.font-overused {
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
 }

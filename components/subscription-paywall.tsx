@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,67 +17,73 @@ export function SubscriptionPaywall({
   features = []
 }: SubscriptionPaywallProps) {
   const defaultFeatures = features.length > 0 ? features : [
-    'Unlimited brand monitoring analyses',
-    'Unlimited AI chat conversations',
-    'Access to all AI models',
-    'Priority support',
-    'Advanced analytics and insights'
+    '100 analyses per month',
+    'Premium support',
+    'Priority access',
+    'Real-time brand tracking across all AI models',
+    'Competitor analysis and ranking',
+    'Actionable insights & recommendations',
+    'Email alerts for visibility changes'
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-[600px] p-4">
-      <Card className="max-w-2xl w-full border-2 border-orange-200 shadow-xl">
-        <CardHeader className="text-center space-y-4 pb-6">
-          <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg">
-            <Lock className="w-8 h-8 text-white" />
+    <div className="flex items-center justify-center min-h-[560px] px-4 py-10 bg-[#f8f6f0]">
+      <Card className="max-w-2xl w-full rounded-[40px] border border-[#ece8dd] bg-white/95 shadow-[0_60px_140px_rgba(0,0,0,0.08)]">
+        <CardHeader className="text-center space-y-6 pb-0">
+          <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-b from-[#2b2b2b] to-[#050505] text-white shadow-[0_25px_60px_rgba(0,0,0,0.25)]">
+            <Lock className="w-7 h-7" />
           </div>
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-            Upgrade to Pro
-          </CardTitle>
-          <CardDescription className="text-lg">
-            {description || `${featureName} is only available on the Pro plan`}
-          </CardDescription>
+          <div className="space-y-3">
+            <CardTitle className="font-neueBit text-[44px] leading-[0.9] text-[#111111]">
+              Upgrade to FireGEO Brand Monitor
+            </CardTitle>
+            <CardDescription className="font-apercu text-[13px] uppercase tracking-[0.3em] text-[#6a665d]">
+              {description || `${featureName} requires the FireGEO Brand Monitor plan.`}
+            </CardDescription>
+          </div>
         </CardHeader>
 
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-              What you'll get with Pro:
+        <CardContent className="space-y-8 pt-8">
+          <div className="space-y-5">
+            <h3 className="font-apercu text-[12px] uppercase tracking-[0.35em] text-[#8b867c]">
+              What you unlock
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {defaultFeatures.map((feature, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <div className="mt-0.5 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                    {index === 0 && <Sparkles className="w-3 h-3 text-orange-600" />}
-                    {index === 1 && <Zap className="w-3 h-3 text-orange-600" />}
-                    {index === 2 && <TrendingUp className="w-3 h-3 text-orange-600" />}
-                    {index > 2 && <div className="w-2 h-2 rounded-full bg-orange-600" />}
+                <li key={feature} className="flex items-start gap-3">
+                  <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-[10px] border border-[#d7d0c3] bg-white">
+                    {index === 0 && <Sparkles className="h-3 w-3 text-[#111111]" />}
+                    {index === 1 && <Zap className="h-3 w-3 text-[#111111]" />}
+                    {index === 2 && <TrendingUp className="h-3 w-3 text-[#111111]" />}
+                    {index > 2 && <div className="h-2 w-2 rounded-full bg-[#111111]" />}
                   </div>
-                  <span className="text-gray-700">{feature}</span>
+                  <p className="font-apercu text-sm text-[#4a473f] leading-relaxed">{feature}</p>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="pt-4 border-t border-gray-200">
-            <div className="flex items-baseline justify-center gap-2 mb-4">
-              <span className="text-4xl font-bold text-gray-900">$9.99</span>
-              <span className="text-gray-600">/month</span>
+          <div className="rounded-[24px] border border-[#ece8dd] bg-[#fdfbf5] px-6 py-6 text-center space-y-4">
+            <div className="flex items-baseline justify-center gap-2">
+              <span className="font-neueBit text-[44px] leading-none text-[#111111]">$10</span>
+              <span className="text-sm text-[#6a665d]">/month</span>
             </div>
+            <p className="text-xs font-apercu uppercase tracking-[0.3em] text-[#8b867c]">
+              Cancel anytime - No hidden fees
+            </p>
             <Button
               asChild
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 h-12 text-lg font-semibold"
+              className="h-12 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] text-white font-medium shadow-[0_25px_60px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-all"
             >
-              <Link href="/plans">
-                Upgrade to Pro
-              </Link>
+              <Link href="/plans">Upgrade to FireGEO Brand Monitor</Link>
             </Button>
-            <p className="text-center text-sm text-gray-500 mt-4">
-              Cancel anytime • No hidden fees
-            </p>
           </div>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+
+
+

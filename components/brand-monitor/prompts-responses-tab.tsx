@@ -103,10 +103,10 @@ export function PromptsResponsesTab({
     .filter(idx => idx !== null);
   
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {/* Search and Controls */}
       {prompts.length > 0 && (
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center">
           {/* Search Input */}
           <div className="flex-1 relative">
             <input
@@ -114,10 +114,10 @@ export function PromptsResponsesTab({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search prompts and responses..."
-              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+              className="w-full h-12 rounded-full border border-[#d7d0c3] bg-[#f4f2ed] pl-12 pr-5 font-neueBit text-[14px] text-[#111111] placeholder:text-[#8b867c] focus:outline-none focus:ring-2 focus:ring-[#111111]"
             />
             <svg 
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+              className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8b867c]"
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -127,7 +127,7 @@ export function PromptsResponsesTab({
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8b867c] hover:text-[#111111]"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -139,7 +139,7 @@ export function PromptsResponsesTab({
           {/* Expand/Collapse All Button */}
           <button
             onClick={handleExpandAll}
-            className="h-9 px-4 py-2 rounded-[10px] text-sm font-medium flex items-center gap-2 transition-all duration-200 bg-orange-500 text-white hover:bg-orange-600 [box-shadow:inset_0px_-2.108433723449707px_0px_0px_#c2410c,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(234,_88,_12,_58%)] hover:translate-y-[1px] hover:scale-[0.98] hover:[box-shadow:inset_0px_-1px_0px_0px_#c2410c,_0px_1px_3px_0px_rgba(234,_88,_12,_40%)] active:translate-y-[2px] active:scale-[0.97] active:[box-shadow:inset_0px_1px_1px_0px_#c2410c,_0px_1px_2px_0px_rgba(234,_88,_12,_30%)]"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#111111] px-6 font-neueBit text-[14px] text-white transition-all"
           >
             {allExpanded ? (
               <>
@@ -177,10 +177,10 @@ export function PromptsResponsesTab({
           <div
             key={idx}
             className={`
-              relative border rounded-lg transition-all duration-300
+              relative transition-all duration-300 rounded-[24px] border
               ${isExpanded 
-                ? 'border-orange-200 bg-white shadow-md' 
-                : 'border-gray-200 bg-white hover:border-orange-100 hover:shadow-sm'
+                ? 'bg-white/95 border-[#ece8dd] shadow-[0_25px_65px_rgba(17,17,17,0.08)]' 
+                : 'bg-white/90 border-[#f1eade] hover:border-[#d7d0c3]'
               }
             `}
           >
@@ -200,9 +200,9 @@ export function PromptsResponsesTab({
             >
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{promptData.prompt}</p>
+                  <p className="font-neueBit text-[16px] text-[#111111] truncate">{promptData.prompt}</p>
                   {hasBrandMention && (
-                    <Badge variant="default" className="text-xs bg-green-100 text-green-800 shrink-0">
+                    <Badge variant="default" className="text-[10px] uppercase tracking-[0.3em] bg-[#e0f5e7] text-[#1f8f4d] shrink-0">
                       Brand Mentioned
                     </Badge>
                   )}
@@ -223,7 +223,7 @@ export function PromptsResponsesTab({
                           {getProviderIcon(providerName)}
                         </div>
                         {isFailed ? (
-                          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 flex items-center justify-center bg-red-500 rounded-full border border-white">
+                          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 flex items-center justify-center bg-[#c94135] rounded-full border border-white">
                             <span className="text-white text-xs font-bold leading-none">×</span>
                           </div>
                         ) : providerResponse.brandMentioned ? (
@@ -249,7 +249,7 @@ export function PromptsResponsesTab({
               `}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="border-t border-gray-100 px-3 py-3">
+              <div className="border-t border-[#f1eade] px-5 py-4">
                 {promptResponses.length > 0 ? (
                   <div className="space-y-4">
                     {['OpenAI', 'Anthropic', 'Google', 'Perplexity'].map((providerName) => {
@@ -260,30 +260,30 @@ export function PromptsResponsesTab({
                       const isFailed = !response.response || response.response.trim().length === 0;
                       
                       return (
-                      <div key={providerName} className="space-y-1">
+                      <div key={providerName} className="space-y-2">
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             {getProviderIcon(response.provider)}
-                            <span className="font-medium text-sm text-gray-900">{response.provider}</span>
+                            <span className="font-neueBit text-[15px] text-[#111111]">{response.provider}</span>
                           </div>
                           {isFailed ? (
-                            <Badge variant="destructive" className="text-xs bg-red-100 text-red-800">
+                            <Badge variant="destructive" className="text-[11px] bg-[#fde6e3] text-[#c94135]">
                               Failed ×
                             </Badge>
                           ) : response.brandMentioned ? (
-                            <Badge variant="default" className="text-xs bg-green-100 text-green-800">
+                            <Badge variant="default" className="text-[11px] bg-[#e0f5e7] text-[#1f8f4d]">
                               Brand Mentioned
                             </Badge>
                           ) : null}
                           {response.brandPosition && response.brandPosition > 0 && (
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className="text-[11px] uppercase tracking-[0.3em]">
                               Position #{response.brandPosition}
                             </Badge>
                           )}
                         </div>
-                        <div className="bg-gray-50 rounded-md p-3 text-sm text-gray-700 select-text cursor-text">
+                        <div className="rounded-2xl border border-[#f1eade] bg-[#fffef9] p-4 text-sm text-[#4a473f] select-text cursor-text">
                           {isFailed ? (
-                            <div className="text-red-600 italic">
+                            <div className="text-[#c94135] italic">
                               Response failed or returned empty content
                             </div>
                           ) : (
@@ -302,7 +302,9 @@ export function PromptsResponsesTab({
                     })}
                   </div>
                 ) : (
-                  <div className="text-gray-500 text-sm text-center py-4">No responses available for this prompt</div>
+                  <div className="text-[#8b867c] text-sm text-center py-4 font-apercu uppercase tracking-[0.25em]">
+                    No responses available for this prompt
+                  </div>
                 )}
               </div>
             </div>
@@ -312,9 +314,9 @@ export function PromptsResponsesTab({
       
       {/* No results message */}
       {searchQuery && filteredPromptIndices.length === 0 && (
-        <div className="text-center py-8 bg-gray-50 rounded-lg">
-          <p className="text-gray-600 mb-2">No results found for "{searchQuery}"</p>
-          <p className="text-gray-500 text-sm">Try searching for different keywords</p>
+        <div className="text-center py-10 rounded-[28px] border border-[#ece8dd] bg-[#fefcf7]">
+          <p className="font-neueBit text-[18px] text-[#111111] mb-2">No results found for "{searchQuery}"</p>
+          <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">Try different keywords</p>
         </div>
       )}
     </div>

@@ -64,9 +64,29 @@ const themeConfig: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["SuisseIntl", ...defaultTheme.fontFamily.sans],
+        // Use Geist Sans which is already loaded via next/font
+        sans: ["var(--font-geist-sans)", ...defaultTheme.fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...defaultTheme.fontFamily.mono],
-        ascii: ["var(--font-roboto-mono)", ...defaultTheme.fontFamily.mono]
+        ascii: ["var(--font-roboto-mono)", 'Courier New', 'monospace'],
+        // Custom display fonts loaded via @font-face in globals.css
+        'neueBit': ['"PP NeueBit"', 'system-ui', 'sans-serif'],
+        'mondwest': ['"PP Mondwest"', 'serif'],
+        'apercu': ['"Apercu Mono Pro"', 'Consolas', 'Monaco', 'monospace'],
+        'geist': ['var(--font-geist-sans)', 'system-ui', 'sans-serif']
+      },
+      colors: {
+        landing: {
+          base: "#111111",
+          background: "#f8f6f0",
+          card: "#fdfbf5",
+          border: "#ece8dd",
+          muted: "#8b867c",
+          body: "#4a473f"
+        }
+      },
+      boxShadow: {
+        "landing-card": "0 35px 80px rgba(0,0,0,0.08)",
+        "landing-cta": "0 25px 60px rgba(0,0,0,0.35)"
       },
       fontSize: {
         "title-h1": [
@@ -276,6 +296,9 @@ const themeConfig: Config = {
         for (let i = 1; i <= 32; i += 1) {
           radius[i] = `${i}px`;
         }
+
+        radius["landing-card"] = "28px";
+        radius["landing-section"] = "40px";
 
         return radius;
       })()

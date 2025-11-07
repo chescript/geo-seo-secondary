@@ -36,12 +36,12 @@ export interface AutumnProduct {
 export const AUTUMN_PRODUCTS: AutumnProduct[] = [
   {
     id: 'free',
-    name: 'Free',
-    description: 'Access to homepage and dashboard',
+    name: 'Free Plan',
+    description: 'For all your messaging needs',
     type: 'service',
     display: {
-      name: 'Free',
-      description: 'Access to homepage and dashboard with rate limits',
+      name: 'Free Plan',
+      description: 'For all your messaging needs',
       button_text: 'Get Started',
     },
     properties: {
@@ -49,11 +49,59 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
     },
     items: [
       {
-        id: 'free-dashboard',
+        id: 'free-analyses',
         type: 'unit',
         display: {
-          primary_text: 'Homepage & Dashboard',
-          secondary_text: 'Rate limited access',
+          primary_text: '10 analyses per month',
+          secondary_text: 'Perfect for getting started',
+        },
+        unit: {
+          amount: 0,
+          quantity: 10,
+        },
+      },
+      {
+        id: 'free-support',
+        type: 'unit',
+        display: {
+          primary_text: 'Community support',
+          secondary_text: 'Get help from our community',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'free-features',
+        type: 'unit',
+        display: {
+          primary_text: 'Basic features',
+          secondary_text: 'Quick AI-readiness check',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'free-seo',
+        type: 'unit',
+        display: {
+          primary_text: 'SEO & metadata score',
+          secondary_text: 'Basic optimization insights',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'free-compatibility',
+        type: 'unit',
+        display: {
+          primary_text: 'Basic LLM compatibility check',
+          secondary_text: 'Essential compatibility testing',
         },
         unit: {
           amount: 0,
@@ -64,14 +112,14 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
   },
   {
     id: 'pro',
-    name: 'Pro',
-    description: 'Unlimited access to all features',
+    name: 'FireGEO Brand Monitor',
+    description: 'Perfect for trying out our service',
     type: 'service',
     display: {
-      name: 'Pro',
-      description: 'Full access to brand monitoring, AI chat, and all features',
-      button_text: 'Subscribe Now',
-      recommend_text: 'Most Popular',
+      name: 'FireGEO Brand Monitor',
+      description: 'Perfect for trying out our service',
+      button_text: 'Get started',
+      recommend_text: 'POPULAR',
     },
     properties: {
       interval: 'month',
@@ -82,47 +130,95 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
         id: 'pro-price',
         type: 'flat',
         display: {
-          primary_text: '$9.99',
-          secondary_text: 'per month',
+          primary_text: '$10/m',
+          secondary_text: '*Billed monthly',
         },
         flat: {
-          amount: 999, // Amount in cents
+          amount: 1000, // Amount in cents ($10.00)
         },
       },
       {
-        id: 'pro-brand-monitoring',
+        id: 'pro-analyses',
         type: 'unit',
         display: {
-          primary_text: 'Brand Monitoring',
-          secondary_text: 'Unlimited analyses',
+          primary_text: '100 analyses per month',
+          secondary_text: 'More than enough for most businesses',
         },
         unit: {
           amount: 0,
-          quantity: 0, // 0 means unlimited
+          quantity: 100,
         },
       },
       {
-        id: 'pro-ai-chat',
+        id: 'pro-support',
         type: 'unit',
         display: {
-          primary_text: 'AI Chat',
-          secondary_text: 'Unlimited conversations',
+          primary_text: 'Premium support',
+          secondary_text: 'Priority email and chat support',
         },
         unit: {
           amount: 0,
-          quantity: 0, // 0 means unlimited
+          quantity: 1,
         },
       },
       {
-        id: 'pro-dashboard',
+        id: 'pro-priority',
         type: 'unit',
         display: {
-          primary_text: 'Homepage & Dashboard',
-          secondary_text: 'Unlimited access',
+          primary_text: 'Priority access',
+          secondary_text: 'Skip the queue for faster results',
         },
         unit: {
           amount: 0,
-          quantity: 0, // 0 means unlimited
+          quantity: 1,
+        },
+      },
+      {
+        id: 'pro-tracking',
+        type: 'unit',
+        display: {
+          primary_text: 'Real-time brand tracking across all AI models',
+          secondary_text: 'Monitor your visibility everywhere',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'pro-competitor',
+        type: 'unit',
+        display: {
+          primary_text: 'Competitor analysis and ranking',
+          secondary_text: 'See how you stack up',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'pro-insights',
+        type: 'unit',
+        display: {
+          primary_text: 'Actionable insights & recommendations',
+          secondary_text: 'Get specific steps to improve',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
+        },
+      },
+      {
+        id: 'pro-alerts',
+        type: 'unit',
+        display: {
+          primary_text: 'Email alerts for visibility changes',
+          secondary_text: 'Stay informed automatically',
+        },
+        unit: {
+          amount: 0,
+          quantity: 1,
         },
       },
     ],
