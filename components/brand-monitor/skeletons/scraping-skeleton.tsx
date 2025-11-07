@@ -5,22 +5,22 @@ export function ScrapingSkeleton() {
   return (
     <div className="flex items-center justify-center animate-in fade-in duration-500">
       <div className="max-w-4xl w-full">
-        <Card className="p-6 bg-card text-card-foreground rounded-xl border shadow-sm border-gray-200">
-          <CardHeader className="pb-6">
+        <Card className="analysis-card p-6 text-[#111111] gap-6">
+          <CardHeader className="pb-6 font-apercu">
             <div className="flex items-start gap-4">
               {/* Logo skeleton */}
-              <Skeleton className="w-16 h-16 rounded-lg flex-shrink-0" />
+              <Skeleton className="w-16 h-16 rounded-lg flex-shrink-0 bg-[#ece8dd]" />
 
               <div className="flex-1 space-y-3">
                 {/* Company name skeleton */}
-                <Skeleton className="h-7 w-48" />
+                <Skeleton className="h-7 w-48 bg-[#ece8dd]" />
 
                 {/* Description skeleton */}
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-full bg-[#ece8dd]" />
+                <Skeleton className="h-4 w-3/4 bg-[#ece8dd]" />
 
                 {/* Industry badge skeleton */}
-                <Skeleton className="h-6 w-32 rounded-full mt-2" />
+                <Skeleton className="h-6 w-32 rounded-full mt-2 bg-[#ece8dd]" />
               </div>
             </div>
           </CardHeader>
@@ -29,22 +29,22 @@ export function ScrapingSkeleton() {
             {/* Scraping progress */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-                <span className="text-sm text-gray-600">Analyzing website content...</span>
+                <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                <span className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">Analyzing website content...</span>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-orange-500 h-2 rounded-full animate-pulse w-2/3" />
+              <div className="w-full bg-[#e8e1d5] rounded-full h-2 overflow-hidden">
+                <div className="bg-[#111111] h-2 rounded-full animate-pulse w-2/3" />
               </div>
             </div>
 
             {/* Competitor previews skeleton */}
             <div className="mt-6 space-y-3">
-              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-32 bg-[#ece8dd]" />
               <div className="flex gap-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-8 w-24 rounded-md" />
+                  <Skeleton key={i} className="h-8 w-24 rounded-md bg-[#ece8dd]" />
                 ))}
               </div>
             </div>

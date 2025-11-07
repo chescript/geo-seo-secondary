@@ -56,10 +56,10 @@ export function CompanyCard({
   const validFaviconUrl = isValidUrl(company.favicon) ? company.favicon : null;
 
   return (
-    <Card className="p-2 bg-gradient-to-br from-white to-gray-50 text-card-foreground gap-6 rounded-xl border border-gray-200 py-6 shadow-sm overflow-hidden transition-all hover:shadow-xl hover:border-orange-200 duration-300 group">
+    <Card className="analysis-card p-2 text-[#111111] gap-6 py-6 overflow-hidden transition-all duration-300 group">
       <div className="flex">
         {/* Left side - OG Image with better styling */}
-        <div className="relative w-80 h-48 ml-4 overflow-hidden rounded-lg bg-gray-100">
+        <div className="relative w-80 h-48 ml-4 overflow-hidden rounded-lg bg-[#f8f6f0]">
           {validLogoUrl && !logoError ? (
             <div className="absolute inset-0 pr-4 py-4 bg-white">
               <Image
@@ -72,8 +72,8 @@ export function CompanyCard({
               />
             </div>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-              <div className="relative h-16 w-16 rounded-2xl bg-white shadow-lg border-2 border-gray-100 flex items-center justify-center p-2">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#f8f6f0]">
+              <div className="relative h-16 w-16 rounded-2xl bg-white shadow-lg border-2 border-[#ece8dd] flex items-center justify-center p-2">
                 {validFaviconUrl && !faviconError ? (
                   <Image
                     src={validFaviconUrl}
@@ -84,7 +84,7 @@ export function CompanyCard({
                     onError={() => setFaviconError(true)}
                   />
                 ) : (
-                  <Building2 className="h-8 w-8 text-gray-400" />
+                  <Building2 className="h-8 w-8 text-[#8b867c]" />
                 )}
               </div>
             </div>
@@ -97,23 +97,23 @@ export function CompanyCard({
             rel="noopener noreferrer"
             className="absolute top-4 right-4 p-2.5 rounded-lg bg-white/95 backdrop-blur-sm hover:bg-white transition-all shadow-lg hover:shadow-xl group-hover:scale-110 duration-200"
           >
-            <ExternalLink className="h-4 w-4 text-gray-700 hover:text-gray-900" />
+            <ExternalLink className="h-4 w-4 text-[#111111] hover:text-[#4a473f]" />
           </a>
         </div>
 
         {/* Right side - Content */}
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 font-apercu">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">{company.name}</h3>
+              <h3 className="font-neueBit text-[28px] leading-[1] text-[#111111] mb-3">{company.name}</h3>
               <div className="flex items-center gap-3 flex-wrap">
                 {company.industry && (
-                  <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-semibold">
+                  <Badge className="bg-[#111111] text-white font-apercu text-[10px] uppercase tracking-[0.35em]">
                     {company.industry}
                   </Badge>
                 )}
-                <span className="text-sm text-gray-600 flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
-                  <Globe className="h-3.5 w-3.5 text-orange-600" />
+                <span className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#8b867c] flex items-center gap-1 bg-[#f8f6f0] px-3 py-1 rounded-full">
+                  <Globe className="h-3.5 w-3.5 text-[#111111]" />
                   {new URL(company.url).hostname}
                 </span>
               </div>
@@ -121,7 +121,7 @@ export function CompanyCard({
             <button
               onClick={onAnalyze}
               disabled={analyzing}
-              className="ml-4 h-10 px-6 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 bg-gradient-to-r from-orange-600 to-red-600 text-white hover:from-orange-700 hover:to-red-700 hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105 active:scale-95 disabled:from-gray-300 disabled:to-gray-300 disabled:shadow-none"
+              className="ml-4 h-11 px-6 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
             >
               {analyzing ? (
                 <>
@@ -139,7 +139,7 @@ export function CompanyCard({
             </button>
           </div>
 
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          <p className="font-apercu text-[13px] text-[#4a473f] mb-4 line-clamp-2">
             {company.description}
           </p>
 
@@ -149,13 +149,13 @@ export function CompanyCard({
               {company.scrapedData.keywords.slice(0, 6).map((keyword, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full font-apercu text-[10px] uppercase tracking-[0.35em] bg-[#f8f6f0] text-[#111111]"
                 >
                   {keyword}
                 </span>
               ))}
               {company.scrapedData.keywords.length > 6 && (
-                <span className="text-xs text-gray-500">
+                <span className="font-apercu text-[11px] tracking-[0.3em] text-[#8b867c]">
                   +{company.scrapedData.keywords.length - 6} more
                 </span>
               )}
@@ -163,21 +163,21 @@ export function CompanyCard({
           )}
         </div>
       </div>
-      
+
       {/* Competitors Section */}
       {showCompetitors && identifiedCompetitors.length > 0 && (
-        <div className="border-t border-gray-200">
-          <div className="px-8 py-8">
+        <div className="border-t border-[#ece8dd]">
+          <div className="px-8 py-8 font-apercu">
             <div className="mb-6">
-              <h3 className="text-lg font-bold text-gray-900">Identified Competitors</h3>
-              <p className="text-sm text-gray-600 mt-1">We'll compare {company.name} against these {identifiedCompetitors.length} competitors</p>
+              <h3 className="font-neueBit text-[22px] leading-[1] text-[#111111]">Identified Competitors</h3>
+              <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">We'll compare {company.name} against these {identifiedCompetitors.length} competitors</p>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
               {identifiedCompetitors.map((competitor, idx) => (
                 <div
                   key={idx}
-                  className="group relative bg-gradient-to-br from-gray-50 to-white rounded-lg border-2 border-gray-200 hover:border-orange-300 p-4 hover:shadow-lg transition-all duration-300 opacity-0 animate-fade-up"
+                  className="group relative bg-white/90 rounded-[22px] border border-[#ece8dd] hover:shadow-[0_18px_45px_rgba(17,17,17,0.08)] p-4 hover:-translate-y-0.5 transition-all duration-300 opacity-0 animate-fade-up"
                   style={{
                     animationDelay: `${idx * 50}ms`,
                     animationFillMode: 'forwards',
@@ -186,7 +186,7 @@ export function CompanyCard({
                 >
                   <div className="flex items-center gap-3">
                     {/* Favicon with background */}
-                    <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-white border border-gray-200 flex items-center justify-center overflow-hidden shadow-sm">
+                    <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-white border border-[#ece8dd] flex items-center justify-center overflow-hidden shadow-sm">
                       {competitor.url ? (
                         <img
                           src={`https://www.google.com/s2/favicons?domain=${competitor.url}&sz=64`}
@@ -195,14 +195,14 @@ export function CompanyCard({
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                             const placeholder = document.createElement('div');
-                            placeholder.className = 'w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center';
-                            placeholder.innerHTML = '<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>';
+                            placeholder.className = 'w-full h-full bg-[#f8f6f0] flex items-center justify-center';
+                            placeholder.innerHTML = '<svg class="w-6 h-6 text-[#8b867c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>';
                             e.currentTarget.parentElement!.appendChild(placeholder);
                           }}
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                          <Building2 className="w-6 h-6 text-gray-400" />
+                        <div className="w-full h-full bg-[#f8f6f0] flex items-center justify-center">
+                          <Building2 className="w-6 h-6 text-[#8b867c]" />
                         </div>
                       )}
                     </div>
@@ -210,20 +210,20 @@ export function CompanyCard({
                     {/* Name and URL */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-gray-900 text-sm truncate">{competitor.name}</span>
+                        <span className="font-neueBit text-[15px] text-[#111111] truncate">{competitor.name}</span>
                         {competitor.url && (
                           <a
                             href={competitor.url.startsWith('http') ? competitor.url : `https://${competitor.url}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-orange-600 hover:text-orange-700 transition-colors flex-shrink-0"
+                            className="text-[#111111] hover:text-[#4a473f] transition-colors flex-shrink-0"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                           </a>
                         )}
                       </div>
                       {competitor.url && (
-                        <p className="text-xs text-gray-500 truncate mt-1">{competitor.url}</p>
+                        <p className="font-apercu text-[10px] uppercase tracking-[0.35em] text-[#8b867c] truncate mt-1">{competitor.url}</p>
                       )}
                     </div>
                   </div>
@@ -232,21 +232,21 @@ export function CompanyCard({
                   {onRemoveCompetitor && (
                     <button
                       onClick={() => onRemoveCompetitor(idx)}
-                      className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-red-50"
+                      className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-[#fff2f0]"
                     >
-                      <Trash2 className="w-4 h-4 text-red-600 hover:text-red-700" />
+                      <Trash2 className="w-4 h-4 text-[#c94135] hover:text-[#a33328]" />
                     </button>
                   )}
                 </div>
               ))}
             </div>
-              
+
               {/* Actions */}
-              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-gray-200">
+              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-[#ece8dd]">
                 {onAddCompetitor && (
                   <button
                     onClick={onAddCompetitor}
-                    className="h-10 px-5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all duration-200 bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105 active:scale-95"
+                    className="h-11 px-5 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
                   >
                     <Plus className="w-4 h-4" />
                     Add Competitor
@@ -258,7 +258,7 @@ export function CompanyCard({
                 {onContinueToAnalysis && (
                   <button
                     onClick={onContinueToAnalysis}
-                    className="h-10 px-8 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-900 hover:to-black hover:shadow-lg hover:shadow-gray-900/30 hover:scale-105 active:scale-95 disabled:from-gray-400 disabled:to-gray-400 disabled:shadow-none"
+                    className="h-11 px-8 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
                   >
                     Continue to Analysis
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
