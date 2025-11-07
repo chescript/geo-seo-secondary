@@ -11,9 +11,9 @@ export function AnalysisSkeleton({ progress = 0, message = "Analyzing..." }: Ana
   return (
     <div className="flex items-center justify-center animate-in fade-in duration-500">
       <div className="max-w-4xl w-full">
-        <Card className="p-6 bg-card text-card-foreground rounded-xl border shadow-sm border-gray-200">
-          <CardHeader className="pb-6">
-            <CardTitle className="text-xl font-semibold">
+        <Card className="analysis-card p-6 text-[#111111] gap-6">
+          <CardHeader className="pb-6 font-apercu">
+            <CardTitle className="font-neueBit text-[26px] leading-[1]">
               Analysis in Progress
             </CardTitle>
 
@@ -21,14 +21,19 @@ export function AnalysisSkeleton({ progress = 0, message = "Analyzing..." }: Ana
             <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between">
                 <CardDescription className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-                  <span>{message}</span>
+                  <div className="w-4 h-4 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                  <span className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">{message}</span>
                 </CardDescription>
-                <span className="text-sm font-medium text-gray-700">{progress}%</span>
+                <span className="font-neueBit text-[18px] text-[#111111]">{progress}%</span>
               </div>
 
               {/* Enhanced progress bar */}
-              <Progress value={progress} className="h-2" />
+              <div className="w-full bg-[#e8e1d5] rounded-full h-2 overflow-hidden">
+                <div
+                  className="bg-[#111111] h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
           </CardHeader>
 
@@ -38,25 +43,25 @@ export function AnalysisSkeleton({ progress = 0, message = "Analyzing..." }: Ana
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="group relative bg-white rounded-lg border border-gray-200 p-5"
+                  className="group relative rounded-[22px] border border-[#ece8dd] bg-white/90 p-5"
                 >
                   <div className="space-y-3">
                     {/* Prompt text skeleton */}
                     <div className="space-y-2">
-                      <Skeleton className="h-4 w-full" />
-                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-4 w-full bg-[#ece8dd]" />
+                      <Skeleton className="h-4 w-3/4 bg-[#ece8dd]" />
                     </div>
 
                     {/* Provider status indicators */}
                     <div className="flex items-center gap-3 justify-end pt-2">
                       {[1, 2, 3, 4].map((j) => (
                         <div key={j} className="flex items-center gap-1">
-                          <Skeleton className="w-5 h-5 rounded" />
+                          <Skeleton className="w-5 h-5 rounded bg-[#ece8dd]" />
                           {/* Status indicator */}
                           <div className={`w-4 h-4 rounded-full ${
-                            j === 1 ? 'bg-green-500' :
-                            j === 2 ? 'border-2 border-orange-500 border-t-transparent animate-spin' :
-                            'border border-gray-300'
+                            j === 1 ? 'bg-[#1f8f4d]' :
+                            j === 2 ? 'border-2 border-[#111111] border-t-transparent animate-spin' :
+                            'border border-[#d7d0c3]'
                           }`} />
                         </div>
                       ))}
@@ -67,17 +72,17 @@ export function AnalysisSkeleton({ progress = 0, message = "Analyzing..." }: Ana
             </div>
 
             {/* Stats preview */}
-            <div className="mt-6 pt-6 border-t border-gray-200 space-y-4">
+            <div className="mt-6 pt-6 border-t border-[#ece8dd] space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Analyzing responses...</span>
-                <Skeleton className="h-6 w-16" />
+                <span className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">Analyzing responses...</span>
+                <Skeleton className="h-6 w-16 bg-[#ece8dd]" />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="text-center space-y-2">
-                    <Skeleton className="h-8 w-16 mx-auto" />
-                    <Skeleton className="h-3 w-20 mx-auto" />
+                    <Skeleton className="h-8 w-16 mx-auto bg-[#ece8dd]" />
+                    <Skeleton className="h-3 w-20 mx-auto bg-[#ece8dd]" />
                   </div>
                 ))}
               </div>
