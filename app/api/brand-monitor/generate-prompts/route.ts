@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generatePromptsForCompany } from "@/lib/ai-utils";
 import { Company } from "@/lib/types";
+import { handleApiError, ValidationError } from "@/lib/api-errors";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -20,10 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (!company || !company.name) {
       console.error('❌ [GENERATE-PROMPTS API] Missing company data');
-      return NextResponse.json(
-        { error: "Company data is required" },
-        { status: 400 }
-      );
+      throw new ValidationError('Company data with name is required', { company: 'required' });
     }
 
     // Generate prompts using AI
@@ -43,10 +41,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('❌ [GENERATE-PROMPTS API] Error:', error);
     console.log('🎯 [GENERATE-PROMPTS API] ========================================\n');
-
-    return NextResponse.json(
-      { error: "Failed to generate prompts", details: error instanceof Error ? error.message : String(error) },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Failed to generate prompts');
   }
 }

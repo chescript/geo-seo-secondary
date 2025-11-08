@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import FirecrawlApp from '@mendable/firecrawl-js';
+import { handleApiError, ValidationError, ExternalServiceError } from '@/lib/api-errors';
 
 const firecrawl = new FirecrawlApp({
   apiKey: process.env.FIRECRAWL_API_KEY!
@@ -8,9 +9,9 @@ const firecrawl = new FirecrawlApp({
 export async function POST(request: NextRequest) {
   try {
     let { url } = await request.json();
-    
+
     if (!url) {
-      return NextResponse.json({ error: 'URL is required' }, { status: 400 });
+      throw new ValidationError('URL is required', { url: 'required' });
     }
     
     // Ensure URL has protocol
@@ -80,12 +81,8 @@ export async function POST(request: NextRequest) {
     }
     
     return NextResponse.json(results);
-    
-  } catch (error: any) {
-    console.error('Check LLMs error:', error);
-    return NextResponse.json(
-      { error: 'Failed to check LLMs.txt: ' + error.message },
-      { status: 500 }
-    );
+
+  } catch (error) {
+    return handleApiError(error, 'Failed to check LLMs.txt');
   }
 }
