@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     if (!isProviderConfigured(normalizedProvider)) {
       throw new ValidationError(`AI provider '${provider}' is not configured`, {
         provider: normalizedProvider,
-        configured: false
+        configured: 'Provider is not configured'
       });
     }
 

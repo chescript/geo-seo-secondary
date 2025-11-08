@@ -85,11 +85,8 @@ function DynamicPricingContent({ session }: { session: any }) {
                 <Button
                   onClick={() => handleSelectPlan(product.id)}
                   disabled={isActive}
-                  className={`w-full mb-6 ${
-                    product.display?.recommend_text 
-                      ? 'btn-firecrawl-orange' 
-                      : 'bg-gray-900 text-white hover:bg-gray-800'
-                  }`}
+                  variant={product.display?.recommend_text ? "primary" : "secondary"}
+                  className="w-full mb-6"
                 >
                   {isActive ? 'Current Plan' : 'Select Plan'}
                 </Button>

@@ -2,9 +2,11 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Plus, Trash2, CheckIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Company, AnalysisStage } from '@/lib/types';
 import { IdentifiedCompetitor, PromptCompletionStatus } from '@/lib/brand-monitor-reducer';
 import { getEnabledProviders } from '@/lib/provider-config';
+import Image from 'next/image';
 
 interface AnalysisProgressSectionProps {
   company: Company;
@@ -31,17 +33,21 @@ const getProviderIcon = (provider: string) => {
   switch (provider) {
     case 'OpenAI':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="OpenAI" 
+          width={28}
+          height={28}
           className="w-7 h-7"
         />
       );
     case 'Anthropic':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
           alt="Anthropic" 
+          width={20}
+          height={20}
           className="w-5 h-5"
         />
       );
@@ -58,9 +64,11 @@ const getProviderIcon = (provider: string) => {
       );
     case 'Perplexity':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="Perplexity" 
+          width={20}
+          height={20}
           className="w-5 h-5"
         />
       );
@@ -108,13 +116,16 @@ export function AnalysisProgressSection({
                       {identifiedCompetitors.slice(0, 6).map((comp, idx) => (
                         <div key={idx} className="w-8 h-8 rounded-full bg-white border-2 border-white shadow-sm overflow-hidden" title={comp.name}>
                           {comp.url ? (
-                            <img 
+                            <Image 
                               src={`https://www.google.com/s2/favicons?domain=${comp.url}&sz=64`}
                               alt={comp.name}
+                              width={64}
+                              height={64}
                               className="w-full h-full object-contain p-0.5"
                               onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                                const fallback = e.currentTarget.nextSibling as HTMLDivElement;
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const fallback = target.nextSibling as HTMLDivElement;
                                 if (fallback) fallback.style.display = 'flex';
                               }}
                             />
@@ -245,23 +256,15 @@ export function AnalysisProgressSection({
 
               {/* Add Prompt Button */}
               <div className="flex justify-end mb-4">
-                <button
-                  onClick={onAddPromptClick}
-                  disabled={analyzing}
-                  className="inline-flex h-[44px] items-center gap-2 rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] px-6 font-geist text-[14px] font-medium text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-                >
+                <Button onClick={onAddPromptClick} disabled={analyzing} variant="primary" size="sm" className="px-6 gap-2">
                   <Plus className="h-4 w-4" />
                   Add Prompt
-                </button>
+                </Button>
               </div>
 
               {/* Start Analysis Button */}
               <div className="flex justify-center pt-4">
-                <button
-                  onClick={onStartAnalysis}
-                  disabled={analyzing}
-                  className="inline-flex h-[52px] items-center justify-center rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] px-10 font-geist text-[16px] font-medium text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-                >
+                <Button onClick={onStartAnalysis} disabled={analyzing} variant="primary" size="lg" className="px-10">
                   {analyzing ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -270,7 +273,7 @@ export function AnalysisProgressSection({
                   ) : (
                     'Start Analysis'
                   )}
-                </button>
+                </Button>
               </div>
             </CardContent>
           </Card>

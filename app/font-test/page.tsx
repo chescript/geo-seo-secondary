@@ -69,10 +69,10 @@ export default function FontTestPage() {
         <div className="bg-gray-100 p-4 rounded text-sm font-mono">
           <p>Open DevTools Console and run:</p>
           <code className="block mt-2">
-            getComputedStyle(document.documentElement).getPropertyValue('--font-neuebit')
+            getComputedStyle(document.documentElement).getPropertyValue(&apos;--font-neuebit&apos;)
           </code>
           <code className="block mt-1">
-            getComputedStyle(document.documentElement).getPropertyValue('--font-mondwest')
+            getComputedStyle(document.documentElement).getPropertyValue(&apos;--font-mondwest&apos;)
           </code>
         </div>
       </div>
@@ -83,10 +83,10 @@ export default function FontTestPage() {
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Open browser DevTools (F12)</li>
           <li>Go to Network tab</li>
-          <li>Filter by "Font" or search for ".otf"</li>
+          <li>Filter by &quot;Font&quot; or search for &quot;.otf&quot;</li>
           <li>Reload the page</li>
           <li>Check if PPNeueBit-Bold.otf and PPMondwest-Regular.otf are loaded</li>
-          <li>If you see 404 errors, the fonts aren't being found</li>
+          <li>If you see 404 errors, the fonts aren&apos;t being found</li>
           <li>If you see 200 OK, the fonts are loading correctly</li>
         </ol>
       </div>

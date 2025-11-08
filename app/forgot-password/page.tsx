@@ -94,11 +94,11 @@ export default function ForgotPasswordPage() {
       <div className="flex min-h-screen flex-col lg:flex-row">
         <AuthShowcase
           eyebrow="PASSWORD RESET"
-          title="We’ve got you."
+          title="We&apos;ve got you."
           description="Enter your email to receive a secure reset link."
           stats={[{ value: '60s', label: 'Avg. delivery' }, { value: '24/7', label: 'Support' }, { value: '1x', label: 'One-time link' }]}
           checklist={["Use your work email", "Check spam if missing", "Links expire after use"]}
-          footerNote="For security, reset links are short‑lived."
+          footerNote="For security, reset links are short&apos;lived."
         />
 
         <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-8 lg:px-16">
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
               Reset your password
             </h2>
             <p className="mt-2 text-center text-sm text-[#4a473f]">
-              Enter your email and we'll send you a reset link
+              Enter your email and we&apos;ll send you a reset link
             </p>
           </div>
           

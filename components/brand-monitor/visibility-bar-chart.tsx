@@ -48,7 +48,7 @@ export function VisibilityBarChart({ data, brandName, averageScore }: Visibility
               Provider Visibility Breakdown
             </CardTitle>
             <CardDescription className="font-geist text-[13px] text-landing-muted mt-1">
-              {brandName}'s visibility across AI providers
+              {brandName}&apos;s visibility across AI providers
             </CardDescription>
           </div>
           <div className="text-right">

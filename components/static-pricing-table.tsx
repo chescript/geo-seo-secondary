@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 interface StaticProduct {
   id: string;
@@ -110,13 +111,12 @@ export default function StaticPricingTable({ products }: StaticPricingTableProps
                 )}
               </div>
               <div className={cn("px-6", product.recommendText && "lg:-translate-y-12")}>
-                <button
+                <Button
                   onClick={() => handleSignup(product.id)}
                   disabled={loadingProductId === product.id}
-                  className={cn(
-                    "w-full py-3 px-4 group overflow-hidden relative transition-all duration-300 border rounded-[10px] inline-flex items-center justify-center whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50",
-                    product.recommendText ? "btn-firecrawl-orange" : "btn-firecrawl-default"
-                  )}
+                  variant={product.recommendText ? "primary" : "secondary"}
+                  size="sm"
+                  className="w-full py-3 px-4 group overflow-hidden relative transition-all duration-300 rounded-full"
                 >
                   {loadingProductId === product.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -132,7 +132,7 @@ export default function StaticPricingTable({ products }: StaticPricingTableProps
                       </div>
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

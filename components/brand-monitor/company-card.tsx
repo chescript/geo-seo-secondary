@@ -170,7 +170,7 @@ export function CompanyCard({
           <div className="px-8 py-8 font-apercu">
             <div className="mb-6">
               <h3 className="font-neueBit text-[22px] leading-[1] text-[#111111]">Identified Competitors</h3>
-              <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">We'll compare {company.name} against these {identifiedCompetitors.length} competitors</p>
+              <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">We&apos;ll compare {company.name} against these {identifiedCompetitors.length} competitors</p>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
@@ -188,16 +188,19 @@ export function CompanyCard({
                     {/* Favicon with background */}
                     <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-white border border-[#ece8dd] flex items-center justify-center overflow-hidden shadow-sm">
                       {competitor.url ? (
-                        <img
+                        <Image
                           src={`https://www.google.com/s2/favicons?domain=${competitor.url}&sz=64`}
                           alt=""
+                          width={64}
+                          height={64}
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            e.currentTarget.style.display = 'none';
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
                             const placeholder = document.createElement('div');
                             placeholder.className = 'w-full h-full bg-[#f8f6f0] flex items-center justify-center';
                             placeholder.innerHTML = '<svg class="w-6 h-6 text-[#8b867c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>';
-                            e.currentTarget.parentElement!.appendChild(placeholder);
+                            target.parentElement!.appendChild(placeholder);
                           }}
                         />
                       ) : (

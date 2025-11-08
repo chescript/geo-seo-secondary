@@ -5,6 +5,7 @@ import { ChevronDown, ChevronsDown, ChevronsUp } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { BrandPrompt, AIResponse } from '@/lib/types';
 import { HighlightedResponse } from './highlighted-response';
+import Image from 'next/image';
 
 interface PromptsResponsesTabProps {
   prompts: BrandPrompt[];
@@ -20,17 +21,21 @@ const getProviderIcon = (provider: string) => {
   switch (provider) {
     case 'OpenAI':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="OpenAI" 
+          width={24}
+          height={24}
           className="w-6 h-6"
         />
       );
     case 'Anthropic':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
           alt="Anthropic" 
+          width={24}
+          height={24}
           className="w-6 h-6"
         />
       );
@@ -47,9 +52,11 @@ const getProviderIcon = (provider: string) => {
       );
     case 'Perplexity':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="Perplexity" 
+          width={24}
+          height={24}
           className="w-6 h-6"
         />
       );
@@ -315,7 +322,7 @@ export function PromptsResponsesTab({
       {/* No results message */}
       {searchQuery && filteredPromptIndices.length === 0 && (
         <div className="text-center py-10 rounded-[28px] border border-[#ece8dd] bg-[#fefcf7]">
-          <p className="font-geist text-[18px] font-semibold text-[#111111] mb-2">No results found for "{searchQuery}"</p>
+          <p className="font-geist text-[18px] font-semibold text-[#111111] mb-2">No results found for &quot;{searchQuery}&quot;</p>
           <p className="font-geist text-[13px] text-[#8b867c]">Try different keywords</p>
         </div>
       )}

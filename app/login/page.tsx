@@ -123,7 +123,7 @@ function LoginForm() {
                   Use your workspace credentials to keep your AI search profile healthy.
                 </p>
                 <p className="text-sm text-[#4a473f]">
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <Link
                     href="/register"
                     className="font-medium text-[#111111] underline decoration-[#c7c0b2]/70 underline-offset-4 transition-colors hover:decoration-[#111111]"

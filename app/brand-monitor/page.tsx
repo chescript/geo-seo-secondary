@@ -1,7 +1,7 @@
 'use client';
 
 import { BrandMonitor } from '@/components/brand-monitor/brand-monitor';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -22,6 +22,18 @@ function BrandMonitorContent({ session }: { session: any }) {
   const { data: analyses, isLoading: analysesLoading, error: analysesError } = useBrandAnalyses();
   const { data: currentAnalysis } = useBrandAnalysis(selectedAnalysisId);
   const deleteAnalysis = useDeleteBrandAnalysis();
+
+  const historyItems = useMemo(
+    () =>
+      (analyses ?? []).map(analysis => ({
+        id: analysis.id,
+        companyName: analysis.companyName ?? null,
+        url: analysis.url,
+        createdAt: analysis.createdAt,
+        competitors: Array.isArray(analysis.competitors) ? analysis.competitors : undefined
+      })),
+    [analyses]
+  );
 
   // Debug logging
   console.log('Brand Monitor Debug:', {
@@ -94,7 +106,7 @@ function BrandMonitorContent({ session }: { session: any }) {
       <div className="w-full">
         {/* Analysis History Bar */}
         <AnalysisHistoryBar
-          analyses={analyses || []}
+          analyses={historyItems}
           currentAnalysisId={selectedAnalysisId}
           onSelectAnalysis={setSelectedAnalysisId}
           onDeleteAnalysis={handleDeleteAnalysis}

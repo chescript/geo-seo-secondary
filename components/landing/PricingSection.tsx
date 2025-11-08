@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 export const PricingSection = memo(function PricingSection() {
   const freePlanFeatures = [
@@ -108,11 +109,9 @@ export const PricingSection = memo(function PricingSection() {
             </div>
 
             {/* Button */}
-            <button className="w-full h-[44px] bg-white border border-[#e1e1e1] rounded-full mt-8 flex items-center justify-center">
-              <span className="font-geist font-medium text-[16px] text-[#111111] tracking-[-0.48px]">
-                Get Started
-              </span>
-            </button>
+            <Button variant="secondary" className="w-full mt-8">
+              Get Started
+            </Button>
           </motion.div>
 
           {/* Premium Plan */}
@@ -169,14 +168,11 @@ export const PricingSection = memo(function PricingSection() {
               </ul>
 
               {/* Button */}
-              <Link
-                href="/register"
-                className="w-full h-[44px] bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] rounded-full flex items-center justify-center hover:from-[#333333] hover:to-[#1a1a1a] transition-all"
-              >
-                <span className="font-geist font-medium text-[16px] text-white tracking-[-0.48px]">
+              <Button asChild variant="primary" className="w-full">
+                <Link href="/register">
                   Get started
-                </span>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </motion.div>
         </div>

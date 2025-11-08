@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { Button } from '@/components/ui/button';
 
 type AssetEntry = { name: string; path: string };
 
@@ -66,12 +67,16 @@ export default function CouncilePage() {
               Councile is a multi-user AI chatbot that centralizes knowledge, keeps conversations organized, and scales securely across your org.
             </p>
             <div className="flex flex-wrap gap-3">
-              <a href="/register" className="btn-firecrawl-orange inline-flex items-center justify-center rounded-[10px] h-11 px-6 text-sm font-medium">
-                Start Free Trial
-              </a>
-              <a href="#features" className="btn-firecrawl-outline inline-flex items-center justify-center rounded-[10px] h-11 px-6 text-sm font-medium">
-                Explore Features
-              </a>
+              <Button asChild variant="primary" size="sm" className="px-6 h-11">
+                <a href="/register">
+                  Start Free Trial
+                </a>
+              </Button>
+              <Button asChild variant="secondary" size="sm" className="px-6 h-11">
+                <a href="#features">
+                  Explore Features
+                </a>
+              </Button>
             </div>
           </div>
 
@@ -94,4 +99,3 @@ export default function CouncilePage() {
     </main>
   );
 }
-

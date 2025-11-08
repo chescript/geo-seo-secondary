@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ReadyToScanModalProps {
   isOpen: boolean;
@@ -82,12 +83,9 @@ export function ReadyToScanModal({ isOpen, onClose, onAnalyze }: ReadyToScanModa
                 className="w-full h-[44px] px-4 bg-[#f1f1f1] border-none rounded-full font-geist text-[16px] text-[#111111] placeholder:text-[#111111] placeholder:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#111111]"
               />
 
-              <button
-                type="submit"
-                className="w-full h-[44px] bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] rounded-full font-geist font-medium text-[16px] text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all"
-              >
+              <Button type="submit" variant="primary" className="w-full">
                 Analyze Now
-              </button>
+              </Button>
             </form>
           </motion.div>
         </>

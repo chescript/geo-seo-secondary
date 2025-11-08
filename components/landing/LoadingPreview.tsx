@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
+import Image from 'next/image';
 
 export function LoadingPreview() {
   // Skeleton shimmer animation
@@ -79,10 +80,12 @@ export function LoadingPreview() {
                 <div className="content-stretch flex flex-col gap-[19.733px] items-start w-full md:w-[616.667px] mx-auto">
                   {/* Score Cards - Skeleton */}
                   <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex gap-[14.8px] items-center p-[12.333px] relative rounded-[7.4px] shrink-0 w-full">
-                    <img
+                    <Image
                       alt=""
                       className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full"
                       src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E"
+                      width={1}
+                      height={1}
                     />
 
                     {/* Overall Score Skeleton */}
@@ -170,10 +173,12 @@ export function LoadingPreview() {
                         key={index}
                         className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-center justify-center pb-[2.467px] pt-[14.8px] px-[12.333px] relative rounded-[7.4px]"
                       >
-                        <img
+                        <Image
                           alt=""
                           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full"
                           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E"
+                          width={1}
+                          height={1}
                         />
 
                         {/* Label skeleton */}
@@ -212,10 +217,12 @@ export function LoadingPreview() {
                         key={index}
                         className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-center justify-center pb-[2.467px] pt-[14.8px] px-[12.333px] relative rounded-[7.4px]"
                       >
-                        <img
+                        <Image
                           alt=""
                           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full"
                           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E"
+                          width={1}
+                          height={1}
                         />
 
                         {/* Label skeleton */}
@@ -249,10 +256,12 @@ export function LoadingPreview() {
 
                   {/* Key Recommendations - Skeleton */}
                   <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-start justify-center px-[12.333px] py-[14.8px] relative rounded-[7.4px] shrink-0 w-full">
-                    <img
+                    <Image
                       alt=""
                       className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full"
                       src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E"
+                      width={1}
+                      height={1}
                     />
 
                     <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[11.1px] w-full">

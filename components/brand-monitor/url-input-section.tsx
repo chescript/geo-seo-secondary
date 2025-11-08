@@ -31,7 +31,7 @@ export function UrlInputSection({
               Enter brand domain
             </p>
             <p className="font-neueBit text-[22px] text-[#111111] leading-tight">
-              We'll crawl every AI surface in your plan.
+              We&apos;ll crawl every AI surface in your plan.
             </p>
           </div>
           {(isValid || isInvalid) && (
@@ -106,7 +106,7 @@ export function UrlInputSection({
           )}
           {isValid && (
             <p className="font-geist text-sm text-emerald-600">
-              URL verified - launch your crawl whenever you're ready.
+              URL verified - launch your crawl whenever you&apos;re ready.
             </p>
           )}
         </div>

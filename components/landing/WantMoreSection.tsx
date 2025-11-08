@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 export const WantMoreSection = memo(function WantMoreSection() {
   return (
@@ -56,18 +57,16 @@ export const WantMoreSection = memo(function WantMoreSection() {
                 {/* Buttons and footer text */}
                 <div className="flex flex-col gap-[16px]">
                   <div className="flex items-center gap-[16px]">
-                    <Link
-                      href="/register"
-                      className="h-[44px] px-[20px] py-[14px] rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] text-white font-geist font-medium text-[16px] tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all inline-flex items-center justify-center whitespace-nowrap"
-                    >
-                      Start free trial
-                    </Link>
-                    <Link
-                      href="/brand-monitor"
-                      className="h-[44px] px-[16px] py-[12px] rounded-full bg-white border border-[#e1e1e1] text-[#111111] font-geist font-medium text-[16px] tracking-[-0.48px] hover:bg-gray-50 transition-all inline-flex items-center justify-center whitespace-nowrap"
-                    >
-                      View brand monitor
-                    </Link>
+                    <Button asChild variant="primary">
+                      <Link href="/register">
+                        Start free trial
+                      </Link>
+                    </Button>
+                    <Button asChild variant="secondary" className="px-4">
+                      <Link href="/brand-monitor">
+                        View brand monitor
+                      </Link>
+                    </Button>
                   </div>
                   <p className="font-apercu text-[12px] leading-[1.8] text-white tracking-[-0.36px] uppercase w-[405px]">
                     *Free tier includes 10 brand analyses per month *No credit card required

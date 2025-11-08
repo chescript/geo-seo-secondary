@@ -8,6 +8,8 @@ import { createContext, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Check, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { buttonClassName } from "@/lib/design-system/button-system";
 import AttachDialog from "@/components/autumn/attach-dialog";
 import { getPricingTableContent } from "@/lib/autumn/pricing-table-content";
 import { Product, ProductItem } from "autumn-js";
@@ -353,8 +355,8 @@ export const PricingCardButton = React.forwardRef<
   return (
     <button
       className={cn(
-        "w-full py-3 px-4 group overflow-hidden relative transition-all duration-300 border rounded-[10px] inline-flex items-center justify-center whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50",
-        recommended ? "btn-firecrawl-orange" : "btn-firecrawl-default",
+        buttonClassName({ variant: recommended ? "primary" : "secondary", size: "sm" }),
+        "w-full py-3 px-4 group overflow-hidden relative transition-all duration-300 rounded-full",
         className
       )}
       {...props}

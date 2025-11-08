@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export default function LivePreviewFrame({
   sessionId,
@@ -323,7 +324,7 @@ export default function LivePreviewFrame({
       ) : null}
 
       {/* Preview image */}
-      <img
+      <Image
         ref={imgRef}
         id="live-frame"
         onLoad={() => {
@@ -336,6 +337,9 @@ export default function LivePreviewFrame({
         style={{
           backgroundColor: "#f0f0f0",
         }}
+        width={1920}
+        height={1080}
+        alt=""
       />
     </div>
   );

@@ -118,7 +118,7 @@ export default function PublicPricingPage() {
               product.items?.[0]?.display || {};
 
             // Get feature items
-            const features = isFree ? product.items : product.items?.slice(1) || [];
+            const features = isFree ? (product.items ?? []) : (product.items?.slice(1) ?? []);
 
             return (
               <div 
@@ -129,7 +129,7 @@ export default function PublicPricingPage() {
               >
                 {isRecommended && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm">
-                    {product.display.recommend_text}
+                    {product.display?.recommend_text}
                   </div>
                 )}
                 
@@ -168,7 +168,7 @@ export default function PublicPricingPage() {
 
                 <Button
                   onClick={() => handleSelectPlan(product.id)}
-                  variant={isRecommended ? 'default' : 'outline'}
+                  variant={isRecommended ? 'primary' : 'secondary'}
                   className="w-full"
                 >
                   {session ? 

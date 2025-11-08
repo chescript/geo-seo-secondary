@@ -62,7 +62,7 @@ function ChatContent({ session }: { session: any }) {
 
     try {
       const response = await sendMessage.mutateAsync({
-        conversationId: selectedConversationId,
+        conversationId: selectedConversationId ?? undefined,
         message: input,
         provider: selectedProvider,
       });
@@ -104,7 +104,8 @@ function ChatContent({ session }: { session: any }) {
         <div className="p-4 border-b">
           <Button
             onClick={handleNewConversation}
-            className="w-full btn-firecrawl-orange"
+            variant="primary"
+            className="w-full"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Chat
@@ -188,10 +189,12 @@ function ChatContent({ session }: { session: any }) {
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{message.content}</p>
-                    <p className={`text-xs mt-1 ${
-                      message.role === 'user' ? 'text-orange-100' : 'text-gray-500'
-                    }`}>
-                      {format(new Date(message.createdAt), 'h:mm a')}
+                    <p
+                      className={`text-xs mt-1 ${
+                        message.role === 'user' ? 'text-orange-100' : 'text-gray-500'
+                      }`}
+                    >
+                      {message.createdAt ? format(new Date(message.createdAt), 'h:mm a') : ''}
                     </p>
                   </div>
                 </div>
@@ -258,7 +261,7 @@ function ChatContent({ session }: { session: any }) {
             <Button
               type="submit"
               disabled={!input.trim() || sendMessage.isPending}
-              className="btn-firecrawl-orange"
+              variant="primary"
             >
               <Send className="w-4 h-4" />
             </Button>

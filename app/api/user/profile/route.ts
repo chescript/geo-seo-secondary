@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { userProfile, userSettings } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { handleApiError, AuthenticationError, ValidationError } from '@/lib/api-errors';
+import logger from '@/lib/logger';
 
 // GET /api/user/profile - Get user profile and settings
 export async function GET(request: NextRequest) {
@@ -15,6 +16,10 @@ export async function GET(request: NextRequest) {
     if (!session?.user) {
       throw new AuthenticationError('Please log in to access your profile');
     }
+
+    logger.info(`User profile requested for user ID: ${session.user.id}`);
+    // The following debug log will only appear in development
+    logger.debug({ user: session.user }, 'User session object');
 
     // Get user profile with settings
     const profile = await db.query.userProfile.findFirst({

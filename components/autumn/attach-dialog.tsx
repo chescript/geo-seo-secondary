@@ -98,7 +98,7 @@ export default function AttachDialog(params?: AttachDialogProps) {
               </span>
             </TotalPrice>
           )}
-          <button
+          <Button
             onClick={async () => {
               setLoading(true);
               try {
@@ -135,7 +135,9 @@ export default function AttachDialog(params?: AttachDialogProps) {
               }
             }}
             disabled={loading}
-            className="btn-firecrawl-orange inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 h-8 px-4 min-w-16 gap-2 disabled:pointer-events-none disabled:opacity-50"
+            variant="primary"
+            size="sm"
+            className="px-4 min-w-16 gap-2"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -146,7 +148,7 @@ export default function AttachDialog(params?: AttachDialogProps) {
                 </span>
               </>
             )}
-          </button>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

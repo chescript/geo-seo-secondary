@@ -3,12 +3,13 @@
 import React from 'react';
 import { X, Trash2, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
+import Image from 'next/image';
 
 interface Analysis {
   id: string;
-  companyName: string;
+  companyName?: string | null;
   url: string;
-  createdAt: string;
+  createdAt?: string | Date | null;
   competitors?: any[];
 }
 
@@ -97,13 +98,16 @@ export function AnalysisHistoryModal({
                         <div className="flex items-start gap-4">
                           {/* Favicon */}
                           <div className="w-12 h-12 rounded-lg bg-landing-background flex items-center justify-center flex-shrink-0 border border-landing-border">
-                            <img
+                            <Image
                               src={faviconUrl}
-                              alt={analysis.companyName}
+                              alt={analysis.companyName || 'Brand logo'}
+                              width={32}
+                              height={32}
                               className="w-8 h-8 object-contain"
                               onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                                const parent = e.currentTarget.parentElement;
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
                                 if (parent) {
                                   const fallback = document.createElement('div');
                                   fallback.className = 'w-full h-full flex items-center justify-center font-geist text-[16px] font-bold text-landing-muted';
@@ -141,7 +145,9 @@ export function AnalysisHistoryModal({
                             {/* Meta info */}
                             <div className="flex items-center gap-3 mt-3">
                               <span className="font-geist text-[11px] text-landing-muted">
-                                {format(new Date(analysis.createdAt), 'MMM d, yyyy')}
+                                {analysis.createdAt
+                                  ? format(new Date(analysis.createdAt), 'MMM d, yyyy')
+                                  : 'Date unavailable'}
                               </span>
                               {analysis.competitors && analysis.competitors.length > 0 && (
                                 <>

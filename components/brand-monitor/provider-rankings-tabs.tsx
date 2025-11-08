@@ -14,17 +14,21 @@ const getProviderIcon = (provider: string) => {
   switch (provider) {
     case 'OpenAI':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="OpenAI" 
+          width={28}
+          height={28}
           className="w-7 h-7"
         />
       );
     case 'Anthropic':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
           alt="Anthropic" 
+          width={24}
+          height={24}
           className="w-6 h-6"
         />
       );
@@ -41,9 +45,11 @@ const getProviderIcon = (provider: string) => {
       );
     case 'Perplexity':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="Perplexity" 
+          width={24}
+          height={24}
           className="w-6 h-6"
         />
       );

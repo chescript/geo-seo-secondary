@@ -8,7 +8,7 @@ import { handleApiError, AuthenticationError, NotFoundError } from '@/lib/api-er
 // DELETE /api/chat/[conversationId] - Delete a conversation
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { conversationId: string } }
+  { params }: { params: Promise<{ conversationId: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -19,7 +19,7 @@ export async function DELETE(
       throw new AuthenticationError('Please log in to manage conversations');
     }
 
-    const { conversationId } = params;
+    const { conversationId } = await params;
 
     // Verify the conversation belongs to the user
     const conversation = await db.query.conversations.findFirst({

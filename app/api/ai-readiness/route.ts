@@ -479,7 +479,17 @@ export async function POST(request: NextRequest) {
     const scrapeStartTime = Date.now();
     
     // Scrape the website using Firecrawl v2
-    let scrapeResult;
+    type ScrapePayload = {
+      html?: string;
+      content?: string;
+      metadata?: Record<string, any>;
+      data?: {
+        html?: string;
+        metadata?: Record<string, any>;
+      };
+    };
+
+    let scrapeResult: ScrapePayload | undefined;
     try {
       scrapeResult = await firecrawl.scrape(url, {
         formats: ['html'],
@@ -526,7 +536,7 @@ export async function POST(request: NextRequest) {
     
     // Calculate overall score with weighted categories
     // Refined weights based on benchmark testing
-    const weights = {
+    const weights: Record<string, number> = {
       // Page-Level Metrics (Most important)
       'readability': 1.5,         // Important but not overwhelming
       'heading-structure': 1.4,    // Good signal

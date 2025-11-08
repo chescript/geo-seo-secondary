@@ -6,6 +6,7 @@ import { CompetitorRanking, ProviderSpecificRanking } from '@/lib/types';
 import { IdentifiedCompetitor } from '@/lib/brand-monitor-reducer';
 import { VisibilityBarChart } from './visibility-bar-chart';
 import { ProviderPerformanceChart } from './provider-performance-chart';
+import Image from 'next/image';
 
 interface VisibilityScoreTabProps {
   competitors: CompetitorRanking[];
@@ -175,13 +176,16 @@ export function VisibilityScoreTab({
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="w-5 h-5 rounded flex items-center justify-center bg-landing-background flex-shrink-0">
                         {faviconUrl ? (
-                          <img
+                          <Image
                             src={faviconUrl}
                             alt={competitor.name}
+                            width={16}
+                            height={16}
                             className="w-4 h-4 object-contain"
                             onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              const fallback = e.currentTarget.nextSibling as HTMLDivElement;
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const fallback = target.nextSibling as HTMLDivElement;
                               if (fallback) fallback.style.display = 'flex';
                             }}
                           />

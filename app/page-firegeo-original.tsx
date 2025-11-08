@@ -260,7 +260,7 @@ export default function Home() {
               {openFaq === 0 && (
                 <div className="px-6 py-6">
                   <p className="text-zinc-600 leading-relaxed">
-                    FireGEO Monitor analyzes your brand's visibility across major AI platforms like ChatGPT, Claude, and Perplexity. Simply enter your website URL, and we'll show you how AI models rank your brand against competitors, what prompts trigger your appearance, and provide actionable insights to improve your AI visibility.
+                    FireGEO Monitor analyzes your brand&apos;s visibility across major AI platforms like ChatGPT, Claude, and Perplexity. Simply enter your website URL, and we&apos;ll show you how AI models rank your brand against competitors, what prompts trigger your appearance, and provide actionable insights to improve your AI visibility.
                   </p>
                 </div>
               )}
@@ -287,7 +287,7 @@ export default function Home() {
               {openFaq === 1 && (
                 <div className="px-6 py-6">
                   <p className="text-zinc-600 leading-relaxed">
-                    We monitor all major AI platforms including OpenAI's ChatGPT, Anthropic's Claude, Perplexity, Google's Gemini, and more. Our system continuously updates as new AI providers emerge, ensuring you always have comprehensive visibility across the AI landscape.
+                    We monitor all major AI platforms including OpenAI&apos;s ChatGPT, Anthropic&apos;s Claude, Perplexity, Google&apos;s Gemini, and more. Our system continuously updates as new AI providers emerge, ensuring you always have comprehensive visibility across the AI landscape.
                   </p>
                 </div>
               )}
@@ -341,7 +341,7 @@ export default function Home() {
               {openFaq === 3 && (
                 <div className="px-6 py-6">
                   <p className="text-zinc-600 leading-relaxed">
-                    You'll see your brand's visibility score, competitor rankings, which prompts trigger your appearance, response quality analysis, and specific recommendations to improve your AI presence. The platform also tracks trends over time and alerts you to significant changes.
+                    You&apos;ll see your brand&apos;s visibility score, competitor rankings, which prompts trigger your appearance, response quality analysis, and specific recommendations to improve your AI presence. The platform also tracks trends over time and alerts you to significant changes.
                   </p>
                 </div>
               )}

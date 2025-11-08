@@ -169,7 +169,8 @@ export type AnalysisStage =
   | 'generating-prompts'
   | 'analyzing-prompts'
   | 'calculating-scores'
-  | 'finalizing';
+  | 'finalizing'
+  | 'error';
 
 export interface ProgressData {
   stage: AnalysisStage;

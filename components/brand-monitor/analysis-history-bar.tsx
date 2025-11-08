@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { Clock, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { AnalysisHistoryModal } from './analysis-history-modal';
+import { Button } from '@/components/ui/button';
 
 interface Analysis {
   id: string;
-  companyName: string;
+  companyName?: string | null;
   url: string;
-  createdAt: string;
+  createdAt?: string | Date | null;
   competitors?: any[];
 }
 
@@ -31,6 +32,8 @@ export function AnalysisHistoryBar({
   const [modalOpen, setModalOpen] = useState(false);
 
   const currentAnalysis = analyses.find(a => a.id === currentAnalysisId);
+  const currentAnalysisDate =
+    currentAnalysis?.createdAt ? format(new Date(currentAnalysis.createdAt), 'MMM d, yyyy') : null;
 
   return (
     <>
@@ -47,11 +50,11 @@ export function AnalysisHistoryBar({
               </div>
               <div className="text-left">
                 <div className="font-geist text-[13px] font-semibold text-landing-base">
-                  {currentAnalysis ? (currentAnalysis.companyName || 'Untitled Analysis') : 'Analysis History'}
+                  {currentAnalysis ? (currentAnalysis?.companyName || 'Untitled Analysis') : 'Analysis History'}
                 </div>
                 <div className="font-geist text-[11px] text-landing-muted">
                   {currentAnalysis
-                    ? format(new Date(currentAnalysis.createdAt), 'MMM d, yyyy')
+                    ? currentAnalysisDate || 'Date unavailable'
                     : `${analyses.length} ${analyses.length === 1 ? 'analysis' : 'analyses'}`
                   }
                 </div>
@@ -59,14 +62,16 @@ export function AnalysisHistoryBar({
             </button>
 
             {/* New Analysis Button */}
-            <button
+            <Button
               onClick={() => onSelectAnalysis(null)}
               disabled={isLoading}
-              className="inline-flex h-[44px] items-center gap-2 rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] px-6 font-geist text-[14px] font-medium text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              variant="primary"
+              size="sm"
+              className="px-6 whitespace-nowrap"
             >
               <Plus className="w-4 h-4" />
               New Analysis
-            </button>
+            </Button>
           </div>
         </div>
       </div>

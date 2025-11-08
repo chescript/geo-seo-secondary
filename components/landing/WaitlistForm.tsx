@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export function WaitlistForm() {
   const [url, setUrl] = useState('');
@@ -42,13 +43,14 @@ export function WaitlistForm() {
             className="flex-1 bg-transparent outline-none font-geist text-[16px] text-[#111111] tracking-[-0.48px] placeholder:opacity-60 disabled:opacity-50"
           />
         </div>
-        <button
+        <Button
           type="submit"
           disabled={!url || status === 'loading'}
-          className="h-[44px] px-5 py-[14px] rounded-full bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] text-white font-geist font-medium text-[16px] tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+          variant="primary"
+          className="px-5"
         >
           {status === 'loading' ? 'Analyzing...' : 'Analyze Now'}
-        </button>
+        </Button>
       </form>
 
       <div className="flex items-center justify-center gap-4">

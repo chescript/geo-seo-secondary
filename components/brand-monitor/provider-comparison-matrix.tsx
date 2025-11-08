@@ -5,6 +5,7 @@ import { ProviderComparisonData } from '@/lib/types';
 import { ArrowUpDownIcon, ArrowUpIcon, ArrowDownIcon } from 'lucide-react';
 import { CompetitorCell } from './competitor-cell';
 import { getConfiguredProviders } from '@/lib/provider-config';
+import Image from 'next/image';
 
 interface ProviderComparisonMatrixProps {
   data: ProviderComparisonData[];
@@ -25,17 +26,21 @@ const getProviderIcon = (provider: string) => {
   switch (provider) {
     case 'OpenAI':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="OpenAI" 
+          width={28}
+          height={28}
           className="w-7 h-7"
         />
       );
     case 'Anthropic':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
           alt="Anthropic" 
+          width={20}
+          height={20}
           className="w-5 h-5"
         />
       );
@@ -52,9 +57,11 @@ const getProviderIcon = (provider: string) => {
       );
     case 'Perplexity':
       return (
-        <img 
+        <Image 
           src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
           alt="Perplexity" 
+          width={20}
+          height={20}
           className="w-5 h-5"
         />
       );

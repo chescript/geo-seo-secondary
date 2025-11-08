@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Product {
   id: string;
@@ -94,12 +95,11 @@ export function PublicPricingTable() {
               Community support
             </li>
           </ul>
-          <Link
-            href="/register"
-            className="btn-firecrawl-outline w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 h-10 px-4"
-          >
-            Start free
-          </Link>
+          <Button asChild variant="secondary" size="sm" className="w-full">
+            <Link href="/register">
+              Start free
+            </Link>
+          </Button>
         </div>
 
         {/* Pro - Featured */}
@@ -133,12 +133,11 @@ export function PublicPricingTable() {
               Priority support
             </li>
           </ul>
-          <Link
-            href="/register"
-            className="btn-firecrawl-orange w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 h-10 px-4"
-          >
-            Start free trial
-          </Link>
+          <Button asChild variant="primary" size="sm" className="w-full">
+            <Link href="/register">
+              Start free trial
+            </Link>
+          </Button>
         </div>
 
         {/* Enterprise */}
@@ -168,12 +167,11 @@ export function PublicPricingTable() {
               Dedicated support
             </li>
           </ul>
-          <Link
-            href="/contact"
-            className="btn-firecrawl-outline w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 h-10 px-4"
-          >
-            Contact sales
-          </Link>
+          <Button asChild variant="secondary" size="sm" className="w-full">
+            <Link href="/contact">
+              Contact sales
+            </Link>
+          </Button>
         </div>
       </div>
     );
@@ -224,14 +222,16 @@ export function PublicPricingTable() {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/register"
-              className={`${
-                isRecommended ? 'btn-firecrawl-orange' : 'btn-firecrawl-outline'
-              } w-full inline-flex items-center justify-center whitespace-nowrap rounded-[10px] text-sm font-medium transition-all duration-200 h-10 px-4`}
+            <Button
+              asChild
+              variant={isRecommended ? 'primary' : 'secondary'}
+              size="sm"
+              className="w-full"
             >
-              {product.properties?.is_free ? 'Start free' : 'Get started'}
-            </Link>
+              <Link href="/register">
+                {product.properties?.is_free ? 'Start free' : 'Get started'}
+              </Link>
+            </Button>
           </div>
         );
       })}

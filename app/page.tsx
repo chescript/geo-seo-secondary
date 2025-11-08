@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState, useRef, Suspense, useCallback } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { AnalysisResultsDashboard } from "@/components/ai-readiness/AnalysisResultsDashboard";
 import { LoadingPreview } from "@/components/landing/LoadingPreview";
+import { Button } from "@/components/ui/button";
 
 // Lazy load below-the-fold components with aggressive settings
 // Using ssr: false to defer execution and reduce initial bundle
@@ -183,13 +184,14 @@ export default function HomePage() {
                   className="flex-1 h-[44px] px-5 bg-[#f1f1f1] border-none rounded-full font-geist text-[16px] text-[#111111] placeholder:text-[#111111] placeholder:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#111111]"
                   disabled={isAnalyzing}
                 />
-                <button
+                <Button
                   onClick={handleAnalysis}
                   disabled={!url || isAnalyzing}
-                  className="h-[44px] px-5 bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] rounded-full font-geist font-medium text-[16px] text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all disabled:opacity-50 whitespace-nowrap"
+                  variant="primary"
+                  className="px-5"
                 >
                   {isAnalyzing ? "Analyzing..." : "Analyze Now"}
-                </button>
+                </Button>
               </div>
 
               {/* Feature Badges */}
@@ -243,7 +245,7 @@ export default function HomePage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-zinc-900 mb-4">
-                  Test Your Website's AI Readiness
+                  Test Your Website&apos;s AI Readiness
                 </h2>
                 <p className="text-zinc-600">Enter your URL to get a detailed analysis</p>
               </div>
@@ -272,10 +274,12 @@ export default function HomePage() {
                       <p className="absolute -bottom-6 left-0 text-sm text-red-500">{urlError}</p>
                     )}
                   </div>
-                  <button
+                  <Button
                     onClick={handleAnalysis}
                     disabled={!url || isAnalyzing}
-                    className="bg-gradient-to-r from-[#2b2b2b] to-[#050505] hover:from-[#333333] hover:to-[#1a1a1a] text-white px-8 py-4 text-base font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 transition-all duration-200"
+                    variant="primary"
+                    size="lg"
+                    className="px-8 shadow-[0px_20px_40px_rgba(5,5,5,0.35)]"
                   >
                     {isAnalyzing ? (
                       <span className="flex items-center gap-2">
@@ -286,7 +290,7 @@ export default function HomePage() {
                         Analyzing...
                       </span>
                     ) : 'Analyze Now'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -351,16 +355,17 @@ export default function HomePage() {
 
                   {/* Reset Button */}
                   <div className="text-center mt-8">
-                    <button
+                    <Button
                       onClick={() => {
                         setShowResults(false);
                         setAnalysisData(null);
                         setUrl("");
                       }}
-                      className="h-[44px] px-8 bg-gradient-to-b from-[#282828] to-[#0f0f0f] border-t border-[#7a7a7a] rounded-full font-geist font-medium text-[16px] text-white tracking-[-0.48px] hover:from-[#333333] hover:to-[#1a1a1a] transition-all"
+                      variant="primary"
+                      className="px-8"
                     >
                       Analyze Another Website
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </motion.section>
