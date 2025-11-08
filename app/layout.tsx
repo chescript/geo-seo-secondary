@@ -1,34 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Providers } from "@/components/providers";
+import "@fontsource/roboto-mono/400.css";
+import "@fontsource/roboto-mono/500.css";
+import "@fontsource/roboto-mono/700.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-  adjustFontFallback: false,
-});
+// Using local Geist fonts from the geist package (same fonts as Google Fonts)
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false, // Not critical for initial render
-  adjustFontFallback: false,
-});
+const geistSans = GeistSans;
 
-const robotoMono = Roboto_Mono({
+const geistMono = GeistMono;
+
+// Using Fontsource for Roboto Mono (same font as Google Fonts, but local)
+const robotoMono = {
   variable: "--font-roboto-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap",
-  preload: false, // Only used in specific components
-  adjustFontFallback: false,
-});
+  className: "", // Roboto Mono loaded via CSS imports above
+};
 
 // Custom local fonts - Only preload critical above-the-fold fonts
 const neueBit = localFont({
