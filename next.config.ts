@@ -38,16 +38,16 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react', 'recharts', '@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
     // Enable more aggressive optimizations
     optimisticClientCache: true,
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
   },
   // Modern JavaScript target - reduces polyfills
   transpilePackages: [],
@@ -71,8 +71,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Production optimizations
   productionBrowserSourceMaps: false, // Disable source maps in production for faster builds
-  optimizeFonts: true, // Enable font optimization
-  swcMinify: true, // Use SWC for minification (faster than Terser)
 
   // Webpack optimization for better chunking
   webpack: (config, { isServer }) => {

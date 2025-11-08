@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { ValidationError } from '@/lib/api-errors';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -214,9 +215,12 @@ function generateMockInsights(url: string = 'https://example.com') {
 export async function POST(request: NextRequest) {
   try {
     const { url, htmlContent, currentChecks } = await request.json();
-    
+
     if (!url || !htmlContent) {
-      return NextResponse.json({ error: 'URL and HTML content are required' }, { status: 400 });
+      throw new ValidationError('URL and HTML content are required', {
+        url: !url ? 'required' : undefined,
+        htmlContent: !htmlContent ? 'required' : undefined
+      });
     }
     
     const insights = await generateAIInsights(url, htmlContent, currentChecks || []);
@@ -229,19 +233,36 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('AI Analysis error:', error);
-    // Return mock data on error, using the url from request if available
+    // For validation errors, throw them properly
+    if (error instanceof ValidationError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: error.message,
+          code: error.code,
+          details: error.details
+        },
+        { status: error.statusCode }
+      );
+    }
+
+    // For other errors, log and return mock data as fallback (for demo purposes)
+    console.error('AI Analysis error - falling back to mock data:', error);
+    console.warn('⚠️ Using mock data due to API error. This is intentional for demo purposes.');
+
     try {
       const { url } = await request.clone().json();
       const mockData = generateMockInsights(url || 'https://example.com');
       return NextResponse.json({
         success: true,
+        usingMockData: true, // Flag to indicate mock data is being used
         ...mockData
       });
     } catch {
       const mockData = generateMockInsights('https://example.com');
       return NextResponse.json({
         success: true,
+        usingMockData: true,
         ...mockData
       });
     }
