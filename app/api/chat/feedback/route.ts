@@ -3,6 +3,13 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { messageFeedback, messages } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
+import {
+  handleApiError,
+  AuthenticationError,
+  ValidationError,
+  NotFoundError,
+  DatabaseError
+} from '@/lib/api-errors';
 
 // POST /api/chat/feedback - Submit feedback for a message
 export async function POST(request: NextRequest) {
@@ -12,13 +19,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError('You must be logged in to submit feedback');
     }
 
     const { messageId, helpful, rating, feedback } = await request.json();
 
     if (!messageId) {
-      return NextResponse.json({ error: 'Message ID required' }, { status: 400 });
+      throw new ValidationError('Message ID is required', { messageId: 'required' });
     }
 
     // Verify the message exists and belongs to the user
@@ -30,7 +37,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!message) {
-      return NextResponse.json({ error: 'Message not found' }, { status: 404 });
+      throw new NotFoundError('Message not found or you do not have access to it');
     }
 
     // Create or update feedback
@@ -67,11 +74,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(created);
     }
-  } catch (error: any) {
-    console.error('Feedback POST error:', error);
-    return NextResponse.json(
-      { error: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error, 'Failed to submit feedback');
   }
 }
