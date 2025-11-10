@@ -15,7 +15,7 @@ const getProviderIcon = (provider: string) => {
     case 'OpenAI':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
+          src="/providers/openai.svg" 
           alt="OpenAI" 
           width={28}
           height={28}
@@ -25,7 +25,7 @@ const getProviderIcon = (provider: string) => {
     case 'Anthropic':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
+          src="/Logos/anthropic.png" 
           alt="Anthropic" 
           width={24}
           height={24}
@@ -46,7 +46,7 @@ const getProviderIcon = (provider: string) => {
     case 'Perplexity':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
+          src="/Logos/perplexity-ai.png" 
           alt="Perplexity" 
           width={24}
           height={24}
@@ -113,15 +113,20 @@ const CompanyCell = ({
 
 // Generate a fallback URL from competitor name
 const generateFallbackUrl = (competitorName: string): string | undefined => {
-  const cleanName = competitorName.toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, '')
-    .trim();
-  
-  if (cleanName.length < 3 || ['inc', 'llc', 'corp', 'company', 'the'].includes(cleanName)) {
+  const stopWords = new Set(['inc', 'llc', 'corp', 'company', 'the', 'group', 'holdings', 'co']);
+  const tokens = competitorName
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .map(token => token.trim())
+    .filter(token => token.length >= 2 && !stopWords.has(token));
+
+  const cleanName = tokens.join('');
+
+  if (cleanName.length < 3) {
     return undefined;
   }
-  
+
   return `${cleanName}.com`;
 };
 

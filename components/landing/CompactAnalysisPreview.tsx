@@ -4,7 +4,6 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { EXAMPLE_URL, MOCK_CHECKS, MOCK_RECOMMENDATIONS } from './shared-constants';
-import Image from 'next/image';
 
 export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
 
@@ -62,7 +61,7 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                 <div className="content-stretch flex flex-col gap-[19.733px] items-start w-full md:w-[616.667px] mx-auto">
                   {/* Score Cards */}
                   <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex gap-[14.8px] items-center p-[12.333px] relative rounded-[7.4px] shrink-0 w-full">
-                    <Image alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" width={1} height={1} />
+                    <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                     {/* Overall Score */}
                     <div className="basis-0 content-stretch flex flex-col gap-[9.867px] grow items-start min-h-px min-w-px relative rounded-[9.867px] shrink-0">
@@ -159,9 +158,10 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        transition={{ delay: index * 0.05 }}
                         className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-center justify-center pb-[2.467px] pt-[14.8px] px-[12.333px] relative rounded-[7.4px]"
                       >
-                        <Image alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" width={1} height={1} />
+                        <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                         {/* Label at top */}
                         <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[8.633px] w-[min-content]">
@@ -216,7 +216,7 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         transition={{ delay: (index + 4) * 0.05 }}
                         className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-center justify-center pb-[2.467px] pt-[14.8px] px-[12.333px] relative rounded-[7.4px]"
                       >
-                        <Image alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" width={1} height={1} />
+                        <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                         {/* Label at top */}
                         <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[8.633px] w-[min-content]">
@@ -262,7 +262,7 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
 
                   {/* Key Recommendations */}
                   <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex flex-col gap-[14.8px] items-start justify-center px-[12.333px] py-[14.8px] relative rounded-[7.4px] shrink-0 w-full">
-                    <Image alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" width={1} height={1} />
+                    <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                     <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[11.1px] w-full">
                       <p className="leading-[1.4]">Key Recommendations</p>

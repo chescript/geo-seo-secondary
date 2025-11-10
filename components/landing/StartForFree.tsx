@@ -29,7 +29,7 @@ export function StartForFree() {
           <AnimatePresence mode="wait">
             <motion.h2
               key={phrases[activeIndex]}
-              className="font-mondwest text-[208.019px] leading-normal text-[#111111] tracking-[-6.2406px] whitespace-nowrap inline-flex items-center gap-12"
+              className="font-mondwest text-6xl sm:text-8xl md:text-9xl lg:text-[208.019px] leading-normal text-[#111111] tracking-[-6.2406px] whitespace-nowrap inline-flex items-center gap-4 sm:gap-8 md:gap-12"
               initial={{ opacity: 0, y: -80 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 80 }}

@@ -99,7 +99,7 @@ export default function EnhancedPricingTable({
             {!hasProSubscription && (
               <button
                 onClick={() => handlePlanAction('pro')}
-                className="inline-flex items-center gap-2 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] px-5 py-2 text-sm font-medium text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)]"
+                className="inline-flex items-center gap-2 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] px-5 py-2 text-sm font-medium text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] cursor-pointer disabled:cursor-not-allowed"
               >
                 Upgrade now <ArrowRight className="w-4 h-4" />
               </button>
@@ -166,7 +166,7 @@ export default function EnhancedPricingTable({
                   onClick={() => handlePlanAction(product.id)}
                   disabled={isButtonDisabled(product.id)}
                   className={cn(
-                    'w-full rounded-full border px-4 py-3 text-sm font-medium transition-all disabled:opacity-60',
+                    'w-full rounded-full border px-4 py-3 text-sm font-medium transition-all disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed',
                     isCurrent
                       ? 'border-[#d7d0c3] bg-[#f5f1e8] text-[#4a473f]'
                       : isRecommended
@@ -193,4 +193,3 @@ export default function EnhancedPricingTable({
     </div>
   );
 }
-

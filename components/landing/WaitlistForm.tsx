@@ -30,6 +30,19 @@ export function WaitlistForm() {
     'Instant results',
   ];
 
+  const FeatureIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <circle cx="9" cy="9" r="8.25" stroke="#111111" strokeWidth="1.5" />
+      <path
+        d="M5.5 9.1L7.35 11L12.5 5.9"
+        stroke="#111111"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
   return (
     <div className="w-full flex flex-col items-center gap-8">
       <form onSubmit={handleSubmit} className="flex items-center gap-3">
@@ -54,16 +67,12 @@ export function WaitlistForm() {
       </form>
 
       <div className="flex items-center justify-center gap-4">
-        {features.map((feature, index) => (
-          <div key={index} className="flex items-center gap-[6px]">
-            {/* Pixel check icon */}
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0Z" fill="#111111"/>
-              <path d="M7.5 11.5L5 9L6 8L7.5 9.5L11.5 5.5L12.5 6.5L7.5 11.5Z" fill="white"/>
-            </svg>
-            <span className="font-neueBit text-[18px] leading-[1.4] text-[#111111] tracking-[-0.54px]">{feature}</span>
-          </div>
-        ))}
+          {features.map((feature, index) => (
+            <div key={index} className="flex items-center gap-[6px]">
+              <FeatureIcon />
+              <span className="font-neueBit text-[18px] leading-[1.4] text-[#111111] tracking-[-0.54px]">{feature}</span>
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ Metadata coverage`;
             viewport={{ once: true }}
             className="flex flex-col gap-[24px] w-full"
           >
-            <h2 className="font-geist font-semibold text-[18px] leading-[1.4] text-black tracking-[-0.54px] w-full">
+            <h2 className="font-geist font-semibold text-lg leading-[1.4] text-black tracking-[-0.54px] w-full">
               Built for Indexing. Designed for Understanding.
             </h2>
             <p className="font-apercu text-[14px] leading-[1.8] text-[#818181] tracking-[-0.42px] uppercase w-full">
@@ -52,23 +52,23 @@ Metadata coverage`;
             transition={{ delay: 0.1 }}
             className="flex flex-col gap-[24px] w-full"
           >
-            <div className="flex gap-[24px] w-full">
+            <div className="flex flex-col md:flex-row gap-[24px] w-full">
               {/* Left Column */}
               <div className="flex-1 flex flex-col gap-[24px]">
-                <h3 className="font-geist font-semibold text-[18px] leading-[1.4] text-black tracking-[-0.54px]">
+                <h3 className="font-geist font-semibold text-lg leading-[1.4] text-black tracking-[-0.54px]">
                   More topics we analyze
                 </h3>
-                <p className="font-apercu text-[18px] leading-[2.4] text-[#818181] tracking-[-0.54px] uppercase whitespace-pre-line">
+                <p className="font-apercu text-lg leading-[2.4] text-[#818181] tracking-[-0.54px] uppercase whitespace-pre-line">
                   {leftColumnTopics}
                 </p>
               </div>
 
               {/* Right Column */}
               <div className="flex-1 flex flex-col gap-[24px]">
-                <h3 className="font-geist font-semibold text-[18px] leading-[1.4] text-black tracking-[-0.54px]">
+                <h3 className="font-geist font-semibold text-lg leading-[1.4] text-black tracking-[-0.54px]">
                   More topics we analyze
                 </h3>
-                <p className="font-apercu text-[18px] leading-[2.4] text-[#818181] tracking-[-0.54px] uppercase whitespace-pre-line">
+                <p className="font-apercu text-lg leading-[2.4] text-[#818181] tracking-[-0.54px] uppercase whitespace-pre-line">
                   {rightColumnTopics}
                 </p>
               </div>

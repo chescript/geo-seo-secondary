@@ -17,7 +17,7 @@ export const WantMoreSection = memo(function WantMoreSection() {
               {/* Left image - larger portion */}
               <div className="absolute left-0 top-0 w-[1116.67px] h-full">
                 <Image
-                  src="/images/def33a43a4ae0671dc6a317f72cf857fc64adc35.png"
+                  src="/Logos/image (4).png"
                   alt="Brand monitoring background illustration"
                   fill
                   loading="lazy"
@@ -30,8 +30,8 @@ export const WantMoreSection = memo(function WantMoreSection() {
               {/* Right image - overlapping */}
               <div className="absolute right-0 top-0 w-[580.09px] h-full">
                 <Image
-                  src="/images/image 1520.png"
-                  alt="AI models analysis illustration"
+                  src="/Logos/image (4).png"
+                  alt="Want more illustration"
                   fill
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, 580px"
@@ -46,29 +46,29 @@ export const WantMoreSection = memo(function WantMoreSection() {
               {/* Text content */}
               <div className="flex flex-col gap-[179px]">
                 <div className="flex flex-col gap-[32px]">
-                  <h2 className="font-neueBit text-[52px] leading-[0.9] text-white capitalize w-[474px]">
+                  <h2 className="font-neueBit text-4xl md:text-[52px] leading-[0.9] text-white capitalize w-full md:w-[474px]">
                     Want More? Track Your Brand Across AI Models
                   </h2>
-                  <p className="font-apercu text-[16px] leading-[1.8] text-white tracking-[-0.48px] uppercase w-[510px]">
+                  <p className="font-apercu text-base leading-[1.8] text-white tracking-[-0.48px] uppercase w-full md:w-[510px]">
                     Unlock Geoscanner Monitor - Analyze how ChatGPT, Claude, Perplexity and other AI models rank your brand against competitors in real-time.
                   </p>
                 </div>
 
                 {/* Buttons and footer text */}
                 <div className="flex flex-col gap-[16px]">
-                  <div className="flex items-center gap-[16px]">
-                    <Button asChild variant="primary">
+                  <div className="flex flex-col sm:flex-row items-center gap-[16px]">
+                    <Button asChild variant="primary" className="w-full sm:w-auto">
                       <Link href="/register">
                         Start free trial
                       </Link>
                     </Button>
-                    <Button asChild variant="secondary" className="px-4">
+                    <Button asChild variant="secondary" className="px-4 w-full sm:w-auto">
                       <Link href="/brand-monitor">
                         View brand monitor
                       </Link>
                     </Button>
                   </div>
-                  <p className="font-apercu text-[12px] leading-[1.8] text-white tracking-[-0.36px] uppercase w-[405px]">
+                  <p className="font-apercu text-xs leading-[1.8] text-white tracking-[-0.36px] uppercase w-full md:w-[405px]">
                     *Free tier includes 10 brand analyses per month *No credit card required
                   </p>
                 </div>

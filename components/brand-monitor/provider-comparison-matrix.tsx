@@ -27,7 +27,7 @@ const getProviderIcon = (provider: string) => {
     case 'OpenAI':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idR3duQxYl/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" 
+          src="/providers/openai.svg" 
           alt="OpenAI" 
           width={28}
           height={28}
@@ -37,7 +37,7 @@ const getProviderIcon = (provider: string) => {
     case 'Anthropic':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg" 
+          src="/Logos/anthropic.png" 
           alt="Anthropic" 
           width={20}
           height={20}
@@ -58,7 +58,7 @@ const getProviderIcon = (provider: string) => {
     case 'Perplexity':
       return (
         <Image 
-          src="https://cdn.brandfetch.io/idNdawywEZ/w/800/h/800/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" 
+          src="/Logos/perplexity-ai.png" 
           alt="Perplexity" 
           width={20}
           height={20}

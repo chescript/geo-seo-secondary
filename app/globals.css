@@ -435,26 +435,26 @@
 
 /* Custom font utility classes */
 .font-neueBit {
-  font-family: var(--font-neue-bit), system-ui, sans-serif !important;
+  font-family: var(--font-neue-bit), system-ui, sans-serif;
 }
 
 .font-mondwest {
-  font-family: var(--font-mondwest), serif !important;
+  font-family: var(--font-mondwest), serif;
 }
 
 .font-apercu {
-  font-family: var(--font-apercu-mono), 'Consolas', 'Monaco', monospace !important;
+  font-family: var(--font-apercu-mono), 'Consolas', 'Monaco', monospace;
 }
 
 .font-ascii {
-  font-family: var(--font-roboto-mono), 'Courier New', monospace !important;
+  font-family: var(--font-roboto-mono), 'Courier New', monospace;
 }
 
 /* Temporary alias for Figma's Overused Grotesk using Geist Sans
    Swap to real files by adding @font-face for 'Overused Grotesk' and
    changing this utility to that family when assets are available. */
 .font-overused {
-  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 /* Performance-optimized CSS animations for hero section */

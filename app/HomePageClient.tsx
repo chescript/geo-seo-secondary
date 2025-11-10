@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useRef, Suspense, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { Check } from "lucide-react";
 import { AnalysisResultsDashboard } from "@/components/ai-readiness/AnalysisResultsDashboard";
 import { LoadingPreview } from "@/components/landing/LoadingPreview";
 import { Button } from "@/components/ui/button";
@@ -50,14 +51,6 @@ const PixelArtCTA = dynamic(
   }
 );
 
-const Footer = dynamic(
-  () => import("@/components/footer").then(mod => ({ default: mod.Footer })),
-  {
-    ssr: false,
-    loading: () => <div className="min-h-[300px] bg-white" />
-  }
-);
-
 const StartForFree = dynamic(
   () => import("@/components/landing/StartForFree").then(mod => ({ default: mod.StartForFree })),
   {
@@ -73,6 +66,8 @@ const FooterBottomBanner = dynamic(
     loading: () => <div className="min-h-[50px] bg-white" />
   }
 );
+
+import FeaturesContainer from "@/components/landing/Features";
 
 export default function HomePageClient() {
   const [url, setUrl] = useState<string>("");
@@ -148,7 +143,7 @@ export default function HomePageClient() {
             {/* Title */}
             <div className="flex flex-col items-center gap-6">
               <h1
-                className="hero-title font-neueBit text-[80px] leading-[0.9] text-[#111111] w-[604px]"
+                className="hero-title font-neueBit text-5xl md:text-[80px] leading-[0.9] text-[#111111] w-full md:w-[604px]"
                 style={{ textTransform: 'none' }}
               >
                 Future-Proof Your Presence In The AI Web.
@@ -156,7 +151,7 @@ export default function HomePageClient() {
 
               {/* Subtitle */}
               <p
-                className="hero-subtitle font-apercu text-[16px] leading-[1.8] text-[#818181] tracking-[-0.48px] uppercase w-[572px]"
+                className="hero-subtitle font-apercu text-base leading-[1.8] text-[#818181] tracking-[-0.48px] uppercase w-full md:w-[572px]"
               >
                 Analyze how AI-ready your webpage is. Get instant insights on LLM compatibility, SEO, and metadata optimization.
               </p>
@@ -164,10 +159,10 @@ export default function HomePageClient() {
 
             {/* Analysis Form */}
             <div
-              className="hero-form flex flex-col items-center gap-8 w-full max-w-[398px]"
+              className="hero-form flex flex-col items-center gap-8 w-full"
             >
               {/* Input and Button */}
-              <div className="flex gap-3 w-full">
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-[398px]">
                 <input
                   type="text"
                   value={url}
@@ -181,48 +176,21 @@ export default function HomePageClient() {
                     }
                   }}
                   placeholder="Enter your website"
-                  className="flex-1 h-[44px] px-5 bg-[#f1f1f1] border-none rounded-full font-geist text-[16px] text-[#111111] placeholder:text-[#111111] placeholder:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#111111]"
+                  className="w-full h-[44px] px-5 bg-[#f1f1f1] border-none rounded-full font-geist text-[16px] text-[#111111] placeholder:text-[#111111] placeholder:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#111111]"
                   disabled={isAnalyzing}
                 />
                 <Button
                   onClick={handleAnalysis}
                   disabled={!url || isAnalyzing}
                   variant="primary"
-                  className="px-5"
+                  className="px-5 w-full sm:w-auto"
                 >
                   {isAnalyzing ? "Analyzing..." : "Analyze Now"}
                 </Button>
               </div>
 
               {/* Feature Badges */}
-              <div className="flex items-center justify-center gap-4">
-                <div className="flex items-center gap-[6px]">
-                  <div className="w-[18px] h-[18px] bg-[#111111] bg-opacity-10 rounded-[3px] flex items-center justify-center">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M3.75 6.25L2.5 5L3 4.5L3.75 5.25L6.75 2.25L7.25 2.75L3.75 6.25Z" fill="#111111"/>
-                    </svg>
-                  </div>
-                  <span className="font-neueBit text-[18px] leading-[1.4] text-[#111111] tracking-[-0.54px]">Free forever</span>
-                </div>
-
-                <div className="flex items-center gap-[6px]">
-                  <div className="w-[18px] h-[18px] bg-[#111111] bg-opacity-10 rounded-[3px] flex items-center justify-center">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M3.75 6.25L2.5 5L3 4.5L3.75 5.25L6.75 2.25L7.25 2.75L3.75 6.25Z" fill="#111111"/>
-                    </svg>
-                  </div>
-                  <span className="font-neueBit text-[18px] leading-[1.4] text-[#111111] tracking-[-0.54px]">No signup required</span>
-                </div>
-
-                <div className="flex items-center gap-[6px]">
-                  <div className="w-[18px] h-[18px] bg-[#111111] bg-opacity-10 rounded-[3px] flex items-center justify-center">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M3.75 6.25L2.5 5L3 4.5L3.75 5.25L6.75 2.25L7.25 2.75L3.75 6.25Z" fill="#111111"/>
-                    </svg>
-                  </div>
-                  <span className="font-neueBit text-[18px] leading-[1.4] text-[#111111] tracking-[-0.54px]">Instant results</span>
-                </div>
-              </div>
+              <FeaturesContainer />
 
               {urlError && (
                 <p className="text-sm text-red-500">{urlError}</p>
@@ -375,7 +343,7 @@ export default function HomePageClient() {
       </div>
 
       {/* Compact Analysis Preview Section */}
-      <CompactAnalysisPreview />
+      {!showResults && <CompactAnalysisPreview />}
 
       {/* Want More Section with Blue Gradient */}
       <WantMoreSection />
@@ -388,9 +356,6 @@ export default function HomePageClient() {
 
       {/* Pixel Art CTA Section (Second Want More) */}
       <PixelArtCTA />
-
-      {/* Footer - Main Content (Logo and Links) */}
-      <Footer />
 
       {/* Start For Free Section - Big Text */}
       <StartForFree />

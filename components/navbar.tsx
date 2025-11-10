@@ -92,7 +92,7 @@ export function Navbar() {
 
           <Link href="/" className="flex items-center gap-3 text-[#111111] cursor-pointer" aria-label="Geoscanner home">
 
-            <div className="flex h-8 w-8 items-center justify-center rounded-[18px] bg-[#111111]/5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-[18px]">
 
               <Image src="/logos/Logo.png" alt="Geoscanner" width={24} height={24} priority className="h-6 w-6 object-contain" />
 
