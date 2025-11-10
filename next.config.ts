@@ -1,9 +1,23 @@
 import type { NextConfig } from "next";
-import withBundleAnalyzer from '@next/bundle-analyzer';
 
-const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
+type ConfigTransformer = (config: NextConfig) => NextConfig;
+
+const passthrough: ConfigTransformer = (config) => config;
+
+const bundleAnalyzer: ConfigTransformer = (() => {
+  if (process.env.ANALYZE !== 'true') {
+    return passthrough;
+  }
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const withBundleAnalyzer = require('@next/bundle-analyzer') as typeof import('@next/bundle-analyzer');
+    return withBundleAnalyzer({ enabled: true });
+  } catch (error) {
+    console.warn("Failed to load '@next/bundle-analyzer'. Skipping bundle analysis.", error);
+    return passthrough;
+  }
+})();
 
 const nextConfig: NextConfig = {
   eslint: {
