@@ -299,8 +299,8 @@ test.describe("Brand Monitor Tests", () => {
     ).toBeVisible();
   });
 
-  test("should show provider rankings and analysis tabs", async ({ page }) => {
-    await page.goto(`${BASE_URL}/brand-monitor`);
+test("should show provider rankings and analysis tabs", async ({ page }) => {
+  await page.goto(`${BASE_URL}/brand-monitor`);
 
     // Create analysis and wait for results
     await createTeslaAnalysis(page);
@@ -316,10 +316,10 @@ test.describe("Brand Monitor Tests", () => {
     ).toBeVisible();
 
     // Look for provider-specific results
-    await expect(
-      page.locator("text=/google|bing|search.?engine/i")
-    ).toBeVisible();
-  });
+  await expect(
+    page.locator("text=/google|bing|search.?engine/i")
+  ).toBeVisible();
+});
 });
 
 // Helper functions
@@ -339,4 +339,24 @@ async function loginUser(page: any) {
 
   // Wait for redirect to dashboard or brand-monitor
   await page.waitForURL(/.*\/(dashboard|brand-monitor)/, { timeout: 10000 });
+}
+
+async function createTeslaAnalysis(page: any) {
+  // Ensure we're on the brand monitor page
+  if (!page.url().includes('/brand-monitor')) {
+    await page.goto(`${BASE_URL}/brand-monitor`);
+  }
+
+  const urlInput = page.locator('input[type="url"], input[placeholder*="tesla.com"]').first();
+  if (await urlInput.count()) {
+    await urlInput.fill('https://www.tesla.com');
+  }
+
+  const analyzeButton = page.locator('button:has-text("Analyze"), button:has-text("Scrape"), button:has-text("Start")').first();
+  if (await analyzeButton.count()) {
+    await analyzeButton.click();
+  }
+
+  // Give the UI a little time to process
+  await page.waitForTimeout(2000);
 }

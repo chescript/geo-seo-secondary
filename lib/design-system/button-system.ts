@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 export const buttonTokens = {
   base:
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-geist font-medium tracking-[-0.48px] leading-none text-[16px] transition-all duration-200 disabled:pointer-events-none disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/20 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-geist font-medium tracking-[-0.48px] leading-none text-[16px] transition-all duration-200 cursor-pointer disabled:pointer-events-none disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/20 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
   sizes: {
     sm: "h-9 px-4 text-[14px]",
     default: "h-11 px-5",

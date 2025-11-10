@@ -47,7 +47,7 @@ const providerIcons: Record<string, React.ReactNode> = {
 };
 
 // Default prompts
-const defaultPrompts: string[] = [
+export const defaultPrompts: string[] = [
   "What are the top 10 {industry} tools in 2024?",
   "List the best {industry} platforms available today",
   "Compare the top 5 {industry} tools including {brand}",
@@ -112,7 +112,7 @@ export function PromptsList({
           </div>
           <Button
             size="sm"
-            variant="outline"
+            variant="secondary"
             onClick={() => setShowAddPrompt(!showAddPrompt)}
             disabled={isAnalyzing}
             className="gap-2"

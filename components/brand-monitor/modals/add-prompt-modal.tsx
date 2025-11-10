@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@/components/ui/button';
 
 interface AddPromptModalProps {
   isOpen: boolean;
@@ -25,36 +26,54 @@ export function AddPromptModal({
   };
   
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 animate-fade-in">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Add Custom Prompt</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Enter a prompt that AI models will answer about your industry.
-          </p>
-          <textarea
-            value={promptText}
-            onChange={(e) => onPromptTextChange(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Example: What is the best AI scraper?"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
-            rows={3}
-            autoFocus
-          />
-          <div className="flex gap-3 mt-6">
-            <button
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+      <div className="bg-landing-background rounded-[32px] border border-landing-border shadow-[0_45px_120px_rgba(11,11,11,0.15)] max-w-lg w-full mx-4 animate-fade-in">
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <span className="inline-flex items-center justify-center gap-2 rounded-full border border-[#e4ded0] bg-[#fdfbf5] px-4 py-2 font-apercu text-[11px] uppercase tracking-[0.4em] text-[#7f7a71] mb-4">
+              Custom Prompt
+            </span>
+            <h3 className="font-neueBit text-[32px] leading-[0.9] text-landing-base">Add your own query</h3>
+            <p className="text-landing-muted font-geist text-[13px] mt-2">
+              Ask AI models a custom question about your industry or brand
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <label className="font-apercu text-[11px] uppercase tracking-[0.4em] text-landing-muted">
+              Your Prompt
+            </label>
+            <textarea
+              value={promptText}
+              onChange={(e) => onPromptTextChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Example: What is the best AI web scraper for production use?"
+              className="w-full rounded-2xl border border-[#e0dacf] bg-[#fdfbf5] px-4 py-3 text-[15px] text-landing-base placeholder:text-[#928d82] focus:border-landing-base focus:outline-none focus:ring-2 focus:ring-landing-base/60 transition-all shadow-[0_10px_30px_rgba(15,15,15,0.05)] resize-none"
+              rows={4}
+              autoFocus
+            />
+            <p className="text-xs text-landing-muted font-geist">
+              Tip: Ask specific questions to get more actionable insights. Press Shift+Enter for new line, Enter to submit.
+            </p>
+          </div>
+
+          <div className="flex gap-3 mt-8">
+            <Button
               onClick={onAdd}
               disabled={!promptText.trim()}
-              className="flex-1 h-10 px-4 rounded-[10px] text-sm font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 bg-orange-500 text-white hover:bg-orange-300 dark:bg-orange-500 dark:hover:bg-orange-300 dark:text-white [box-shadow:inset_0px_-2.108433723449707px_0px_0px_#c2410c,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(234,_88,_12,_58%)] hover:translate-y-[1px] hover:scale-[0.98] hover:[box-shadow:inset_0px_-1px_0px_0px_#c2410c,_0px_1px_3px_0px_rgba(234,_88,_12,_40%)] active:translate-y-[2px] active:scale-[0.97] active:[box-shadow:inset_0px_1px_1px_0px_#c2410c,_0px_1px_2px_0px_rgba(234,_88,_12,_30%)] disabled:shadow-none disabled:hover:translate-y-0 disabled:hover:scale-100"
+              variant="primary"
+              size="default"
+              className="flex-1"
             >
               Add Prompt
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={onClose}
-              className="px-4 h-10 rounded-[10px] text-sm font-medium transition-all duration-200 bg-[#36322F] text-[#fff] hover:bg-[#4a4542] [box-shadow:inset_0px_-2.108433723449707px_0px_0px_#171310,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(58,_33,_8,_58%)] hover:translate-y-[1px] hover:scale-[0.98] hover:[box-shadow:inset_0px_-1px_0px_0px_#171310,_0px_1px_3px_0px_rgba(58,_33,_8,_40%)] active:translate-y-[2px] active:scale-[0.97] active:[box-shadow:inset_0px_1px_1px_0px_#171310,_0px_1px_2px_0px_rgba(58,_33,_8,_30%)]"
+              variant="secondary"
+              size="default"
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       </div>

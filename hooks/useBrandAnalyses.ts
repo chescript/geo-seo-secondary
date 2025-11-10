@@ -17,7 +17,7 @@ export function useBrandAnalyses() {
     retry: (failureCount, error) => {
       // Don't retry on authentication or authorization errors
       if (error instanceof ClientApiError) {
-        if (error.isAuthenticationError() || error.isAuthorizationError()) {
+        if (error.isAuthenticationError()) {
           return false;
         }
       }
@@ -38,7 +38,7 @@ export function useBrandAnalysis(analysisId: string | null) {
     enabled: !!session?.user?.id && !!analysisId,
     retry: (failureCount, error) => {
       if (error instanceof ClientApiError) {
-        if (error.isAuthenticationError() || error.isAuthorizationError() || error.isNotFoundError()) {
+        if (error.isAuthenticationError() || error.isNotFoundError()) {
           return false;
         }
       }

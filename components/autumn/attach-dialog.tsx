@@ -108,9 +108,6 @@ export default function AttachDialog(params?: AttachDialogProps) {
                     featureId: option.feature_id,
                     quantity: option.quantity || 0,
                   })),
-                  returnUrl: window.location.origin + '/dashboard',
-                  successUrl: window.location.origin + '/dashboard',
-                  cancelUrl: window.location.origin + '/plans',
                 });
                 setOpen(false);
                 
@@ -254,7 +251,7 @@ export const QuantityInput = ({
     >
       <div className="flex items-center gap-1">
         <Button
-          variant="outline"
+          variant="secondary"
           size="icon"
           onClick={() =>
             currentValue > 0 && handleValueChange(currentValue - 1)
@@ -268,7 +265,7 @@ export const QuantityInput = ({
           {currentValue}
         </span>
         <Button
-          variant="outline"
+          variant="secondary"
           size="icon"
           onClick={() => handleValueChange(currentValue + 1)}
           className="h-6 w-6 pb-0.5"

@@ -50,7 +50,7 @@ export const WantMoreSection = memo(function WantMoreSection() {
                     Want More? Track Your Brand Across AI Models
                   </h2>
                   <p className="font-apercu text-[16px] leading-[1.8] text-white tracking-[-0.48px] uppercase w-[510px]">
-                    Unlock FireGEO Monitor - Analyze how ChatGPT, Claude, Perplexity and other AI models rank your brand against competitors in real-time.
+                    Unlock Geoscanner Monitor - Analyze how ChatGPT, Claude, Perplexity and other AI models rank your brand against competitors in real-time.
                   </p>
                 </div>
 

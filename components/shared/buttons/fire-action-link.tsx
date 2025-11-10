@@ -34,7 +34,7 @@ export function FireActionLink({
 
   if (onClick) {
     return (
-      <button onClick={onClick} className={baseClasses}>
+      <button onClick={onClick} className={cn(baseClasses, "cursor-pointer")}>
         {label}
       </button>
     );

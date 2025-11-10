@@ -268,7 +268,7 @@ export default function ControlPanel({
               }
             }
           })
-          .catch(error => {
+          .catch((error: unknown) => {
             console.error('AI analysis error:', error);
             // Remove loading tiles on error
             setCombinedChecks(prev => prev.filter(c => !(c as any).isLoading));

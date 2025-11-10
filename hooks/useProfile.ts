@@ -25,7 +25,7 @@ export function useProfile() {
     enabled: !!session?.user?.id,
     retry: (failureCount, error) => {
       if (error instanceof ClientApiError) {
-        if (error.isAuthenticationError() || error.isAuthorizationError()) {
+        if (error.isAuthenticationError()) {
           return false;
         }
       }
@@ -76,7 +76,7 @@ export function useSettings() {
     enabled: !!session?.user?.id,
     retry: (failureCount, error) => {
       if (error instanceof ClientApiError) {
-        if (error.isAuthenticationError() || error.isAuthorizationError()) {
+        if (error.isAuthenticationError()) {
           return false;
         }
       }

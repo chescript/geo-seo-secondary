@@ -478,18 +478,14 @@ export async function POST(request: NextRequest) {
     console.log('[AI-READY] Step 1/4: Starting Firecrawl scrape...');
     const scrapeStartTime = Date.now();
     
-    // Scrape the website using Firecrawl v2
-    type ScrapePayload = {
+    // Scrape the website using Firecrawl SDK (returns a Document-like object)
+    type FirecrawlDocument = {
       html?: string;
-      content?: string;
+      markdown?: string;
       metadata?: Record<string, any>;
-      data?: {
-        html?: string;
-        metadata?: Record<string, any>;
-      };
     };
 
-    let scrapeResult: ScrapePayload | undefined;
+    let scrapeResult: FirecrawlDocument | undefined;
     try {
       scrapeResult = await firecrawl.scrape(url, {
         formats: ['html'],
@@ -500,9 +496,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to scrape website. Please check the URL.' }, { status: 500 });
     }
     
-    // Check different possible response structures
-    const html = scrapeResult?.html || scrapeResult?.data?.html || scrapeResult?.content || '';
-    const metadata = scrapeResult?.metadata || scrapeResult?.data?.metadata || {};
+    // Extract content and metadata from Firecrawl document
+    const html = scrapeResult?.html || scrapeResult?.markdown || '';
+    const metadata = scrapeResult?.metadata || {};
     
     if (!html) {
       console.error('No HTML content found in response');

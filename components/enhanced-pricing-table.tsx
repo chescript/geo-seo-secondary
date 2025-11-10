@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -53,9 +53,6 @@ export default function EnhancedPricingTable({
       if (productId === 'pro' && subscriptionTier === 'free') {
         await attach({
           productId: 'pro',
-          returnUrl: `${window.location.origin}/plans?success=true`,
-          successUrl: `${window.location.origin}/plans?success=true`,
-          cancelUrl: `${window.location.origin}/plans`,
         });
       } else if (productId === 'free' && subscriptionTier === 'pro') {
         alert('To downgrade, please contact support or cancel your subscription from the dashboard.');
@@ -72,7 +69,7 @@ export default function EnhancedPricingTable({
     if (!isAuthenticated) return 'Get started';
     if (subscriptionLoading) return 'Loading...';
     if (productId === subscriptionTier) return 'Current plan';
-    if (productId === 'pro') return 'Upgrade to FireGEO Brand Monitor';
+    if (productId === 'pro') return 'Upgrade to Geoscanner Brand Monitor';
     if (productId === 'free') return 'Downgrade';
     return 'Select plan';
   };
@@ -92,7 +89,7 @@ export default function EnhancedPricingTable({
               </div>
               <div className="space-y-1">
                 <p className="font-neueBit text-[20px]">
-                  {hasProSubscription ? 'FireGEO Brand Monitor active' : 'Free Plan'}
+                  {hasProSubscription ? 'Geoscanner Brand Monitor active' : 'Free Plan'}
                 </p>
                 <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#6a665d]">
                   {hasProSubscription ? '100 analyses per month' : 'Upgrade for 100 analyses per month'}

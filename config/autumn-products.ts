@@ -112,11 +112,11 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
   },
   {
     id: 'pro',
-    name: 'FireGEO Brand Monitor',
+    name: 'Geoscanner Brand Monitor',
     description: 'Perfect for trying out our service',
     type: 'service',
     display: {
-      name: 'FireGEO Brand Monitor',
+      name: 'Geoscanner Brand Monitor',
       description: 'Perfect for trying out our service',
       button_text: 'Get started',
       recommend_text: 'POPULAR',

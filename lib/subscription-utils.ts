@@ -1,4 +1,5 @@
-import { autumn } from 'autumn-js/next';
+import { cache } from "react";
+import { Autumn as autumn } from "autumn-js";
 import { SUBSCRIPTION_TIERS, ERROR_MESSAGES } from '@/config/constants';
 
 /**
@@ -6,25 +7,37 @@ import { SUBSCRIPTION_TIERS, ERROR_MESSAGES } from '@/config/constants';
  * @param userId - The user's ID
  * @returns true if user has Pro subscription, false otherwise
  */
-export async function hasProSubscription(userId: string): Promise<boolean> {
-  try {
-    const customer = await autumn.getCustomer(userId);
-
-    if (!customer || !customer.products) {
+export const hasProSubscription = cache(
+  async (userId: string): Promise<boolean> => {
+    if (!userId) {
       return false;
     }
 
-    // Check if user has the Pro product attached
-    const hasProProduct = customer.products.some(
-      (product: any) => product.id === SUBSCRIPTION_TIERS.PRO
-    );
+    try {
+      const customerResult = await autumn.customers.get(userId);
 
-    return hasProProduct;
-  } catch (error) {
-    console.error('[SUBSCRIPTION] Error checking subscription:', error);
-    return false;
+      if (!customerResult.data) {
+        return false;
+      }
+
+      const customer = customerResult.data;
+
+      if (!customer || !customer.products) {
+        return false;
+      }
+
+      // Check if user has the Pro product attached
+      const hasProProduct = customer.products.some(
+        (product) => product.id === SUBSCRIPTION_TIERS.PRO && product.status === 'active'
+      );
+
+      return hasProProduct;
+    } catch (error) {
+      console.error(ERROR_MESSAGES.SUBSCRIPTION_CHECK_FAILED, error);
+      return false;
+    }
   }
-}
+);
 
 /**
  * Check if a user has access to a paid feature
@@ -40,7 +53,7 @@ export async function requireProSubscription(
   const hasPro = await hasProSubscription(userId);
 
   if (!hasPro) {
-    let errorMessage = ERROR_MESSAGES.SUBSCRIPTION_REQUIRED;
+    let errorMessage: string = ERROR_MESSAGES.SUBSCRIPTION_REQUIRED;
 
     if (featureName === 'chat') {
       errorMessage = ERROR_MESSAGES.SUBSCRIPTION_REQUIRED_CHAT;
@@ -69,5 +82,5 @@ export async function getSubscriptionTier(userId: string): Promise<'free' | 'pro
  */
 export async function getSubscriptionPlanName(userId: string): Promise<string> {
   const tier = await getSubscriptionTier(userId);
-  return tier === SUBSCRIPTION_TIERS.PRO ? 'FireGEO Brand Monitor' : 'Free Plan';
+  return tier === SUBSCRIPTION_TIERS.PRO ? 'Geoscanner Brand Monitor' : 'Free Plan';
 }

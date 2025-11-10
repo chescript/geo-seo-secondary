@@ -195,7 +195,7 @@ export function PublicPricingTable() {
           >
             {isRecommended && (
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm font-medium">
-                {product.display.recommend_text}
+                {product.display?.recommend_text}
               </div>
             )}
             <h3 className="text-2xl font-bold mb-2">

@@ -90,7 +90,7 @@ export function ProviderSelector({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
+            variant="secondary"
             className={cn(
               "w-full justify-between rounded-[32px] border border-[#d7d0c3] bg-[#fdfbf5] px-6 py-4 text-left shadow-[0_15px_45px_rgba(17,17,17,0.08)] transition-all hover:-translate-y-0.5 hover:border-[#111111] hover:bg-white",
               disabled && "cursor-not-allowed opacity-50",
@@ -194,16 +194,16 @@ export function ProviderSelector({
           {validProviders.length > 1 && (
             <div className="mt-5 grid gap-2 sm:grid-cols-2">
               <Button
-                variant="ghost"
-                size="sm"
+                variant="secondary"
+                size="default"
                 className="h-11 rounded-2xl border border-transparent bg-[#111111] font-apercu text-[11px] uppercase tracking-[0.35em] text-white hover:bg-[#000000]"
                 onClick={() => onSelectionChange(validProviders)}
               >
                 Select all
               </Button>
               <Button
-                variant="ghost"
-                size="sm"
+                variant="secondary"
+                size="default"
                 className="h-11 rounded-2xl border border-[#d7d0c3] bg-white font-apercu text-[11px] uppercase tracking-[0.35em] text-[#111111] hover:border-[#111111]"
                 onClick={() => onSelectionChange([validProviders[0]])}
               >

@@ -1,0 +1,13 @@
+# Geoscanner Robots.txt
+# Allow all search engines to crawl public pages
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /brand-monitor
+Disallow: /chat
+Disallow: /pricing
+
+# Sitemap
+Sitemap: https://firegeo.com/sitemap.xml

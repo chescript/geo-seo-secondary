@@ -15,8 +15,8 @@ export default function ScrambleText({
 }) {
   const [displayText, setDisplayText] = useState(text); // Initialize with final text to avoid hydration mismatch
   const [isClient, setIsClient] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
-  const startTimeRef = useRef<number>();
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startTimeRef = useRef<number | null>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
   const containerRef = useRef<HTMLSpanElement>(null);
 

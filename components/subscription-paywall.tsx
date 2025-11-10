@@ -35,10 +35,10 @@ export function SubscriptionPaywall({
           </div>
           <div className="space-y-3">
             <CardTitle className="font-neueBit text-[44px] leading-[0.9] text-[#111111]">
-              Upgrade to FireGEO Brand Monitor
+              Upgrade to Geoscanner Brand Monitor
             </CardTitle>
             <CardDescription className="font-apercu text-[13px] uppercase tracking-[0.3em] text-[#6a665d]">
-              {description || `${featureName} requires the FireGEO Brand Monitor plan.`}
+              {description || `${featureName} requires the Geoscanner Brand Monitor plan.`}
             </CardDescription>
           </div>
         </CardHeader>
@@ -75,7 +75,7 @@ export function SubscriptionPaywall({
               asChild
               className="h-12 rounded-full border border-[#0f0f0f] bg-gradient-to-b from-[#2b2b2b] to-[#050505] text-white font-medium shadow-[0_25px_60px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-all"
             >
-              <Link href="/plans">Upgrade to FireGEO Brand Monitor</Link>
+              <Link href="/plans">Upgrade to Geoscanner Brand Monitor</Link>
             </Button>
           </div>
         </CardContent>

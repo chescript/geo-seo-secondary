@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/utils/cn";
-import { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface SlateButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -60,7 +60,7 @@ export const SlateButton = React.forwardRef<
         ref={ref}
         className={cn(
           // Base styles
-          "inline-flex items-center justify-center rounded-12  transition-all",
+          "inline-flex items-center justify-center rounded-12  transition-all cursor-pointer",
           // Colors
           "bg-black-alpha-4 text-accent-black",
           "hover:bg-black-alpha-6",

@@ -64,7 +64,11 @@ async function createTestUser(page: any) {
       console.log("✅ Test user created successfully");
     }
   } catch (error) {
-    console.log("ℹ️ Test user creation skipped or failed:", error.message);
+    if (error instanceof Error) {
+      console.log("ℹ️ Test user creation skipped or failed:", error.message);
+    } else {
+      console.log("ℹ️ Test user creation skipped or failed with an unknown error.");
+    }
     // Don't fail setup if user creation fails (user might already exist)
   }
 }

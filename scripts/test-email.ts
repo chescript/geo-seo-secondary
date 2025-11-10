@@ -70,7 +70,9 @@ async function testEmail(recipientEmail: string) {
 
     console.log('✅ SUCCESS! Email sent successfully');
     console.log('\n📬 Email Details:');
-    console.log('   Message ID:', result.id);
+    if (result.data) {
+      console.log('   Message ID:', result.data.id);
+    }
     console.log('   Response:', JSON.stringify(result, null, 2));
     console.log('\n✅ Check your inbox at:', recipientEmail);
     console.log('   (Check spam folder if not in inbox)\n');

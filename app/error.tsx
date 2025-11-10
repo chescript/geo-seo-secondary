@@ -35,7 +35,7 @@ export default function GlobalError({
                   Application Error
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400">
-                  We're sorry, but something went wrong. Our team has been notified and we're working on a fix.
+                  We&apos;re sorry, but something went wrong. Our team has been notified and we&apos;re working on a fix.
                 </p>
               </div>
             </div>

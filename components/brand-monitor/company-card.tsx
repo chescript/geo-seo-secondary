@@ -3,6 +3,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Globe, Building2, ExternalLink, Plus, Trash2 } from 'lucide-react';
 import { Company } from '@/lib/types';
 import Image from 'next/image';
@@ -118,10 +119,12 @@ export function CompanyCard({
                 </span>
               </div>
             </div>
-            <button
+            <Button
               onClick={onAnalyze}
               disabled={analyzing}
-              className="ml-4 h-11 px-6 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
+              variant="primary"
+              size="default"
+              className="ml-4"
             >
               {analyzing ? (
                 <>
@@ -136,7 +139,7 @@ export function CompanyCard({
                   </svg>
                 </>
               )}
-            </button>
+            </Button>
           </div>
 
           <p className="font-apercu text-[13px] text-[#4a473f] mb-4 line-clamp-2">
@@ -247,27 +250,30 @@ export function CompanyCard({
               {/* Actions */}
               <div className="flex items-center gap-4 mt-8 pt-6 border-t border-[#ece8dd]">
                 {onAddCompetitor && (
-                  <button
+                  <Button
                     onClick={onAddCompetitor}
-                    className="h-11 px-5 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
+                    variant="primary"
+                    size="default"
                   >
                     <Plus className="w-4 h-4" />
                     Add Competitor
-                  </button>
+                  </Button>
                 )}
 
                 <div className="flex-1" />
 
                 {onContinueToAnalysis && (
-                  <button
+                  <Button
                     onClick={onContinueToAnalysis}
-                    className="h-11 px-8 rounded-full font-neueBit text-[15px] flex items-center gap-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 bg-[#111111] text-white hover:opacity-90 hover:scale-105 active:scale-95"
+                    variant="primary"
+                    size="default"
+                    className="px-8"
                   >
                     Continue to Analysis
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

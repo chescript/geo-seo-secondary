@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Providers } from "@/components/providers";
-import "@fontsource/roboto-mono/400.css";
-import "@fontsource/roboto-mono/500.css";
-import "@fontsource/roboto-mono/700.css";
+// Load Roboto Mono via Next.js font loader (no external CSS imports)
 
 // Using local Geist fonts from the geist package (same fonts as Google Fonts)
 import { GeistSans } from "geist/font/sans";
@@ -15,11 +14,13 @@ const geistSans = GeistSans;
 
 const geistMono = GeistMono;
 
-// Using Fontsource for Roboto Mono (same font as Google Fonts, but local)
-const robotoMono = {
+// Using Next.js Google Fonts for Roboto Mono
+const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
-  className: "", // Roboto Mono loaded via CSS imports above
-};
+  display: "swap",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 // Custom local fonts - Only preload critical above-the-fold fonts
 const neueBit = localFont({
@@ -50,8 +51,30 @@ const apercuMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FireGEO - AI Brand Visibility Platform",
+  title: "Geoscanner - AI Brand Visibility Platform",
   description: "Track how AI models rank your brand. Free AI-readiness checker + premium brand monitoring.",
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+  },
+  openGraph: {
+    title: "Geoscanner - AI Brand Visibility Platform",
+    description: "Track how AI models rank your brand. Free AI-readiness checker + premium brand monitoring.",
+    url: 'https://firegeo.com',
+    siteName: 'Geoscanner',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Geoscanner - AI Brand Visibility Platform",
+    description: "Track how AI models rank your brand. Free AI-readiness checker + premium brand monitoring.",
+  },
   other: {
     // Hint to browsers about resource priorities
     'color-scheme': 'light',

@@ -75,6 +75,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(created);
     }
   } catch (error) {
-    return handleApiError(error, 'Failed to submit feedback');
+    return handleApiError(error);
   }
 }

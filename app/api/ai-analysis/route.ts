@@ -217,10 +217,13 @@ export async function POST(request: NextRequest) {
     const { url, htmlContent, currentChecks } = await request.json();
 
     if (!url || !htmlContent) {
-      throw new ValidationError('URL and HTML content are required', {
-        url: !url ? 'required' : undefined,
-        htmlContent: !htmlContent ? 'required' : undefined
-      });
+      throw new ValidationError(
+        'URL and HTML content are required',
+        {
+          ...( !url ? { url: 'required' } : {} ),
+          ...( !htmlContent ? { htmlContent: 'required' } : {} ),
+        }
+      );
     }
     
     const insights = await generateAIInsights(url, htmlContent, currentChecks || []);
@@ -240,7 +243,7 @@ export async function POST(request: NextRequest) {
           success: false,
           error: error.message,
           code: error.code,
-          details: error.details
+          details: error.fields
         },
         { status: error.statusCode }
       );

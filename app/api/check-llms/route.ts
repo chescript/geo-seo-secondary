@@ -83,6 +83,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(results);
 
   } catch (error) {
-    return handleApiError(error, 'Failed to check LLMs.txt');
+    return handleApiError(error);
   }
 }

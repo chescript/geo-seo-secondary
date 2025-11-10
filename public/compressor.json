@@ -1,0 +1,8 @@
+{
+  "configs": [
+    { "extension": "avif", "quality": 60, "scale": 1 },
+    { "extension": "avif", "quality": 50, "scale": 2 },
+    { "extension": "webp", "quality": 80, "scale": 1 },
+    { "extension": "webp", "quality": 70, "scale": 2 }
+  ]
+}

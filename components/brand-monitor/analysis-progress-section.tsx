@@ -1,12 +1,14 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, Trash2, CheckIcon } from 'lucide-react';
+import { Loader2, Plus, Trash2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Company, AnalysisStage } from '@/lib/types';
 import { IdentifiedCompetitor, PromptCompletionStatus } from '@/lib/brand-monitor-reducer';
 import { getEnabledProviders } from '@/lib/provider-config';
 import Image from 'next/image';
+import { defaultPrompts } from '@/components/brand-monitor/prompts-list';
+import Tooltip from '@/components/ui/shadcn/tooltip';
 
 interface AnalysisProgressSectionProps {
   company: Company;
@@ -153,19 +155,32 @@ export function AnalysisProgressSection({
                 </CardDescription>
               )}
               {analyzing && analysisProgress && (
-                <div className="mt-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <CardDescription className="flex items-center gap-2 font-geist text-[12px] font-medium text-[#8b867c]">
+                <div className="mt-4 space-y-3">
+                  <div className="rounded-[18px] border border-[#e4ded0] bg-[#fdfbf5] px-4 py-3">
+                    <div className="flex items-center gap-2 mb-1">
                       <Loader2 className="w-4 h-4 animate-spin text-[#111111]" />
-                      <span className="text-[#111111]">{analysisProgress.message}</span>
+                      <span className="font-apercu text-[10px] uppercase tracking-[0.35em] text-[#8b867c]">
+                        What&apos;s happening now
+                      </span>
+                    </div>
+                    <p className="font-geist text-[14px] font-medium text-[#111111]">
+                      {analysisProgress.message}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between mb-2">
+                    <CardDescription className="font-apercu text-[10px] uppercase tracking-[0.35em] text-[#8b867c]">
+                      Overall Progress
                     </CardDescription>
                     <span className="font-geist text-[16px] font-semibold text-[#111111]">{analysisProgress.progress}%</span>
                   </div>
-                  <div className="w-full bg-[#e8e1d5] rounded-full h-2 overflow-hidden">
-                    <div 
-                      className="bg-[#111111] h-2 rounded-full transition-all duration-500 ease-out"
+                  <div className="w-full bg-[#e8e1d5] rounded-full h-2.5 overflow-hidden shadow-inner">
+                    <div
+                      className="bg-gradient-to-r from-[#111111] to-[#2b2b2b] h-2.5 rounded-full transition-all duration-500 ease-out relative"
                       style={{ width: `${analysisProgress.progress}%` }}
-                    />
+                    >
+                      <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                    </div>
                   </div>
                 </div>
               )}
@@ -218,30 +233,53 @@ export function AnalysisProgressSection({
                             const provider = config.name;
                             const normalizedPrompt = prompt.trim();
                             const status = analyzing ? (promptCompletionStatus[normalizedPrompt]?.[provider] || 'pending') : null;
-                            
+
+                            // Get status description for tooltip
+                            const getStatusDescription = (status: string | null) => {
+                              if (!status) return '';
+                              switch (status) {
+                                case 'pending':
+                                  return `${provider}: Waiting to start`;
+                                case 'running':
+                                  return `${provider}: Currently analyzing`;
+                                case 'completed':
+                                  return `${provider}: Analysis complete`;
+                                case 'failed':
+                                  return `${provider}: Analysis failed`;
+                                case 'skipped':
+                                  return `${provider}: Skipped`;
+                                default:
+                                  return provider;
+                              }
+                            };
+
                             return (
                               <div key={`${prompt}-${provider}`} className="flex items-center gap-1">
-                                <div className="w-6 h-6 flex items-center justify-center">
-                                  {getProviderIcon(provider)}
-                                </div>
+                                <Tooltip description={analyzing ? '' : provider}>
+                                  <div className="w-6 h-6 flex items-center justify-center">
+                                    {getProviderIcon(provider)}
+                                  </div>
+                                </Tooltip>
                                 {analyzing && (
-                                  <>
-                                    {status === 'pending' && (
-                                      <div className="w-3.5 h-3.5 rounded-full border border-[#d7d0c3]" />
-                                    )}
-                                    {status === 'running' && (
-                                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#111111]" />
-                                    )}
-                                    {status === 'completed' && (
-                                      <CheckIcon className="w-3.5 h-3.5 text-[#1f8f4d]" />
-                                    )}
-                                    {status === 'failed' && (
-                                      <div className="w-3.5 h-3.5 rounded-full bg-[#c94135]" />
-                                    )}
-                                    {status === 'skipped' && (
-                                      <div className="w-3.5 h-3.5 rounded-full bg-[#b2ada1]" />
-                                    )}
-                                  </>
+                                  <Tooltip description={getStatusDescription(status)}>
+                                    <>
+                                      {status === 'pending' && (
+                                        <div className="w-3.5 h-3.5 rounded-full border border-[#d7d0c3]" />
+                                      )}
+                                      {status === 'running' && (
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#111111]" />
+                                      )}
+                                      {status === 'completed' && (
+                                        <Check className="w-3.5 h-3.5 text-[#1f8f4d]" />
+                                      )}
+                                      {status === 'failed' && (
+                                        <div className="w-3.5 h-3.5 rounded-full bg-[#c94135]" />
+                                      )}
+                                      {status === 'skipped' && (
+                                        <div className="w-3.5 h-3.5 rounded-full bg-[#b2ada1]" />
+                                      )}
+                                    </>
+                                  </Tooltip>
                                 )}
                               </div>
                             );

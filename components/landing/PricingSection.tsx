@@ -131,7 +131,7 @@ export const PricingSection = memo(function PricingSection() {
               {/* Header */}
               <div className="flex flex-col gap-2">
                 <h3 className="font-geist font-semibold text-[16px] leading-[1.2] text-[#111111] tracking-[-0.48px] capitalize">
-                  FireGEO Brand Monitor
+                  Geoscanner Brand Monitor
                 </h3>
                 <p className="font-apercu text-[14px] leading-[1.4] text-[#818181] tracking-[-0.42px] uppercase">
                   Perfect for trying out our service

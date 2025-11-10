@@ -253,7 +253,8 @@ export const ERROR_MESSAGES = {
   SUBSCRIPTION_REQUIRED: 'This feature requires a Pro subscription. Please upgrade your plan.',
   SUBSCRIPTION_REQUIRED_CHAT: 'AI Chat is only available on the Pro plan. Upgrade to access unlimited conversations.',
   SUBSCRIPTION_REQUIRED_BRAND_MONITOR: 'Brand Monitoring is only available on the Pro plan. Upgrade to access unlimited analyses.',
-  MONTHLY_LIMIT_EXCEEDED: 'You have reached your monthly analysis limit. Upgrade to FireGEO Brand Monitor for 100 analyses per month.',
+  MONTHLY_LIMIT_EXCEEDED: 'You have reached your monthly analysis limit. Upgrade to Geoscanner Brand Monitor for 100 analyses per month.',
+  SUBSCRIPTION_CHECK_FAILED: 'Failed to verify subscription status. Please try again.',
   USAGE_TRACKING_FAILED: 'Failed to track usage. Please try again.',
 } as const;
 

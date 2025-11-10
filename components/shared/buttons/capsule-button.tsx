@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/utils/cn";
-import { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import AnimatedWidth from "@/components/shared/layout/animated-width";
 
@@ -76,7 +76,7 @@ export function CapsuleButton({
     <button
       className={cn(
         // Base styles
-        "inline-flex items-center justify-center rounded-full  transition-all duration-200",
+        "inline-flex items-center justify-center rounded-full  transition-all duration-200 cursor-pointer",
         // Size
         sizeClasses[size],
         // Variant

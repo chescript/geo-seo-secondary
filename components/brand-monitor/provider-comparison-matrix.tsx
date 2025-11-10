@@ -2,7 +2,7 @@
 
 import React, { useState, Fragment } from 'react';
 import { ProviderComparisonData } from '@/lib/types';
-import { ArrowUpDownIcon, ArrowUpIcon, ArrowDownIcon } from 'lucide-react';
+import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { CompetitorCell } from './competitor-cell';
 import { getConfiguredProviders } from '@/lib/provider-config';
 import Image from 'next/image';
@@ -103,9 +103,22 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
   
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 bg-landing-card rounded-[6px] border border-landing-border">
-        <p className="text-landing-base font-geist text-[16px] font-medium mb-2">No comparison data available</p>
-        <p className="text-landing-muted font-geist text-[13px]">The analysis may still be processing or no providers returned data.</p>
+      <div className="text-center py-16 px-6 bg-landing-card rounded-[22px] border border-landing-border">
+        <div className="max-w-md mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-[#f1f0ed] flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-landing-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 className="text-landing-base font-neueBit text-[24px] mb-2">No comparison data yet</h3>
+          <p className="text-landing-muted font-geist text-[14px] leading-relaxed mb-4">
+            The analysis may still be processing, or no providers returned data for your competitors.
+          </p>
+          <div className="inline-flex items-center gap-2 text-landing-muted font-geist text-[12px] uppercase tracking-[0.3em]">
+            <div className="w-2 h-2 rounded-full bg-landing-muted animate-pulse" />
+            <span>Check back in a moment</span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -175,10 +188,10 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
 
   // Get sort icon
   const getSortIcon = (column: string) => {
-    if (sortColumn !== column) return <ArrowUpDownIcon className="w-4 h-4 opacity-30" />;
-    if (sortDirection === 'asc') return <ArrowUpIcon className="w-4 h-4" />;
-    if (sortDirection === 'desc') return <ArrowDownIcon className="w-4 h-4" />;
-    return <ArrowUpDownIcon className="w-4 h-4" />;
+    if (sortColumn !== column) return <ArrowUpDown className="w-4 h-4 opacity-30" />;
+    if (sortDirection === 'asc') return <ArrowUp className="w-4 h-4" />;
+    if (sortDirection === 'desc') return <ArrowDown className="w-4 h-4" />;
+    return <ArrowUpDown className="w-4 h-4" />;
   };
 
   // If no providers are included, don't render the component
@@ -220,17 +233,24 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
         </thead>
         <tbody>
           {getSortedData().map((competitor, rowIndex) => {
-            const competitorData = competitors?.find(c => 
-              c.name === competitor.competitor || 
+            const competitorData = competitors?.find(c =>
+              c.name === competitor.competitor ||
               c.name.toLowerCase() === competitor.competitor.toLowerCase()
             );
-            
+
             // Generate URL if not found - try to guess from competitor name
             const fallbackUrl = !competitorData?.url ? generateFallbackUrl(competitor.competitor) : undefined;
-            
+
             return (
-              <tr key={competitor.competitor} className={rowIndex > 0 ? 'border-t border-landing-border' : ''}>
-                <td className="border-r border-landing-border bg-landing-card">
+              <tr
+                key={competitor.competitor}
+                className={`
+                  ${rowIndex > 0 ? 'border-t border-landing-border' : ''}
+                  ${rowIndex % 2 === 1 ? 'bg-[#faf9f6]' : 'bg-white'}
+                  hover:bg-[#f1f0ed] transition-colors duration-150
+                `}
+              >
+                <td className="border-r border-landing-border">
                   <CompetitorCell
                     name={competitor.competitor}
                     isOwn={competitor.isOwn}
@@ -247,12 +267,18 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
                       key={provider}
                       className={`text-center p-3 ${
                         index < providers.length - 1 ? 'border-r border-landing-border' : ''
-                      }`}
+                      } relative group`}
                       style={getBackgroundStyle(score)}
+                      title={`${competitor.competitor} visibility on ${provider}: ${score}%`}
                     >
                       <span className="text-landing-base font-geist text-[13px] font-medium">
                         {score}%
                       </span>
+                      {score === 0 && (
+                        <span className="absolute opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-landing-muted">
+                          No data
+                        </span>
+                      )}
                     </td>
                   );
                 })}
@@ -263,4 +289,4 @@ export function ProviderComparisonMatrix({ data, brandName, competitors }: Provi
       </table>
     </div>
   );
-} 
+}

@@ -42,12 +42,14 @@ export const sendEmail = async ({
       from: fromAddress,
       to,
       subject,
-      text,
-      html: html || text,
+      text: text || html || '',
+      html: html || text || '',
     });
 
     console.log('✅ [EMAIL] Email sent successfully!');
-    console.log('📧 [EMAIL] Message ID:', data.id);
+    if (data.data) {
+      console.log('📧 [EMAIL] Message ID:', data.data.id);
+    }
     console.log('📧 [EMAIL] Full response:', JSON.stringify(data, null, 2));
     console.log('📧 [EMAIL] ========================================\n');
     return data;

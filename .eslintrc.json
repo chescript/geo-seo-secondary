@@ -5,7 +5,8 @@
     "@next/next/no-img-element": "off",
     "react-hooks/exhaustive-deps": "off",
     "no-unused-vars": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "react/no-unescaped-entities": "off"
   }
 }
 

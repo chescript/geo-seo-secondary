@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import defaultTheme from "tailwindcss/defaultTheme";
-import { Config } from "tailwindcss/types/config";
+import { Config } from "tailwindcss";
 
 import colorsJson from "./colors.json";
 
@@ -265,11 +265,7 @@ const themeConfig: Config = {
           }
         ]
       },
-      colors: {
-        transparent: "transparent",
-        current: "currentColor",
-        ...colors
-      },
+
       screens: {
         xs: { min: "390px" },
         "xs-max": { max: "389px" },
@@ -327,10 +323,8 @@ const themeConfig: Config = {
       })()
     }
   },
-  variants: { extend: { top: ["before"] } },
-  corePlugins: {
-    container: false
-  },
+
+
   plugins: [
     ({
       addUtilities, matchUtilities

@@ -78,7 +78,7 @@ const ProductChangeDialog = ({ open, setOpen, preview }: ProductChangeDialogProp
         
         <DialogFooter className="flex-col sm:flex-row gap-2">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => setOpen(false)}
             disabled={isLoading}
           >

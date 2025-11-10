@@ -69,9 +69,9 @@ export function useCredits() {
   const { data: session } = useSession();
   
   return useQuery<{ allowed: boolean; balance: number }>({
-    queryKey: [CACHE_KEYS.CREDITS, session?.user?.id],
+    queryKey: [CACHE_KEYS.SUBSCRIPTION, session?.user?.id],
     queryFn: async () => {
-      const res = await fetch(API_ENDPOINTS.CREDITS);
+      const res = await fetch(API_ENDPOINTS.SUBSCRIPTION);
       return parseApiResponse<{ allowed: boolean; balance: number }>(res);
     },
     enabled: !!session?.user?.id,

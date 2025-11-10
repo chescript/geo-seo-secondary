@@ -41,6 +41,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('❌ [GENERATE-PROMPTS API] Error:', error);
     console.log('🎯 [GENERATE-PROMPTS API] ========================================\n');
-    return handleApiError(error, 'Failed to generate prompts');
+    return handleApiError(error);
   }
 }
