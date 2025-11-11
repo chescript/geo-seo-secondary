@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 // Lazy load below-the-fold components with aggressive settings
 // Using ssr: false to defer execution and reduce initial bundle
 const CompactAnalysisPreview = dynamic(
-  () => import("@/components/landing/CompactAnalysisPreview").then(mod => ({ default: mod.CompactAnalysisPreview })),
+  () => import("@/components/landing/CompactAnalysisPreview").then(mod => mod.CompactAnalysisPreview),
   {
     ssr: false,
     loading: () => <div className="min-h-[600px] bg-white" />
@@ -20,7 +20,7 @@ const CompactAnalysisPreview = dynamic(
 );
 
 const WantMoreSection = dynamic(
-  () => import("@/components/landing/WantMoreSection").then(mod => ({ default: mod.WantMoreSection })),
+  () => import("@/components/landing/WantMoreSection").then(mod => mod.WantMoreSection),
   {
     ssr: false,
     loading: () => <div className="min-h-[560px] bg-white" />
@@ -28,7 +28,7 @@ const WantMoreSection = dynamic(
 );
 
 const PricingSection = dynamic(
-  () => import("@/components/landing/PricingSection").then(mod => ({ default: mod.PricingSection })),
+  () => import("@/components/landing/PricingSection").then(mod => mod.PricingSection),
   {
     ssr: false,
     loading: () => <div className="min-h-[400px] bg-white" />
@@ -36,7 +36,7 @@ const PricingSection = dynamic(
 );
 
 const TopicsSection = dynamic(
-  () => import("@/components/landing/TopicsSection").then(mod => ({ default: mod.TopicsSection })),
+  () => import("@/components/landing/TopicsSection").then(mod => mod.TopicsSection),
   {
     ssr: false,
     loading: () => <div className="min-h-[400px] bg-white" />
@@ -44,7 +44,7 @@ const TopicsSection = dynamic(
 );
 
 const PixelArtCTA = dynamic(
-  () => import("@/components/landing/PixelArtCTA").then(mod => ({ default: mod.PixelArtCTA })),
+  () => import("@/components/landing/PixelArtCTA").then(mod => mod.PixelArtCTA),
   {
     ssr: false,
     loading: () => <div className="min-h-[600px] bg-white" />
@@ -52,7 +52,7 @@ const PixelArtCTA = dynamic(
 );
 
 const StartForFree = dynamic(
-  () => import("@/components/landing/StartForFree").then(mod => ({ default: mod.StartForFree })),
+  () => import("@/components/landing/StartForFree").then(mod => mod.StartForFree),
   {
     ssr: false,
     loading: () => <div className="min-h-[200px] bg-white" />
@@ -60,7 +60,7 @@ const StartForFree = dynamic(
 );
 
 const FooterBottomBanner = dynamic(
-  () => import("@/components/footer").then(mod => ({ default: mod.FooterBottomBanner })),
+  () => import("@/components/footer").then(mod => mod.FooterBottomBanner),
   {
     ssr: false,
     loading: () => <div className="min-h-[50px] bg-white" />

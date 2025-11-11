@@ -17,7 +17,7 @@ export const WantMoreSection = memo(function WantMoreSection() {
               {/* Left image - larger portion */}
               <div className="absolute left-0 top-0 w-[1116.67px] h-full">
                 <Image
-                  src="/Logos/image (4).png"
+                  src="/Logos/brand-monitoring-bg.png"
                   alt="Brand monitoring background illustration"
                   fill
                   loading="lazy"
@@ -30,7 +30,7 @@ export const WantMoreSection = memo(function WantMoreSection() {
               {/* Right image - overlapping */}
               <div className="absolute right-0 top-0 w-[580.09px] h-full">
                 <Image
-                  src="/Logos/image (4).png"
+                  src="/Logos/brand-monitoring-bg.png"
                   alt="Want more illustration"
                   fill
                   loading="lazy"

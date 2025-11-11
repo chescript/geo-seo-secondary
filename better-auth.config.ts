@@ -12,8 +12,6 @@ const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
 };
 
 export const auth = betterAuth({
@@ -30,11 +28,6 @@ export const auth = betterAuth({
       clientId: env.GOOGLE_CLIENT_ID || '',
       clientSecret: env.GOOGLE_CLIENT_SECRET || '',
       enabled: !!(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
-    },
-    github: {
-      clientId: env.GITHUB_CLIENT_ID || '',
-      clientSecret: env.GITHUB_CLIENT_SECRET || '',
-      enabled: !!(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET),
     },
   },
   trustedOrigins: [env.NEXT_PUBLIC_APP_URL],
