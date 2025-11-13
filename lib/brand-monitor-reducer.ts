@@ -41,6 +41,10 @@ export type BrandMonitorAction =
       type: "UPDATE_PROMPT_STATUS";
       payload: { prompt: string; provider: string; status: PromptStatus };
     }
+  | {
+      type: "UPDATE_PROMPT_ERROR";
+      payload: { prompt: string; provider: string; error: string };
+    }
   | { type: "SET_ANALYZING_PROMPTS"; payload: string[] }
   | { type: "SET_ANALYSIS_TILES"; payload: AnalysisTile[] }
   | {
@@ -85,6 +89,12 @@ export type PromptStatus =
 export interface PromptCompletionStatus {
   [promptKey: string]: {
     [provider: string]: PromptStatus;
+  };
+}
+
+export interface PromptErrorMessages {
+  [promptKey: string]: {
+    [provider: string]: string | undefined;
   };
 }
 
@@ -175,6 +185,7 @@ export interface BrandMonitorState {
   // Analysis progress
   analysisProgress: AnalysisProgressState;
   promptCompletionStatus: PromptCompletionStatus;
+  promptErrorMessages: PromptErrorMessages;
   analysisTiles: AnalysisTile[];
   statusUpdateCount: number;
 
@@ -222,6 +233,7 @@ export const initialBrandMonitorState: BrandMonitorState = {
     partialResults: [],
   },
   promptCompletionStatus: {},
+  promptErrorMessages: {},
   analysisTiles: [],
   statusUpdateCount: 0,
   activeResultsTab: "matrix",
@@ -349,6 +361,20 @@ export function brandMonitorReducer(
           },
         },
         statusUpdateCount: state.statusUpdateCount + 1,
+      };
+
+    case "UPDATE_PROMPT_ERROR":
+      const errorPrompt = action.payload.prompt.trim();
+      const errorProvider = action.payload.provider;
+      return {
+        ...state,
+        promptErrorMessages: {
+          ...state.promptErrorMessages,
+          [errorPrompt]: {
+            ...state.promptErrorMessages[errorPrompt],
+            [errorProvider]: action.payload.error,
+          },
+        },
       };
 
     case "SET_ANALYZING_PROMPTS":

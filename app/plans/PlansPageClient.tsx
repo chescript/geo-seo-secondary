@@ -15,7 +15,7 @@ const staticProducts = [
     },
     items: [
       {
-        primaryText: '10 analyses per month',
+        primaryText: '1 analysis per month',
         secondaryText: 'Perfect for getting started',
       },
       {

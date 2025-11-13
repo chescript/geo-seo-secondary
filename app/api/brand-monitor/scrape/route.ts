@@ -5,7 +5,10 @@ import {
   handleApiError,
   AuthenticationError,
   ValidationError,
+  ExternalServiceError,
 } from '@/lib/api-errors';
+import { canPerformAction } from '@/lib/usage-tracking';
+import { ERROR_MESSAGES } from '@/config/constants';
 
 export async function POST(request: NextRequest) {
   console.log('\n🔍 [SCRAPE] ========================================');
@@ -24,6 +27,43 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ [SCRAPE] User authenticated:', sessionResponse.user.id);
     console.log('📧 [SCRAPE] User email:', sessionResponse.user.email);
+
+    // Check if user has remaining analyses this month
+    try {
+      console.log('📊 [SCRAPE] Checking usage limits - User ID:', sessionResponse.user.id);
+      const usageCheck = await canPerformAction(sessionResponse.user.id, 'brand_analysis');
+
+      console.log('📊 [SCRAPE] Usage check result:', {
+        allowed: usageCheck.allowed,
+        remaining: usageCheck.remaining,
+        limit: usageCheck.limit,
+      });
+
+      if (!usageCheck.allowed) {
+        console.error('❌ [SCRAPE] Monthly limit exceeded');
+        throw new ValidationError(ERROR_MESSAGES.MONTHLY_LIMIT_EXCEEDED);
+      }
+
+      console.log(`✅ [SCRAPE] Usage check passed. Remaining: ${usageCheck.remaining}/${usageCheck.limit === -1 ? '∞' : usageCheck.limit}`);
+    } catch (err) {
+      console.error('❌ [SCRAPE] Usage check failed:', err);
+      console.error('❌ [SCRAPE] Error type:', err instanceof Error ? err.constructor.name : typeof err);
+      console.error('❌ [SCRAPE] Error message:', err instanceof Error ? err.message : String(err));
+
+      if (err instanceof ValidationError) {
+        throw err;
+      }
+
+      // Pass through the actual error message if available
+      const errorMessage = err instanceof Error
+        ? err.message
+        : "Unable to verify usage limits. Please try again";
+
+      throw new ExternalServiceError(
+        errorMessage,
+        "usage-tracking"
+      );
+    }
 
     const { url, maxAge } = await request.json();
     console.log('🌐 [SCRAPE] Raw URL received:', url);

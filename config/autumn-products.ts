@@ -52,12 +52,12 @@ export const AUTUMN_PRODUCTS: AutumnProduct[] = [
         id: 'free-analyses',
         type: 'unit',
         display: {
-          primary_text: '10 analyses per month',
+          primary_text: '1 analysis per month',
           secondary_text: 'Perfect for getting started',
         },
         unit: {
           amount: 0,
-          quantity: 10,
+          quantity: 1,
         },
       },
       {

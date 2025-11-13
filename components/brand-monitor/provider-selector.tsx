@@ -31,6 +31,8 @@ export function ProviderSelector({
   onSelectionChange,
   disabled = false,
 }: ProviderSelectorProps) {
+  console.log('[ProviderSelector] Props:', { availableProviders, selectedProviders, disabled });
+
   const enabledProviders = getEnabledProviders();
   const enabledNames = enabledProviders.map((p) => p.name);
   const mergedProviders =
@@ -41,15 +43,29 @@ export function ProviderSelector({
     enabledNames.includes(provider),
   );
 
+  console.log('[ProviderSelector] Computed:', { enabledNames, validProviders });
+
   const handleProviderToggle = (provider: string, checked: boolean) => {
+    console.log('[ProviderSelector] Toggle:', { provider, checked, currentSelection: selectedProviders, effectiveSelection });
+
+    // If selectedProviders is empty, we're using the fallback (all providers)
+    // Initialize it with all valid providers first
+    const actualSelection = selectedProviders.length > 0 ? selectedProviders : validProviders;
+    console.log('[ProviderSelector] Actual selection to work with:', actualSelection);
+
     if (checked) {
-      if (!selectedProviders.includes(provider)) {
-        onSelectionChange([...selectedProviders, provider]);
+      if (!actualSelection.includes(provider)) {
+        const newSelection = [...actualSelection, provider];
+        console.log('[ProviderSelector] Adding provider:', newSelection);
+        onSelectionChange(newSelection);
       }
     } else {
-      const newSelection = selectedProviders.filter((p) => p !== provider);
+      const newSelection = actualSelection.filter((p) => p !== provider);
       if (newSelection.length > 0) {
+        console.log('[ProviderSelector] Removing provider:', newSelection);
         onSelectionChange(newSelection);
+      } else {
+        console.log('[ProviderSelector] Cannot remove last provider');
       }
     }
   };
@@ -80,6 +96,11 @@ export function ProviderSelector({
 
   const [open, setOpen] = useState(false);
 
+  const handleOpenChange = (newOpen: boolean) => {
+    console.log('[ProviderSelector] Popover open state changing:', { from: open, to: newOpen });
+    setOpen(newOpen);
+  };
+
   return (
     <div className="space-y-3">
       <label className="flex items-center gap-2 font-apercu text-[11px] uppercase tracking-[0.35em] text-[#8b867c]">
@@ -87,7 +108,7 @@ export function ProviderSelector({
         AI Providers
       </label>
 
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             variant="secondary"
@@ -99,18 +120,18 @@ export function ProviderSelector({
           >
             <div className="flex flex-wrap items-center gap-2">
               {effectiveSelection.length === validProviders.length ? (
-                <span className="font-apercu text-[12px] uppercase tracking-[0.35em] text-[#4a473f]">
+                <span className="font-sans text-[13px] text-[#4a473f]">
                   All providers selected ({validProviders.length})
                 </span>
               ) : effectiveSelection.length === 0 ? (
-                <span className="font-apercu text-[12px] uppercase tracking-[0.35em] text-[#8b867c]">
+                <span className="font-sans text-[13px] text-[#8b867c]">
                   Select providers...
                 </span>
               ) : (
                 effectiveSelection.map((provider) => (
                   <span
                     key={provider}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#d7d0c3] bg-white/90 px-4 py-1.5 font-apercu text-[12px] uppercase tracking-[0.35em] text-[#111111]"
+                    className="inline-flex items-center gap-2 rounded-full border border-[#d7d0c3] bg-white/90 px-3 py-1 font-sans text-[12px] text-[#111111]"
                   >
                     <ProviderIcon provider={provider} size={14} />
                     {provider}
@@ -149,9 +170,12 @@ export function ProviderSelector({
                     <button
                       key={provider}
                       type="button"
-                      onClick={() =>
-                        handleProviderToggle(provider, !isSelected)
-                      }
+                      onClick={(e) => {
+                        console.log('[ProviderSelector] Button clicked:', { provider, isSelected, isLastSelected });
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleProviderToggle(provider, !isSelected);
+                      }}
                       disabled={isLastSelected}
                       className={cn(
                         "w-full rounded-[18px] border bg-white px-4 py-3 text-left transition-all",
@@ -169,7 +193,7 @@ export function ProviderSelector({
                           <p className="font-apercu text-[11px] uppercase tracking-[0.32em] text-[#111111]">
                             {provider}
                           </p>
-                          <p className="font-overused text-[13px] leading-snug text-[#5c5850] tracking-tight">
+                          <p className="font-sans text-[13px] leading-snug text-[#5c5850]">
                             {description}
                           </p>
                         </div>
@@ -196,16 +220,22 @@ export function ProviderSelector({
               <Button
                 variant="secondary"
                 size="default"
-                className="h-11 rounded-2xl border border-transparent bg-[#111111] font-apercu text-[11px] uppercase tracking-[0.35em] text-white hover:bg-[#000000]"
-                onClick={() => onSelectionChange(validProviders)}
+                className="h-11 rounded-2xl border border-transparent bg-[#111111] font-sans text-[13px] font-medium text-white hover:bg-[#000000]"
+                onClick={() => {
+                  console.log('[ProviderSelector] Select all clicked:', validProviders);
+                  onSelectionChange(validProviders);
+                }}
               >
                 Select all
               </Button>
               <Button
                 variant="secondary"
                 size="default"
-                className="h-11 rounded-2xl border border-[#d7d0c3] bg-white font-apercu text-[11px] uppercase tracking-[0.35em] text-[#111111] hover:border-[#111111]"
-                onClick={() => onSelectionChange([validProviders[0]])}
+                className="h-11 rounded-2xl border border-[#d7d0c3] bg-white font-sans text-[13px] font-medium text-[#111111] hover:border-[#111111]"
+                onClick={() => {
+                  console.log('[ProviderSelector] Just first clicked:', [validProviders[0]]);
+                  onSelectionChange([validProviders[0]]);
+                }}
               >
                 Just {validProviders[0]}
               </Button>
@@ -215,7 +245,7 @@ export function ProviderSelector({
       </Popover>
 
       {effectiveSelection.length > 0 && (
-        <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#8b867c]">
+        <p className="font-sans text-[12px] text-[#8b867c]">
           {effectiveSelection.length} provider
           {effectiveSelection.length !== 1 ? "s" : ""} selected
         </p>

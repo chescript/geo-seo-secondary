@@ -7,8 +7,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL!,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000,
   maxUses: 7500,
+  ssl: { rejectUnauthorized: false },
 });
 
 // Create the drizzle database instance with schema

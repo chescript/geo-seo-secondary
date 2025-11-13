@@ -368,7 +368,7 @@ export default function Home() {
               {openFaq === 4 && (
                 <div className="px-6 py-6">
                   <p className="text-zinc-600 leading-relaxed">
-                    Each brand analysis uses 10 credits (1 credit for initial URL analysis, 9 credits for the full AI provider scan). The free tier includes 100 credits monthly, enough for 10 complete analyses. Pro plans include unlimited analyses for comprehensive monitoring.
+                    Each brand analysis uses 10 credits (1 credit for initial URL analysis, 9 credits for the full AI provider scan). The free tier includes 10 credits monthly, enough for 1 complete analysis. Pro plans include unlimited analyses for comprehensive monitoring.
                   </p>
                 </div>
               )}

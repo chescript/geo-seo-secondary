@@ -69,7 +69,7 @@ export const WantMoreSection = memo(function WantMoreSection() {
                     </Button>
                   </div>
                   <p className="font-apercu text-xs leading-[1.8] text-white tracking-[-0.36px] uppercase w-full md:w-[405px]">
-                    *Free tier includes 10 brand analyses per month *No credit card required
+                    *Free tier includes 1 brand analysis per month *No credit card required
                   </p>
                 </div>
               </div>

@@ -28,9 +28,12 @@ export function ScrapingSkeleton() {
           <CardContent className="space-y-4">
             {/* Scraping progress */}
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
-                <span className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c]">Analyzing website content...</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                  <span className="font-sans text-[14px] text-[#4a473f]">Analyzing website content...</span>
+                </div>
+                <span className="font-apercu text-[11px] uppercase tracking-[0.3em] text-[#8b867c]">~30-60s</span>
               </div>
 
               {/* Progress bar */}

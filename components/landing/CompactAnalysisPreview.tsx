@@ -66,16 +66,16 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                     {/* Overall Score */}
                     <div className="basis-0 content-stretch flex flex-col gap-[9.867px] grow items-start min-h-px min-w-px relative rounded-[9.867px] shrink-0">
                       <div className="content-stretch flex gap-[3.7px] items-center relative shrink-0">
-                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[8.633px] text-nowrap">
+                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[11px] text-nowrap">
                           <p className="leading-[1.3] whitespace-pre">Overall Score</p>
                         </div>
                       </div>
                       <div className="content-stretch flex flex-col gap-[9.867px] items-start relative shrink-0 w-full">
                         <div className="flex flex-col font-['Overused_Grotesk',sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[#111111] text-[0px] w-full">
                           <p className="leading-[1.4]">
-                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[14.8px]">90</span>
-                            <span className="text-[14.8px]"> </span>
-                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[7.4px]">/100</span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[18px]">90</span>
+                            <span className="text-[18px]"> </span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[10px]">/100</span>
                           </p>
                         </div>
                       </div>
@@ -99,16 +99,16 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                     {/* SEO Score */}
                     <div className="basis-0 content-stretch flex flex-col gap-[9.867px] grow items-start min-h-px min-w-px relative rounded-[9.867px] shrink-0">
                       <div className="content-stretch flex gap-[3.7px] items-center relative shrink-0">
-                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[8.633px] text-nowrap">
+                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[11px] text-nowrap">
                           <p className="leading-[1.3] whitespace-pre">SEO Score</p>
                         </div>
                       </div>
                       <div className="content-stretch flex flex-col gap-[9.867px] items-start relative shrink-0 w-full">
                         <div className="flex flex-col font-['Overused_Grotesk',sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[#111111] text-[0px] w-full">
                           <p className="leading-[1.4]">
-                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[14.8px]">95</span>
-                            <span className="text-[14.8px]"> </span>
-                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[7.4px]">/100</span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[18px]">95</span>
+                            <span className="text-[18px]"> </span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[10px]">/100</span>
                           </p>
                         </div>
                       </div>
@@ -132,16 +132,16 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                     {/* Content Quality */}
                     <div className="basis-0 content-stretch flex flex-col gap-[9.867px] grow items-start min-h-px min-w-px relative rounded-[9.867px] shrink-0">
                       <div className="content-stretch flex gap-[3.7px] items-center relative shrink-0">
-                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[8.633px] text-nowrap">
+                        <div className="flex flex-col font-['Overused_Grotesk',sans-serif] justify-center leading-[0] not-italic opacity-50 relative shrink-0 text-[#111111] text-[11px] text-nowrap">
                           <p className="leading-[1.3] whitespace-pre">Content Quality</p>
                         </div>
                       </div>
                       <div className="content-stretch flex flex-col gap-[9.867px] items-start relative shrink-0 w-full">
                         <div className="flex flex-col font-['Overused_Grotesk',sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[#111111] text-[0px] w-full">
                           <p className="leading-[1.4]">
-                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[14.8px]">73</span>
-                            <span className="text-[14.8px]"> </span>
-                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[7.4px]">/100</span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-medium not-italic text-[18px]">73</span>
+                            <span className="text-[18px]"> </span>
+                            <span className="font-['Overused_Grotesk',sans-serif] font-normal not-italic text-[#888888] text-[10px]">/100</span>
                           </p>
                         </div>
                       </div>
@@ -164,13 +164,13 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                         {/* Label at top */}
-                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[8.633px] w-[min-content]">
+                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[11px] w-[min-content]">
                           <p className="leading-[1.3]">{check.label}</p>
                         </div>
 
                         {/* Title and Icon */}
                         <div className="content-stretch flex gap-[7.4px] items-center relative shrink-0 w-full">
-                          <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[11.1px] text-nowrap">
+                          <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[14px] text-nowrap">
                             <p className="leading-[1.4] whitespace-pre">{check.title}</p>
                           </div>
                           <div className="relative shrink-0 size-[11.1px]">
@@ -182,14 +182,14 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         </div>
 
                         {/* Details */}
-                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[7.4px] w-[min-content]">
+                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[11px] w-[min-content]">
                           <p className="leading-[1.3]">{check.details}</p>
                         </div>
 
                         {/* View Details Button */}
                         <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex items-center justify-between px-[7.4px] py-[4.933px] relative rounded-[4.933px] shrink-0 w-[143.067px]">
                           <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[4.933px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
-                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[7.4px] text-black text-nowrap">
+                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[11px] text-black text-nowrap">
                             <p className="leading-[1.3] whitespace-pre">VIEW DETAILS</p>
                           </div>
                           <div className="relative shrink-0 size-[9.867px]">
@@ -219,13 +219,13 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[7.4px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
 
                         {/* Label at top */}
-                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[8.633px] w-[min-content]">
+                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[11px] w-[min-content]">
                           <p className="leading-[1.3]">{check.label}</p>
                         </div>
 
                         {/* Title and Icon */}
                         <div className="content-stretch flex gap-[7.4px] items-center relative shrink-0 w-full">
-                          <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[11.1px] text-nowrap">
+                          <div className="flex flex-col font-['Geist',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#111111] text-[14px] text-nowrap">
                             <p className="leading-[1.4] whitespace-pre">{check.title}</p>
                           </div>
                           <div className="relative shrink-0 size-[11.1px]">
@@ -237,14 +237,14 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                         </div>
 
                         {/* Details */}
-                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[7.4px] w-[min-content]">
+                        <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] min-w-full opacity-50 relative shrink-0 text-[#111111] text-[11px] w-[min-content]">
                           <p className="leading-[1.3]">{check.details}</p>
                         </div>
 
                         {/* View Details Button */}
                         <div className="border-[#f1f1f1] border-[0.617px] border-solid box-border content-stretch flex items-center justify-between px-[7.4px] py-[4.933px] relative rounded-[4.933px] shrink-0 w-[143.067px]">
                           <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[4.933px] size-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fafafa'/%3E%3C/svg%3E" />
-                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[7.4px] text-black text-nowrap">
+                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[11px] text-black text-nowrap">
                             <p className="leading-[1.3] whitespace-pre">VIEW DETAILS</p>
                           </div>
                           <div className="relative shrink-0 size-[9.867px]">
@@ -284,7 +284,7 @@ export const CompactAnalysisPreview = memo(function CompactAnalysisPreview() {
                               </svg>
                             )}
                           </div>
-                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[#111111] text-[7.4px] text-nowrap">
+                          <div className="flex flex-col font-['Geist',sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[#111111] text-[11px] text-nowrap">
                             <p className="leading-[1.3] whitespace-pre">{rec}</p>
                           </div>
                         </div>

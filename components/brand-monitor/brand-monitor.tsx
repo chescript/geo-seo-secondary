@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Loader2 } from "lucide-react";
 import { ClientApiError } from "@/lib/client-errors";
 import {
   brandMonitorReducer,
@@ -32,6 +32,7 @@ import {
 } from "@/lib/brand-monitor-utils";
 import { getEnabledProviders } from "@/lib/provider-config";
 import { useSaveBrandAnalysis } from "@/hooks/useBrandAnalyses";
+import { toast } from "sonner";
 
 // Components
 import { UrlInputSection } from "./url-input-section";
@@ -46,7 +47,7 @@ import { AddCompetitorModal } from "./modals/add-competitor-modal";
 import { ProviderComparisonMatrix } from "./provider-comparison-matrix";
 import { ProviderRankingsTabs } from "./provider-rankings-tabs";
 import { ProviderSelector } from "./provider-selector";
-import { UsageCounter } from "./usage-counter";
+import { ProgressSteps } from "../ui/progress-steps";
 
 // Skeleton loaders
 import { ScrapingSkeleton } from "./skeletons/scraping-skeleton";
@@ -87,6 +88,11 @@ export function BrandMonitor({
         completedAnalysis
       });
 
+      // Show success toast for completed analysis
+      toast.success('Analysis complete!', {
+        description: `All prompts have been analyzed across selected AI providers`,
+      });
+
       // Only save if this is a new analysis (not loaded from existing)
       if (!selectedAnalysis && !hasSavedRef.current) {
         hasSavedRef.current = true;
@@ -108,6 +114,9 @@ export function BrandMonitor({
         saveAnalysis.mutate(analysisData, {
           onSuccess: (savedAnalysis) => {
             console.log("✅ Analysis saved successfully:", savedAnalysis);
+            toast.success('Analysis saved successfully', {
+              description: 'Your brand analysis has been saved to history',
+            });
             if (onSaveAnalysis) {
               onSaveAnalysis(savedAnalysis);
             }
@@ -144,6 +153,7 @@ export function BrandMonitor({
     selectedProviders,
     analysisProgress,
     promptCompletionStatus,
+    promptErrorMessages,
     analyzingPrompts,
     analysis,
     activeResultsTab,
@@ -190,8 +200,8 @@ export function BrandMonitor({
           } as Company,
         });
       }
-      // Reset the flag after a short delay to ensure the save effect doesn't trigger
-      setTimeout(() => setIsLoadingExistingAnalysis(false), 100);
+      // Reset the flag after content is loaded
+      setTimeout(() => setIsLoadingExistingAnalysis(false), 300);
     } else if (selectedAnalysis === null) {
       // Reset state when explicitly set to null (New Analysis clicked)
       dispatch({ type: "RESET_STATE" });
@@ -292,10 +302,18 @@ export function BrandMonitor({
       // After fade out completes, set company and show card with fade in
       setTimeout(() => {
         dispatch({ type: "SCRAPE_SUCCESS", payload: data.company });
+
+        // Show success toast
+        toast.success('Company data extracted successfully', {
+          description: `${data.company.name}${data.company.industry ? ` - ${data.company.industry}` : ''}`,
+        });
+
         // Small delay to ensure DOM updates before fade in
         setTimeout(() => {
           dispatch({ type: "SET_SHOW_COMPANY_CARD", payload: true });
           console.log('✅ [CLIENT] Company card displayed');
+          // Auto-identify competitors
+          handlePrepareAnalysisAuto(data.company);
           console.log('🌐 [CLIENT] ========================================\n');
         }, 50);
       }, 500);
@@ -317,6 +335,91 @@ export function BrandMonitor({
   const handleProviderSelectionChange = useCallback((providers: string[]) => {
     dispatch({ type: "SET_SELECTED_PROVIDERS", payload: providers });
   }, []);
+
+  // Auto-prepare competitors after scrape (no loading state)
+  const handlePrepareAnalysisAuto = useCallback(async (companyData: Company) => {
+    // Check which providers are available
+    try {
+      const response = await fetch("/api/brand-monitor/check-providers", {
+        method: "POST",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const providers = data.providers || ["OpenAI", "Anthropic", "Google"];
+        dispatch({ type: "SET_AVAILABLE_PROVIDERS", payload: providers });
+        if (selectedProviders.length === 0) {
+          dispatch({ type: "SET_SELECTED_PROVIDERS", payload: providers });
+        }
+      }
+    } catch (e) {
+      const defaultProviders = [];
+      if (process.env.NEXT_PUBLIC_HAS_OPENAI_KEY)
+        defaultProviders.push("OpenAI");
+      if (process.env.NEXT_PUBLIC_HAS_ANTHROPIC_KEY)
+        defaultProviders.push("Anthropic");
+      const fallbackProviders =
+        defaultProviders.length > 0
+          ? defaultProviders
+          : ["OpenAI", "Anthropic"];
+      dispatch({ type: "SET_AVAILABLE_PROVIDERS", payload: fallbackProviders });
+      if (selectedProviders.length === 0) {
+        dispatch({
+          type: "SET_SELECTED_PROVIDERS",
+          payload: fallbackProviders,
+        });
+      }
+    }
+
+    // Extract competitors from scraped data or use industry defaults
+    const extractedCompetitors = companyData.scrapedData?.competitors || [];
+    const industryCompetitors = getIndustryCompetitors(companyData.industry || "");
+
+    // Merge extracted competitors with industry defaults
+    const competitorMap = new Map<string, IdentifiedCompetitor>();
+
+    industryCompetitors.forEach((comp) => {
+      const normalizedName = normalizeCompetitorName(comp.name);
+      competitorMap.set(normalizedName, comp as IdentifiedCompetitor);
+    });
+
+    extractedCompetitors.forEach((name) => {
+      const normalizedName = normalizeCompetitorName(name);
+      const existing = competitorMap.get(normalizedName);
+      if (existing) {
+        if (!existing.url) {
+          const url = assignUrlToCompetitor(name);
+          competitorMap.set(normalizedName, { name, url });
+        }
+        return;
+      }
+      const url = assignUrlToCompetitor(name);
+      competitorMap.set(normalizedName, { name, url });
+    });
+
+    let competitors = Array.from(competitorMap.values())
+      .filter(
+        (comp) =>
+          comp.name !== "Competitor 1" &&
+          comp.name !== "Competitor 2" &&
+          comp.name !== "Competitor 3" &&
+          comp.name !== "Competitor 4" &&
+          comp.name !== "Competitor 5"
+      )
+      .slice(0, 10);
+
+    competitors = competitors.slice(0, 6);
+
+    console.log("Auto-identified competitors:", competitors);
+    dispatch({ type: "SET_IDENTIFIED_COMPETITORS", payload: competitors });
+    dispatch({ type: "SET_SHOW_COMPETITORS", payload: true });
+
+    // Show success toast for competitors found
+    if (competitors.length > 0) {
+      toast.success(`Found ${competitors.length} competitor${competitors.length !== 1 ? 's' : ''}`, {
+        description: `Ready to analyze ${companyData.name}`,
+      });
+    }
+  }, [selectedProviders.length]);
 
   const handlePrepareAnalysis = useCallback(async () => {
     if (!company) return;
@@ -598,49 +701,91 @@ export function BrandMonitor({
   // Find brand data
   const brandData = analysis?.competitors?.find((c) => c.isOwn);
 
+  // Determine current step for progress indicator
+  const currentStep = analysis
+    ? 3
+    : company && showCompanyCard
+    ? 2
+    : 1;
+
+  const progressSteps: Array<{
+    number: number;
+    label: string;
+    status: 'completed' | 'current' | 'upcoming';
+  }> = [
+    {
+      number: 1,
+      label: "Enter URL",
+      status: currentStep > 1 ? "completed" : currentStep === 1 ? "current" : "upcoming"
+    },
+    {
+      number: 2,
+      label: "Review & Customize",
+      status: currentStep > 2 ? "completed" : currentStep === 2 ? "current" : "upcoming"
+    },
+    {
+      number: 3,
+      label: "Analysis Results",
+      status: currentStep === 3 ? "current" : "upcoming"
+    }
+  ];
+
   return (
     <div className="flex flex-col h-full overflow-x-hidden">
-      {/* Usage Counter - shown on initial input screen */}
-      {showInput && <UsageCounter />}
-
-      {/* URL Input Section */}
-      {showInput && (
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-            <div className="space-y-6">
-              <UrlInputSection
-                url={url}
-                urlValid={urlValid}
-                loading={loading}
-                analyzing={analyzing}
-                onUrlChange={handleUrlChange}
-                onSubmit={handleScrape}
-              />
-
-              {/* Provider Selector */}
-              <div className="max-w-md mx-auto">
-                <ProviderSelector
-                  availableProviders={availableProviders}
-                  selectedProviders={selectedProviders}
-                  onSelectionChange={handleProviderSelectionChange}
-                  disabled={loading || analyzing}
-                />
-              </div>
+      {/* Loading Existing Analysis */}
+      {isLoadingExistingAnalysis && (
+        <div className="flex items-center justify-center min-h-[60vh] animate-in fade-in duration-300">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-10 w-10 animate-spin text-landing-base mx-auto" />
+            <div className="space-y-2">
+              <p className="font-sans text-[15px] font-medium text-landing-base">Loading analysis...</p>
+              <p className="font-sans text-[13px] text-landing-muted">Retrieving saved results</p>
             </div>
           </div>
         </div>
       )}
 
+      {/* Progress Steps - shown except on initial input screen */}
+      {!showInput && !analysis && !isLoadingExistingAnalysis && (
+        <div className="w-full bg-white border-b border-landing-border">
+          <ProgressSteps steps={progressSteps} />
+        </div>
+      )}
+
+      {/* URL Input Section */}
+      {showInput && !isLoadingExistingAnalysis && (
+        <UrlInputSection
+          url={url}
+          urlValid={urlValid}
+          loading={loading}
+          analyzing={analyzing}
+          onUrlChange={handleUrlChange}
+          onSubmit={handleScrape}
+        />
+      )}
+
+      {/* Provider Selector - below URL input */}
+      {showInput && !isLoadingExistingAnalysis && (
+        <div className="max-w-3xl mx-auto w-full px-4 pb-8">
+          <ProviderSelector
+            availableProviders={availableProviders}
+            selectedProviders={selectedProviders}
+            onSelectionChange={handleProviderSelectionChange}
+            disabled={loading || analyzing}
+          />
+        </div>
+      )}
+
       {/* Scraping Skeleton Loader */}
-      {loading && !company && <ScrapingSkeleton />}
+      {loading && !company && !isLoadingExistingAnalysis && <ScrapingSkeleton />}
 
       {/* Preparing Analysis Skeleton (Identifying Competitors) */}
       {preparingAnalysis && company && !showPromptsList && <CompetitorSkeleton />}
 
       {/* Company Card Section with Competitors */}
       {!showInput && company && !showPromptsList && !analyzing && !analysis && !loading && !preparingAnalysis && (
-        <div className="flex items-center justify-center animate-panel-in">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-center animate-panel-in py-8">
+          <div className="max-w-5xl mx-auto w-full px-4">
             <div className="w-full space-y-6">
               <div
                 className={`transition-all duration-500 ${showCompanyCard ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
@@ -651,6 +796,7 @@ export function BrandMonitor({
                   analyzing={preparingAnalysis}
                   showCompetitors={showCompetitors}
                   identifiedCompetitors={identifiedCompetitors}
+                  error={error}
                   onRemoveCompetitor={(idx) =>
                     dispatch({ type: "REMOVE_COMPETITOR", payload: idx })
                   }
@@ -664,7 +810,7 @@ export function BrandMonitor({
                       payload: { name: "", url: "" },
                     });
                   }}
-                  onContinueToAnalysis={handleProceedToPrompts}
+                  onContinueToAnalysis={handleAnalyze}
                 />
               </div>
             </div>
@@ -677,7 +823,7 @@ export function BrandMonitor({
 
       {/* Prompts List Section - Shows both before and during analysis */}
       {showPromptsList && company && !analysis && !generatingPrompts && (
-        <div ref={analysisSectionRef} className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div ref={analysisSectionRef} className="max-w-5xl mx-auto w-full px-4 py-8">
           <AnalysisProgressSection
             company={company}
             analyzing={analyzing}
@@ -688,6 +834,8 @@ export function BrandMonitor({
             customPrompts={customPrompts}
             removedDefaultPrompts={removedDefaultPrompts}
             promptCompletionStatus={promptCompletionStatus}
+            promptErrorMessages={promptErrorMessages}
+            error={error}
             onRemoveDefaultPrompt={(index) =>
               dispatch({ type: "REMOVE_DEFAULT_PROMPT", payload: index })
             }
@@ -705,13 +853,18 @@ export function BrandMonitor({
               dispatch({ type: "SET_NEW_PROMPT_TEXT", payload: "" });
             }}
             onStartAnalysis={handleAnalyze}
+            onRetryProvider={(prompt, provider) => {
+              // Retry logic will be implemented
+              console.log(`Retry requested for ${provider} on prompt: ${prompt}`);
+              toast.info('Retry functionality coming soon');
+            }}
           />
         </div>
       )}
 
       {/* Analysis Results */}
       {analysis && brandData && (
-        <div className="w-full animate-panel-in font-overused">
+        <div className="w-full animate-panel-in">
           {/* Horizontal Navigation Tabs */}
           <ResultsNavigation
             activeTab={activeResultsTab}
@@ -723,7 +876,7 @@ export function BrandMonitor({
 
           {/* Main Content Area */}
           <div className="w-full bg-landing-background">
-            <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-[1600px] mx-auto relative">
+            <div className="px-4 py-8 max-w-6xl mx-auto relative">
                   {/* Tab Content */}
                   {activeResultsTab === "visibility" && (
                     <div
@@ -754,7 +907,7 @@ export function BrandMonitor({
                             <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">
                               Comparison Matrix
                             </CardTitle>
-                            <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
+                            <CardDescription className="font-sans text-[14px] text-landing-muted mt-2">
                               Compare visibility scores across different AI
                               providers
                             </CardDescription>
@@ -763,7 +916,7 @@ export function BrandMonitor({
                             <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">
                               {brandData.visibilityScore}%
                             </p>
-                            <p className="font-geist text-[11px] text-landing-muted mt-2">
+                            <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-landing-muted mt-2">
                               Average Score
                             </p>
                           </div>
@@ -779,8 +932,8 @@ export function BrandMonitor({
                             />
                           ) : (
                             <div className="text-center py-8 bg-landing-card rounded-[6px] border border-landing-border">
-                              <p className="font-geist text-[16px] font-medium text-landing-base">No comparison data available</p>
-                              <p className="font-geist text-[13px] text-landing-muted mt-2">
+                              <p className="font-sans text-[16px] font-medium text-landing-base">No comparison data available</p>
+                              <p className="font-sans text-[14px] text-landing-muted mt-2">
                                 Please ensure AI providers are configured and the
                                 analysis has completed.
                               </p>
@@ -827,7 +980,7 @@ export function BrandMonitor({
                             <CardTitle className="font-neueBit text-[32px] leading-[0.9] tracking-[-0.32px]">
                               Prompts & Responses
                             </CardTitle>
-                            <CardDescription className="font-geist text-[13px] text-landing-muted mt-2">
+                            <CardDescription className="font-sans text-[14px] text-landing-muted mt-2">
                               AI responses to your brand queries
                             </CardDescription>
                           </div>
@@ -835,7 +988,7 @@ export function BrandMonitor({
                             <p className="font-neueBit text-[40px] leading-[0.9] text-landing-base">
                               {analysis.prompts.length}
                             </p>
-                            <p className="font-geist text-[11px] text-landing-muted mt-2">
+                            <p className="font-apercu text-[11px] uppercase tracking-[0.3em] text-landing-muted mt-2">
                               Total Prompts
                             </p>
                           </div>
@@ -866,8 +1019,8 @@ export function BrandMonitor({
         </div>
       )}
 
-      {/* Error message */}
-      {error && (
+      {/* Error message - only show toast if not on prompts/company screen (where we have banners) */}
+      {error && !showPromptsList && !showCompanyCard && (
         <ErrorMessage
           error={error}
           onDismiss={() => dispatch({ type: "SET_ERROR", payload: null })}

@@ -56,25 +56,25 @@ export class ClientApiError extends Error {
 
   // Get user-friendly error message
   getUserMessage(): string {
-    // Special handling for common errors
+    // For most errors, just return the actual message from the API
+    // Only provide generic messages for specific cases where the API message isn't user-friendly
     switch (this.code) {
       case 'UNAUTHORIZED':
-        return 'Please log in to continue';
+        return this.message || 'Please log in to continue';
       case 'SESSION_EXPIRED':
-        return 'Your session has expired. Please log in again';
+        return this.message || 'Your session has expired. Please log in again';
       case 'INSUFFICIENT_CREDITS':
-        return `You need ${this.metadata?.creditsRequired || 'more'} credits. You have ${this.metadata?.creditsAvailable || 0} credits available`;
+        return this.message || `You need ${this.metadata?.creditsRequired || 'more'} credits. You have ${this.metadata?.creditsAvailable || 0} credits available`;
       case 'RATE_LIMIT_EXCEEDED':
-        return `Too many requests. Please try again in ${this.metadata?.retryAfter || 60} seconds`;
+        return this.message || `Too many requests. Please try again in ${this.metadata?.retryAfter || 60} seconds`;
       case 'VALIDATION_ERROR':
-        if (this.fields && Object.keys(this.fields).length > 0) {
-          return 'Please check the highlighted fields';
-        }
+        // For validation errors, always use the API message as it's specific
         return this.message;
       case 'EXTERNAL_SERVICE_ERROR':
-        return `Service temporarily unavailable${this.metadata?.service ? ` (${this.metadata.service})` : ''}. Please try again later`;
+        // Use the API message if available, otherwise provide generic message
+        return this.message || `Service temporarily unavailable${this.metadata?.service ? ` (${this.metadata.service})` : ''}. Please try again later`;
       case 'DATABASE_ERROR':
-        return 'Unable to complete the operation. Please try again';
+        return this.message || 'Unable to complete the operation. Please try again';
       default:
         return this.message;
     }

@@ -130,7 +130,7 @@ export function Navbar() {
 
                       <Avatar className="h-8 w-8 border-0 bg-transparent text-white">
 
-                        <AvatarFallback className="bg-transparent font-neueBit text-[13px] uppercase tracking-[0.28em] text-white">
+                        <AvatarFallback className="bg-transparent font-neueBit text-[13px] uppercase text-white">
 
                           {session.user.email?.charAt(0).toUpperCase() || 'U'}
 
@@ -190,27 +190,9 @@ export function Navbar() {
 
                             <span className="inline-flex items-center gap-2">
 
-                              <LayoutDashboard className="h-4 w-4" />
-
-                              Dashboard
-
-                            </span>
-
-                            <ArrowUpRight className="h-4 w-4" />
-
-                          </Link>
-
-                        </DropdownMenuItem>
-
-                      <DropdownMenuItem asChild className="rounded-[18px] border border-transparent px-3 py-3 font-apercu text-sm text-[#111111] data-[highlighted]:border-[#111111] data-[highlighted]:bg-white">
-
-                          <Link href="/brand-monitor" className="flex items-center justify-between gap-3 cursor-pointer">
-
-                            <span className="inline-flex items-center gap-2">
-
                               <BarChart3 className="h-4 w-4" />
 
-                              Brand Monitor
+                              Brand Analysis
 
                             </span>
 

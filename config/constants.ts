@@ -25,7 +25,7 @@ export const SUBSCRIPTION_TIERS = {
 // Usage Limits by Tier
 // ============================================
 export const USAGE_LIMITS = {
-  FREE_TIER_ANALYSES_PER_MONTH: 10,
+  FREE_TIER_ANALYSES_PER_MONTH: 1,
   PRO_TIER_ANALYSES_PER_MONTH: 100,
 } as const;
 

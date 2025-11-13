@@ -73,7 +73,7 @@ function CheckCard({
           <p className="font-geist text-[11px] uppercase tracking-[0.16em] text-[#6d6d6d]">
             {check.label}
           </p>
-          <p className="font-geist text-[21px] font-semibold leading-snug text-[#111111]">
+          <p className="font-geist text-[24px] font-semibold leading-snug text-[#111111]">
             {check.title}
           </p>
         </div>
@@ -99,7 +99,7 @@ function CheckCard({
         </div>
       </div>
 
-      <p className="mt-4 font-geist text-[13px] leading-relaxed text-[#353535]">
+      <p className="mt-4 font-geist text-[15px] leading-relaxed text-[#353535]">
         {summary}
       </p>
 
@@ -108,7 +108,7 @@ function CheckCard({
           <p className="font-geist text-[10px] uppercase tracking-[0.18em] text-[#8b8b8b]">
             Recommendation
           </p>
-          <p className="mt-2 font-geist text-[13px] leading-relaxed">
+          <p className="mt-2 font-geist text-[15px] leading-relaxed">
             {check.recommendation}
           </p>
         </div>
@@ -144,7 +144,7 @@ function CheckCard({
             className="overflow-hidden"
           >
             <div className="mt-4 rounded-[16px] border border-dashed border-[#e7e7e7] bg-white/90 p-4 text-sm text-[#111111]">
-              <p className="font-geist text-[13px] leading-relaxed">{check.details}</p>
+              <p className="font-geist text-[15px] leading-relaxed">{check.details}</p>
               {check.recommendation && (
                 <p className="mt-3 font-geist text-[12px] text-[#6f6f6f]">
                   {check.recommendation}
@@ -189,7 +189,7 @@ export function AnalysisResultsDashboard({
       <div className="flex flex-col gap-6">
       <div className="space-y-4">
         <div className="space-y-2">
-          <p className="font-geist text-[11px] uppercase tracking-[0.2em] text-[#7a7a7a]">
+          <p className="font-geist text-[13px] uppercase tracking-[0.2em] text-[#7a7a7a]">
             Analysis Results for
           </p>
           <div className="flex items-center gap-3 rounded-full border border-[#111111] bg-[#111111] px-5 py-2 text-white">
@@ -197,10 +197,10 @@ export function AnalysisResultsDashboard({
               <div className="h-6 w-1 rounded-full bg-white/30" />
               <div className="h-6 w-1 rounded-full bg-white/20" />
             </div>
-            <span className="font-geist text-[14px]">{hostname}</span>
+            <span className="font-geist text-[16px]">{hostname}</span>
             <Search className="h-4 w-4 text-white/70" />
           </div>
-          <p className="font-apercu text-[13px] tracking-[0.05em] text-[#7f7f7f]">
+          <p className="font-apercu text-[15px] tracking-[0.05em] text-[#7f7f7f]">
             Here's how AI-ready your website is
           </p>
         </div>
@@ -216,7 +216,7 @@ export function AnalysisResultsDashboard({
                 key={card.label}
                 className="rounded-[16px] border border-[#f1f1f1] bg-[#fafafa] p-5 shadow-[inset_0_0_12px_rgba(0,0,0,0.02)]"
               >
-                <p className="font-geist text-[11px] uppercase tracking-[0.18em] text-[#7d7d7d]">
+                <p className="font-geist text-[12px] uppercase tracking-[0.18em] text-[#7d7d7d]">
                   {card.label}
                 </p>
                 <p className="mt-4 font-neueBit text-[42px] leading-none text-[#111111]">
@@ -284,7 +284,7 @@ export function AnalysisResultsDashboard({
                       </svg>
                     )}
                   </span>
-                  <p className="flex-1 font-geist text-[14px] leading-[1.6] text-[#1f1f1f]">
+                  <p className="flex-1 font-geist text-[16px] leading-[1.6] text-[#1f1f1f]">
                     {item}
                   </p>
                   <svg className="h-4 w-4 text-[#b5b5b5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>

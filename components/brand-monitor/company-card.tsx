@@ -27,17 +27,19 @@ interface CompanyCardProps {
   onRemoveCompetitor?: (index: number) => void;
   onAddCompetitor?: () => void;
   onContinueToAnalysis?: () => void;
+  error?: string | null;
 }
 
-export function CompanyCard({ 
-  company, 
-  onAnalyze, 
+export function CompanyCard({
+  company,
+  onAnalyze,
   analyzing,
   showCompetitors = false,
   identifiedCompetitors = [],
   onRemoveCompetitor,
   onAddCompetitor,
-  onContinueToAnalysis 
+  onContinueToAnalysis,
+  error
 }: CompanyCardProps) {
   const [logoError, setLogoError] = React.useState(false);
   const [faviconError, setFaviconError] = React.useState(false);
@@ -103,7 +105,7 @@ export function CompanyCard({
         </div>
 
         {/* Right side - Content */}
-        <div className="flex-1 p-8 font-apercu">
+        <div className="flex-1 p-8">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <h3 className="font-neueBit text-[28px] leading-[1] text-[#111111] mb-3">{company.name}</h3>
@@ -119,30 +121,32 @@ export function CompanyCard({
                 </span>
               </div>
             </div>
-            <Button
-              onClick={onAnalyze}
-              disabled={analyzing}
-              variant="primary"
-              size="default"
-              className="ml-4"
-            >
-              {analyzing ? (
-                <>
-                  <div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  <span>Identify Competitors</span>
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </>
-              )}
-            </Button>
+            {!showCompetitors && (
+              <Button
+                onClick={onAnalyze}
+                disabled={analyzing}
+                variant="primary"
+                size="default"
+                className="ml-4"
+              >
+                {analyzing ? (
+                  <>
+                    <div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <span>Identify Competitors</span>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </>
+                )}
+              </Button>
+            )}
           </div>
 
-          <p className="font-apercu text-[13px] text-[#4a473f] mb-4 line-clamp-2">
+          <p className="font-sans text-[14px] text-[#4a473f] mb-4 line-clamp-2">
             {company.description}
           </p>
 
@@ -158,7 +162,7 @@ export function CompanyCard({
                 </span>
               ))}
               {company.scrapedData.keywords.length > 6 && (
-                <span className="font-apercu text-[11px] tracking-[0.3em] text-[#8b867c]">
+                <span className="font-sans text-[12px] text-[#8b867c]">
                   +{company.scrapedData.keywords.length - 6} more
                 </span>
               )}
@@ -170,10 +174,12 @@ export function CompanyCard({
       {/* Competitors Section */}
       {showCompetitors && identifiedCompetitors.length > 0 && (
         <div className="border-t border-[#ece8dd]">
-          <div className="px-8 py-8 font-apercu">
+          <div className="px-8 py-8">
             <div className="mb-6">
               <h3 className="font-neueBit text-[22px] leading-[1] text-[#111111]">Identified Competitors</h3>
-              <p className="font-apercu text-[12px] uppercase tracking-[0.3em] text-[#8b867c] mt-2">We&apos;ll compare {company.name} against these {identifiedCompetitors.length} competitors</p>
+              <p className="font-sans text-[14px] text-[#4a473f] mt-3">
+                We&apos;ll compare how AI models (ChatGPT, Claude, Perplexity) describe {company.name} against these {identifiedCompetitors.length} competitors. You can add or remove competitors before starting the analysis.
+              </p>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
@@ -216,7 +222,7 @@ export function CompanyCard({
                     {/* Name and URL */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-neueBit text-[15px] text-[#111111] truncate">{competitor.name}</span>
+                        <span className="font-sans text-[14px] font-medium text-[#111111] truncate">{competitor.name}</span>
                         {competitor.url && (
                           <a
                             href={competitor.url.startsWith('http') ? competitor.url : `https://${competitor.url}`}
@@ -229,7 +235,7 @@ export function CompanyCard({
                         )}
                       </div>
                       {competitor.url && (
-                        <p className="font-apercu text-[10px] uppercase tracking-[0.35em] text-[#8b867c] truncate mt-1">{competitor.url}</p>
+                        <p className="font-sans text-[12px] text-[#8b867c] truncate mt-1">{competitor.url}</p>
                       )}
                     </div>
                   </div>
@@ -268,14 +274,39 @@ export function CompanyCard({
                     variant="primary"
                     size="default"
                     className="px-8"
+                    disabled={analyzing}
                   >
-                    Continue to Analysis
+                    Start Analysis
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </Button>
                 )}
               </div>
+
+              {/* Error Message Banner */}
+              {!analyzing && error && (
+                <div className="mt-6 rounded-[18px] border border-[#e4b4b0] bg-[#fff5f5] px-5 py-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-start gap-3">
+                    <svg className="h-5 w-5 text-[#c94135] flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                    </svg>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-sans text-[14px] leading-relaxed text-[#7d1f1a]">
+                        {error}
+                      </p>
+                      {error.toLowerCase().includes('monthly') && error.toLowerCase().includes('limit') && (
+                        <a
+                          href="/plans"
+                          className="inline-block mt-2 font-sans text-[13px] font-medium text-[#c94135] hover:text-[#a63529] underline"
+                        >
+                          View upgrade options →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
         </div>
       )}

@@ -203,7 +203,18 @@ export function useSSEHandler({ state, dispatch, onAnalysisComplete }: UseSSEHan
               status: 'failed'
             }
           });
-          
+
+          // Store error message if available
+          const errorMessage = (analysisCompleteData as any).error || 'Analysis failed';
+          dispatch({
+            type: 'UPDATE_PROMPT_ERROR',
+            payload: {
+              prompt: normalizedCompletePrompt,
+              provider: analysisCompleteData.provider,
+              error: errorMessage
+            }
+          });
+
           // Update tile status to failed
           const failedTileIndex = state.analysisTiles.findIndex(tile => tile.prompt === analysisCompleteData.prompt);
           if (failedTileIndex !== -1) {
@@ -278,9 +289,31 @@ export function useSSEHandler({ state, dispatch, onAnalysisComplete }: UseSSEHan
       console.log('📡 [SSE] Response received, status:', response.status);
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('❌ [SSE] Request failed:', errorData);
-        throw new Error(errorData.error || 'Failed to analyze');
+        let errorMessage = 'Failed to analyze';
+
+        try {
+          const errorData = await response.json();
+          console.error('❌ [SSE] Request failed with error data:', errorData);
+          console.error('❌ [SSE] Error structure:', JSON.stringify(errorData, null, 2));
+
+          // Extract error message from nested structure
+          // Try multiple possible locations for the error message
+          if (errorData.error?.message) {
+            errorMessage = errorData.error.message;
+          } else if (errorData.message) {
+            errorMessage = errorData.message;
+          } else if (typeof errorData.error === 'string') {
+            errorMessage = errorData.error;
+          } else {
+            errorMessage = `Analysis failed with status ${response.status}`;
+          }
+          console.error('❌ [SSE] Extracted error message:', errorMessage);
+        } catch (parseError) {
+          console.error('❌ [SSE] Failed to parse error response:', parseError);
+          errorMessage = `Analysis failed with status ${response.status}`;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const reader = response.body?.getReader();
@@ -319,19 +352,21 @@ export function useSSEHandler({ state, dispatch, onAnalysisComplete }: UseSSEHan
     } catch (error) {
       console.error('❌ [SSE] Connection error:', error);
 
-      // Check if it's a connection error
+      // Determine the error message to show
+      let errorMessage = 'Failed to analyze brand visibility';
+
       if (error instanceof TypeError && error.message.includes('network')) {
-        dispatch({
-          type: 'SET_ERROR',
-          payload: 'Connection lost. Please check your internet connection and try again.'
-        });
-      } else {
-        dispatch({
-          type: 'SET_ERROR',
-          payload: 'Failed to analyze brand visibility'
-        });
+        errorMessage = 'Connection lost. Please check your internet connection and try again.';
+      } else if (error instanceof Error && error.message) {
+        // Use the actual error message from the API
+        errorMessage = error.message;
       }
-      
+
+      dispatch({
+        type: 'SET_ERROR',
+        payload: errorMessage
+      });
+
       // Reset progress
       dispatch({
         type: 'SET_ANALYSIS_PROGRESS',

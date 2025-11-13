@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, Trash2, Check } from 'lucide-react';
+import { Loader2, Plus, Trash2, Check, RotateCcw, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Company, AnalysisStage } from '@/lib/types';
-import { IdentifiedCompetitor, PromptCompletionStatus } from '@/lib/brand-monitor-reducer';
+import { IdentifiedCompetitor, PromptCompletionStatus, PromptErrorMessages } from '@/lib/brand-monitor-reducer';
 import { getEnabledProviders } from '@/lib/provider-config';
 import Image from 'next/image';
 import { defaultPrompts } from '@/components/brand-monitor/prompts-list';
@@ -24,10 +24,13 @@ interface AnalysisProgressSectionProps {
   customPrompts: string[];
   removedDefaultPrompts: number[];
   promptCompletionStatus: PromptCompletionStatus;
+  promptErrorMessages: PromptErrorMessages;
   onRemoveDefaultPrompt: (index: number) => void;
   onRemoveCustomPrompt: (prompt: string) => void;
   onAddPromptClick: () => void;
   onStartAnalysis: () => void;
+  onRetryProvider: (prompt: string, provider: string) => void;
+  error?: string | null;
 }
 
 // Provider icon mapping
@@ -89,10 +92,13 @@ export function AnalysisProgressSection({
   customPrompts,
   removedDefaultPrompts,
   promptCompletionStatus,
+  promptErrorMessages,
   onRemoveDefaultPrompt,
   onRemoveCustomPrompt,
   onAddPromptClick,
   onStartAnalysis,
+  onRetryProvider,
+  error,
 }: AnalysisProgressSectionProps) {
   // Use provided prompts (backend will generate AI-powered prompts)
   // Or use custom prompts if user provided them
@@ -233,6 +239,7 @@ export function AnalysisProgressSection({
                             const provider = config.name;
                             const normalizedPrompt = prompt.trim();
                             const status = analyzing ? (promptCompletionStatus[normalizedPrompt]?.[provider] || 'pending') : null;
+                            const errorMessage = promptErrorMessages[normalizedPrompt]?.[provider];
 
                             // Get status description for tooltip
                             const getStatusDescription = (status: string | null) => {
@@ -245,7 +252,7 @@ export function AnalysisProgressSection({
                                 case 'completed':
                                   return `${provider}: Analysis complete`;
                                 case 'failed':
-                                  return `${provider}: Analysis failed`;
+                                  return errorMessage ? `${provider}: ${errorMessage}` : `${provider}: Analysis failed`;
                                 case 'skipped':
                                   return `${provider}: Skipped`;
                                 default:
@@ -254,7 +261,7 @@ export function AnalysisProgressSection({
                             };
 
                             return (
-                              <div key={`${prompt}-${provider}`} className="flex items-center gap-1">
+                              <div key={`${prompt}-${provider}`} className="flex items-center gap-1.5">
                                 <Tooltip description={analyzing ? '' : provider}>
                                   <div className="w-6 h-6 flex items-center justify-center">
                                     {getProviderIcon(provider)}
@@ -262,7 +269,7 @@ export function AnalysisProgressSection({
                                 </Tooltip>
                                 {analyzing && (
                                   <Tooltip description={getStatusDescription(status)}>
-                                    <>
+                                    <div className="flex items-center gap-1">
                                       {status === 'pending' && (
                                         <div className="w-3.5 h-3.5 rounded-full border border-[#d7d0c3]" />
                                       )}
@@ -273,12 +280,24 @@ export function AnalysisProgressSection({
                                         <Check className="w-3.5 h-3.5 text-[#1f8f4d]" />
                                       )}
                                       {status === 'failed' && (
-                                        <div className="w-3.5 h-3.5 rounded-full bg-[#c94135]" />
+                                        <>
+                                          <AlertCircle className="w-3.5 h-3.5 text-[#c94135]" />
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              onRetryProvider(prompt, provider);
+                                            }}
+                                            className="p-0.5 hover:bg-[#f5f1eb] rounded transition-colors"
+                                            title="Retry analysis"
+                                          >
+                                            <RotateCcw className="w-3 h-3 text-[#5c5850]" />
+                                          </button>
+                                        </>
                                       )}
                                       {status === 'skipped' && (
                                         <div className="w-3.5 h-3.5 rounded-full bg-[#b2ada1]" />
                                       )}
-                                    </>
+                                    </div>
                                   </Tooltip>
                                 )}
                               </div>
@@ -299,6 +318,28 @@ export function AnalysisProgressSection({
                   Add Prompt
                 </Button>
               </div>
+
+              {/* Error Message Banner */}
+              {!analyzing && error && (
+                <div className="mb-6 rounded-[18px] border border-[#e4b4b0] bg-[#fff5f5] px-5 py-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 text-[#c94135] flex-shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-sans text-[14px] leading-relaxed text-[#7d1f1a]">
+                        {error}
+                      </p>
+                      {error.toLowerCase().includes('monthly') && error.toLowerCase().includes('limit') && (
+                        <a
+                          href="/plans"
+                          className="inline-block mt-2 font-sans text-[13px] font-medium text-[#c94135] hover:text-[#a63529] underline"
+                        >
+                          View upgrade options →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Start Analysis Button */}
               <div className="flex justify-center pt-4">

@@ -13,7 +13,7 @@ const imgLine4 = "https://www.figma.com/api/mcp/asset/bc142cd5-6dcf-4bd6-a6d7-f3
 
 export const PricingSection = memo(function PricingSection() {
   const freePlanFeatures = [
-    '10 analyses per month',
+    '1 analysis per month',
     'Community support',
     'Basic features',
     'Quick AI-readiness check',

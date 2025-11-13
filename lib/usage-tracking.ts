@@ -84,7 +84,14 @@ async function getOrCreateUsageRecord(
     };
   } catch (error) {
     console.error('[USAGE_TRACKING] Error getting/creating usage record:', error);
-    throw new Error(ERROR_MESSAGES.USAGE_TRACKING_FAILED);
+    console.error('[USAGE_TRACKING] Full error details:', JSON.stringify(error, null, 2));
+
+    // Provide more specific error message
+    const errorMessage = error instanceof Error
+      ? `Database error: ${error.message}`
+      : ERROR_MESSAGES.USAGE_TRACKING_FAILED;
+
+    throw new Error(errorMessage);
   }
 }
 
